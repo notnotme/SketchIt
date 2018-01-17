@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/edit"
+        android:title="@string/edit"
+        android:icon="@mipmap/edit_w"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/share"
+        android:title="@string/share"
+        android:icon="@mipmap/share_w"
+        app:showAsAction="always"
+        app:actionProviderClass=
+            "com.notnotme.sketchup.view.ShareActionProvider"/>
+
+</menu>

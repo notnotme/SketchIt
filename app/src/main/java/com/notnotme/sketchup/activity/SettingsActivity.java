@@ -1,0 +1,130 @@
+package com.notnotme.sketchup.activity;
+
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.text.emoji.EmojiCompat;
+import android.support.v4.app.ShareCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
+import android.widget.TextView;
+
+import com.notnotme.sketchup.BuildConfig;
+import com.notnotme.sketchup.R;
+import com.notnotme.sketchup.Utils;
+import com.notnotme.sketchup.dao.DaoManager;
+import com.notnotme.sketchup.dao.Sketch;
+import com.notnotme.sketchup.egg.EggActivity;
+
+import java.io.File;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+
+public final class SettingsActivity extends BaseActivity {
+
+    private static final int EGG_CLICK_COUNT = 7;
+    private AlertDialog mAlertDialog;
+    private int mEggCounter;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
+        setSupportActionBar(findViewById(R.id.toolbar));
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        findViewById(R.id.delete_all_sketches).setOnClickListener(v -> mAlertDialog = new AlertDialog.Builder(this)
+                .setMessage(R.string.confirm_delete_all_sketches)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(android.R.string.ok, (dialog, i) -> deleteAllSketches())
+                .show());
+
+        findViewById(R.id.rate).setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id=" + getPackageName()));
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
+                    startActivity(intent);
+                }
+            });
+
+        findViewById(R.id.share).setOnClickListener(v -> {
+                ShareCompat.IntentBuilder intentBuilder = ShareCompat.IntentBuilder.from(this);
+                intentBuilder.setType("text/plain")
+                        .setText("https://play.google.com/store/apps/details?id=" + getPackageName())
+                        .startChooser();
+            });
+
+        findViewById(R.id.egg).setOnClickListener(v -> {
+            mEggCounter = mEggCounter + 1;
+            if (mEggCounter == EGG_CLICK_COUNT) {
+                startActivity(new Intent(this, EggActivity.class));
+            } else {
+                Handler handler = getMainHandler();
+                handler.removeCallbacksAndMessages(null);
+                handler.postDelayed(() -> mEggCounter = 0, TimeUnit.SECONDS.toMillis(3));
+            }
+        });
+
+        String versionString = getString(R.string.app_name) + " v" + BuildConfig.VERSION_NAME;
+        versionString += System.lineSeparator();
+        versionString += "(" + BuildConfig.BUILD_TYPE + ")";
+
+        TextView version = findViewById(R.id.version);
+        version.setText(versionString);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mAlertDialog != null && mAlertDialog.isShowing()) {
+            mAlertDialog.dismiss();
+        }
+    }
+
+    public void deleteAllSketches() {
+        AsyncTask.execute(() -> {
+            if (isDestroyed() || isFinishing()) return;
+
+            DaoManager daoManager = getLocalDatabase().getDaoManager();
+            AtomicReference<Exception> exceptionAtomicReference = new AtomicReference<>();
+            try {
+                List<Sketch> sketches = daoManager.getAllSketch();
+                daoManager.deleteSketches(sketches);
+                for (Sketch sketch : sketches) {
+                    Utils.deleteFile(this, new File(sketch.getPath()));
+                }
+            } catch (Exception e) {
+                exceptionAtomicReference.set(e);
+            }
+
+            getMainHandler().post(() -> {
+                if (isDestroyed() || isFinishing()) return;
+
+                Exception exception = exceptionAtomicReference.get();
+                if (exception != null) {
+                    Snackbar.make(findViewById(R.id.coordinator),
+                            EmojiCompat.get().process(exception.getMessage() + "\uD83D\uDCA5"),
+                            Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Snackbar.make(findViewById(R.id.coordinator),
+                            EmojiCompat.get().process(getString(R.string.all_sketches_deleted, "\uD83D\uDCA5")),
+                            Snackbar.LENGTH_SHORT).show();
+                }
+            });
+        });
+    }
+
+}

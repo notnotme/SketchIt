@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#ffc222</color>
+    <color name="colorPrimaryDark">#f2b820</color>
+    <color name="colorAccent">#ffc222</color>
+    <color name="darkgrey">#FF909090</color>
+
+    <string-array name="colors_array" translatable="false">
+        <item>#FF33B5E5</item>
+        <item>#FF0099CC</item>
+        <item>#FFAA66CC</item>
+        <item>#FF9933CC</item>
+        <item>#FF99CC00</item>
+        <item>#FF669900</item>
+        <item>#FFFFBB33</item>
+        <item>#FFFF8800</item>
+        <item>#FFFF4444</item>
+        <item>#FFCC0000</item>
+        <item>#FF000000</item>
+        <item>#FF909090</item>
+        <item>#FFC0C0C0</item>
+        <item>#FFE0E0E0</item>
+        <item>#FFFFFFFF</item>
+    </string-array>
+
+</resources>
+

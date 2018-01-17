@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@android:color/background_light"
+        app:cardCornerRadius="@dimen/cardview_default_radius"
+        app:cardElevation="@dimen/cardview_default_elevation"
+        app:contentPadding="4dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:minWidth="200dp">
+
+            <TextView
+                android:text="@string/action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/darkgrey"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp" />
+
+            <TextView
+                style="?android:textAppearanceMedium"
+                android:id="@+id/btn_new"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textColor="?colorAccent"
+                android:text="@string/new_sketch"
+                android:padding="8dp"
+                android:background="?selectableItemBackground"/>
+
+            <TextView
+                style="?android:textAppearanceMedium"
+                android:id="@+id/btn_save"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/save"
+                android:padding="8dp"
+                android:textColor="?colorAccent"
+                android:background="?selectableItemBackground"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

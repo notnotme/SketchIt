@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">SketchUp</string>
-    <string name="app_name_viewer">SketchUp - Viewer</string>
-    <string name="app_name_settings">SketchUp - Settings</string>
+    <string name="app_name" translatable="false">SketchIt</string>
+    <string name="app_name_viewer">SketchIt - Viewer</string>
+    <string name="app_name_settings">SketchIt - Settings</string>
 
     <string name="title_sketch">Sketch</string>
     <string name="title_album">Album</string>

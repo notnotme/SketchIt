@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name_viewer">SketchUp - espectador</string>
-    <string name="app_name_settings">SketchUp - configurações</string>
+    <string name="app_name_viewer">SketchIt - espectador</string>
+    <string name="app_name_settings">SketchIt - configurações</string>
 
     <string name="title_sketch">projeto</string>
     <string name="title_album">galeria</string>

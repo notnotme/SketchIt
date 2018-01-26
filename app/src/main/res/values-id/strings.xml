@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name_viewer">SketchUp - penonton</string>
-    <string name="app_name_settings">SketchUp - pengaturan</string>
+    <string name="app_name_viewer">SketchIt - penonton</string>
+    <string name="app_name_settings">SketchIt - pengaturan</string>
 
     <string name="title_sketch">disain</string>
     <string name="title_album">galeri</string>

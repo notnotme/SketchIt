@@ -92,7 +92,7 @@ public final class OpenGLRenderer implements GLSurfaceView.Renderer {
             mScanlineTexture = new Texture2D(mContext, "scanline.png");
             mChessTexture = new Texture2D(mContext, "chess.png");
             mBeamTexture = new Texture2D(mContext, "beam.png");
-            mLogoTexture = new Texture2D(mContext, "sketchup.png");
+            mLogoTexture = new Texture2D(mContext, "sketchit.png");
             mFontTexture = new Texture2D(mContext, "font.png");
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());

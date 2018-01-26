@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name_viewer">SketchUp - espectador</string>
+    <string name="app_name_settings">SketchUp - configurações</string>
+
+    <string name="title_sketch">projeto</string>
+    <string name="title_album">galeria</string>
+    <string name="new_sketch">novo</string>
+    <string name="save">salvar</string>
+    <string name="share">ação</string>
+    <string name="edit">editar</string>
+    <string name="pen">escova</string>
+    <string name="color">cor</string>
+    <string name="start_drawing_question">Iniciar um novo desenho?</string>
+    <string name="save_drawing_question">Salvar na galeria?</string>
+    <string name="action">ação</string>
+    <string name="ask_delete_selection">Tem certeza de que deseja excluir a seleção?</string>
+    <string name="sketch_view">espectador</string>
+    <string name="sketch_saved">Desenho salvo %1$s</string>
+    <string name="sketch_deleted">%1$s elementos excluídos %2$s</string>
+    <string name="delete_all_sketches_hint">Você pode apagar todos os desenhos clicando no botão abaixo.</string>
+    <string name="delete_all_sketches">Limpe todos os desenhos</string>
+    <string name="all_sketches_deleted">Todos os desenhos foram excluídos %1$s</string>
+    <string name="confirm_delete_all_sketches">Você tem certeza?</string>
+    <string name="rate">nota</string>
+    <string name="rate_hint">Dê uma nota para esta aplicação é aproveitar a oportunidade para nos deixar um comentário.</string>
+    <string name="share_this_app">Compartilhe este aplicativo com seus amigos ;)</string>
+    <string name="settings">configurações</string>
+
+</resources>

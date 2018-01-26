@@ -13,7 +13,7 @@
     <string name="pen">Pinceau</string>
     <string name="color">Couleur</string>
     <string name="start_drawing_question">Démarrer un nouveau dessin?</string>
-    <string name="save_drawing_question">Sauvegarder dans la gallerie ?</string>
+    <string name="save_drawing_question">Sauvegarder dans la gallerie?</string>
     <string name="action">Action</string>
     <string name="ask_delete_selection">Voulez-vous vraiment effacer la sélection?</string>
     <string name="sketch_view">Visionneuse</string>
@@ -22,7 +22,7 @@
     <string name="delete_all_sketches_hint">Vous pouvez éffacer tous les dessins en cliquant sur le bouton ci-dessous.</string>
     <string name="delete_all_sketches">Effacer tous les dessins</string>
     <string name="all_sketches_deleted">Tous les dessins ont été effacés %1$s</string>
-    <string name="confirm_delete_all_sketches">Êtes-vous sûre ?</string>
+    <string name="confirm_delete_all_sketches">Êtes-vous sûre?</string>
     <string name="rate">Noter</string>
     <string name="rate_hint">Donnez une note à cette application est saisissez l\'occasion de nous laisser un commentaire.</string>
     <string name="share_this_app">Partagez cette application avec vos amis ;)</string>

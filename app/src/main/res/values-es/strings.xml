@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name_viewer">SketchUp - Espectador</string>
+    <string name="app_name_settings">SketchUp - Configuraciones</string>
+
+    <string name="title_sketch">Bosquejo</string>
+    <string name="title_album">Álbum</string>
+    <string name="new_sketch">Nuevo</string>
+    <string name="save">Guardar</string>
+    <string name="share">Compartir</string>
+    <string name="edit">Editar</string>
+    <string name="pen">Cepillo</string>
+    <string name="color">Color</string>
+    <string name="start_drawing_question">¿Comience un nuevo dibujo?</string>
+    <string name="save_drawing_question">¿Guardar dibujo en la galería?</string>
+    <string name="action">Acción</string>
+    <string name="ask_delete_selection">¿Realmente quieres eliminar la selección?</string>
+    <string name="sketch_view">Visor de dibujos</string>
+    <string name="sketch_saved">Boceto guardado %1$s</string>
+    <string name="sketch_deleted">%1$s artículo (s) eliminado %2$s</string>
+    <string name="settings">Configuraciones</string>
+    <string name="delete_all_sketches_hint">Puede eliminar todos sus bocetos a la vez haciendo clic en el botón a continuación.</string>
+    <string name="delete_all_sketches">Eliminar todos los bocetos</string>
+    <string name="all_sketches_deleted">Todos los bocetos borrados %1$s</string>
+    <string name="confirm_delete_all_sketches">¿Estás seguro?</string>
+    <string name="rate">Nota</string>
+    <string name="rate_hint">Califica esta aplicación y aprovecha la ocasión para dar tu opinión. :)</string>
+    <string name="share_this_app">Comparte esta aplicación para que tus amigos la descubran.</string>
+
+</resources>

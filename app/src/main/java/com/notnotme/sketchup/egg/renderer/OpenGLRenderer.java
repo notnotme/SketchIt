@@ -44,7 +44,7 @@ public final class OpenGLRenderer implements GLSurfaceView.Renderer {
     };
 
     private final static char[] GREETINGS =
-            "\03 Adoru \03 zerkman \03 gloky \03 rez \03 phz \03 maracuja \03 mooz \03 sebt3 \03 LLB \03 pls \03 sam \03 nebneb \03 JFL \03 maxep \03 latortue \03 Mr Den \03 ZeuPiark \03 wullon \03 p0nce \03 Arthie \03 Zorro \03 Damn I'm sorry there are so many people that I could forgot maybe you :( \03\03\03 KIDS,    DON'T SMOKE WEEDS !! \03\03\03".toCharArray();
+            "\03 Adoru \03 zerkman \03 gloky \03 rez \03 phz \03 maracuja \03 mooz \03 fra \03 sebt3 \03 LLB \03 pls \03 sam \03 nebneb \03 JFL \03 maxep \03 latortue \03 Mr Den \03 ZeuPiark \03 wullon \03 p0nce \03 Arthie \03 Zorro \03 flure \03 pinkette \03 Damn I'm sorry there are so many people that I could forgot maybe you :( \03\03\03 KIDS,    DON'T SMOKE WEEDS !! \03\03\03".toCharArray();
 
     private int mScreenWidth;
     private int mScreenHeight;

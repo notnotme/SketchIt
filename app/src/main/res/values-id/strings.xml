@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name_viewer">SketchUp - penonton</string>
+    <string name="app_name_settings">SketchUp - pengaturan</string>
+
+    <string name="title_sketch">disain</string>
+    <string name="title_album">galeri</string>
+    <string name="new_sketch">baru</string>
+    <string name="save">menyimpan</string>
+    <string name="share">saham</string>
+    <string name="edit">mengedit</string>
+    <string name="pen">sikat</string>
+    <string name="color">warna</string>
+    <string name="start_drawing_question">Mulai gambar baru?</string>
+    <string name="save_drawing_question">Simpan di galeri?</string>
+    <string name="action">tindakan</string>
+    <string name="ask_delete_selection">Yakin ingin menghapus pilihannya?</string>
+    <string name="sketch_view">penonton</string>
+    <string name="sketch_saved">Gambar yang disimpan %1$s</string>
+    <string name="sketch_deleted">%1$s item dihapus %2$s</string>
+    <string name="delete_all_sketches_hint">Anda bisa menghapus semua gambar dengan mengklik tombol di bawah ini.</string>
+    <string name="delete_all_sketches">Hapus semua gambar</string>
+    <string name="all_sketches_deleted">Semua gambar telah dihapus %1$s</string>
+    <string name="confirm_delete_all_sketches">Apakah kamu yakin</string>
+    <string name="rate">catatan</string>
+    <string name="rate_hint">Beri catatan pada aplikasi ini adalah memanfaatkan kesempatan untuk memberi kami komentar.</string>
+    <string name="share_this_app">Bagikan aplikasi ini dengan teman Anda ;)</string>
+
+    <string name="settings">pengaturan</string>
+</resources>

@@ -1,4 +1,4 @@
-package com.notnotme.sketchup.view;
+package com.notnotme.sketchup;
 
 import android.content.Context;
 import android.view.View;

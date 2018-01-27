@@ -13,8 +13,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.notnotme.sketchup.R;
+import com.notnotme.sketchup.ShareActionProvider;
 import com.notnotme.sketchup.dao.Sketch;
-import com.notnotme.sketchup.view.ShareActionProvider;
 
 import java.io.File;
 

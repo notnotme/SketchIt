@@ -12,16 +12,21 @@ import android.support.text.emoji.EmojiCompat;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.notnotme.sketchup.BuildConfig;
 import com.notnotme.sketchup.R;
+import com.notnotme.sketchup.Theme;
 import com.notnotme.sketchup.Utils;
 import com.notnotme.sketchup.dao.DaoManager;
 import com.notnotme.sketchup.dao.Sketch;
 import com.notnotme.sketchup.egg.EggActivity;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -31,6 +36,21 @@ public final class SettingsActivity extends BaseActivity {
     private static final int EGG_CLICK_COUNT = 7;
     private AlertDialog mAlertDialog;
     private int mEggCounter;
+
+    private AdapterView.OnItemSelectedListener mOnThemeSelectionListener =
+            new AdapterView.OnItemSelectedListener() {
+                @Override public void onNothingSelected(AdapterView<?> adapterView) {}
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    Theme theme = (Theme) adapterView.getAdapter().getItem(i);
+                    Theme currentTheme = getSettingsManager().getTheme();
+
+                    if (!currentTheme.equals(theme)) {
+                        getSettingsManager().setTheme(theme);
+                        recreate();
+                    }
+                }
+            };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +97,11 @@ public final class SettingsActivity extends BaseActivity {
                 handler.postDelayed(() -> mEggCounter = 0, TimeUnit.SECONDS.toMillis(3));
             }
         });
+
+        Spinner spinner = findViewById(R.id.theme_spinner);
+        spinner.setAdapter(new ThemeAdapter(this, Arrays.asList(Theme.values())));
+        spinner.setSelection(getSettingsManager().getTheme().ordinal());
+        spinner.setOnItemSelectedListener(mOnThemeSelectionListener);
 
         String versionString = getString(R.string.app_name) + " v" + BuildConfig.VERSION_NAME;
         versionString += System.lineSeparator();

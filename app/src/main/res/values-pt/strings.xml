@@ -27,5 +27,6 @@
     <string name="rate_hint">Dê uma nota para esta aplicação é aproveitar a oportunidade para nos deixar um comentário.</string>
     <string name="share_this_app">Compartilhe este aplicativo com seus amigos ;)</string>
     <string name="settings">configurações</string>
+    <string name="change_theme_color">Você pode alterar a cor do aplicativo selecionando outro valor abaixo</string>
 
 </resources>

@@ -26,6 +26,7 @@
     <string name="rate">catatan</string>
     <string name="rate_hint">Beri catatan pada aplikasi ini adalah memanfaatkan kesempatan untuk memberi kami komentar.</string>
     <string name="share_this_app">Bagikan aplikasi ini dengan teman Anda ;)</string>
-
     <string name="settings">pengaturan</string>
+    <string name="change_theme_color">Anda dapat mengubah warna aplikasi dengan memilih nilai lain di bawah ini</string>
+
 </resources>

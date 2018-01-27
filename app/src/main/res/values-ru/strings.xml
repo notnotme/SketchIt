@@ -27,5 +27,6 @@
     <string name="rate_hint">Дайте примечание к этому приложению, воспользуйтесь возможностью оставить нам комментарий.</string>
     <string name="share_this_app">Поделитесь этим приложением со своими друзьями ;)</string>
     <string name="settings">настройки</string>
+    <string name="change_theme_color">Вы можете изменить цвет приложения, выбрав другое значение ниже</string>
 
 </resources>

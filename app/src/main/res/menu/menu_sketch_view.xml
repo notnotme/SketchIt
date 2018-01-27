@@ -15,6 +15,6 @@
         android:icon="@mipmap/share_w"
         app:showAsAction="always"
         app:actionProviderClass=
-            "com.notnotme.sketchup.view.ShareActionProvider"/>
+            "com.notnotme.sketchup.ShareActionProvider"/>
 
 </menu>

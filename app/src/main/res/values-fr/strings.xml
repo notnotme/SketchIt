@@ -28,5 +28,6 @@
     <string name="share_this_app">Partagez cette application avec vos amis ;)</string>
     <string name="settings">Paramètres</string>
     <string name="change_theme_color">Vous pouvez changer le thème de l\'application en sélectionnant une valeur ci-dessous</string>
+    <string name="more">Plus</string>
 
 </resources>

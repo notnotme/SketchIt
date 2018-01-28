@@ -42,6 +42,14 @@
                 app:spanCount="3"
                 tools:listitem="@layout/item_color"/>
 
+            <Button
+                style="?borderlessButtonStyle"
+                android:id="@+id/more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?colorAccent"
+                android:text="More"/>
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,12 +16,16 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 import com.notnotme.sketchup.R;
+import com.notnotme.sketchup.Utils;
 import com.notnotme.sketchup.view.DrawingView;
+import com.notnotme.sketchup.view.RatioTouchListener;
 
 import java.util.Arrays;
 
@@ -46,7 +52,7 @@ public final class SketchFragment extends Fragment {
 
         mBtnPlus.setOnClickListener(v -> showPlusPopup());
         mBtnPencil.setOnClickListener(v -> showPencilPopup());
-        mBtnColors.setOnClickListener(v -> showColoursPopup());
+        mBtnColors.setOnClickListener(v -> showColorPopup());
         view.findViewById(R.id.undo).setOnClickListener(v -> undoDrawing());
         view.findViewById(R.id.btn_albums).setOnClickListener(v -> mCallback.showAlbumFragment());
 
@@ -64,11 +70,6 @@ public final class SketchFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mCallback = null;
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
     }
 
     private void undoDrawing() {
@@ -138,7 +139,7 @@ public final class SketchFragment extends Fragment {
         popup.showAtLocation(getView(), Gravity.NO_GRAVITY, mBtnPencil.getLeft() + mBtnPencil.getWidth() / 3, mBtnPencil.getBottom() + 50);
     }
 
-    private void showColoursPopup() {
+    private void showColorPopup() {
         View layout = View.inflate(getContext(), R.layout.popup_colors, null);
         RecyclerView rv = layout.findViewById(R.id.recycler);
 
@@ -151,9 +152,96 @@ public final class SketchFragment extends Fragment {
                     popup.dismiss();
                 }));
 
+        layout.findViewById(R.id.more).setOnClickListener(view -> {
+            popup.dismiss();
+            showHsvPopup(mDrawingView.getBrushColor());
+        });
+
         popup.setAnimationStyle(android.R.style.Animation_Dialog);
         popup.setFocusable(true);
         popup.showAtLocation(layout, Gravity.NO_GRAVITY, mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
+    }
+
+    private void showHsvPopup(int color) {
+        View layout = View.inflate(getContext(), R.layout.popup_hsv, null);
+
+        ImageView hueImage = layout.findViewById(R.id.hue_color);
+        ImageView hueSelector = layout.findViewById(R.id.hue_selector);
+        ImageView colorImage = layout.findViewById(R.id.hue_mask);
+        ImageView colorSelector = layout.findViewById(R.id.color_selector);
+        ImageView colorPreview = layout.findViewById(R.id.color_preview);
+        Bitmap hueBitmap = ((BitmapDrawable) hueImage.getDrawable()).getBitmap();
+
+        float tempHSV[] = new float[3];
+
+        Color.RGBToHSV(Color.red(color), Color.green(color), Color.blue(color), tempHSV);
+        colorPreview.setColorFilter(Color.HSVToColor(tempHSV), PorterDuff.Mode.SRC);
+
+        layout.findViewById(R.id.hue_container).setOnTouchListener(new RatioTouchListener() {
+            @Override
+            public boolean onTouch(View view, float x, float y, float ratioX, float ratioY) {
+                hueSelector.animate()
+                        .y(y - hueSelector.getHeight()/2)
+                        .setDuration(0)
+                        .start();
+
+                int bitmapOffsetY = (int) ((hueBitmap.getHeight()-1)*ratioY);
+                int hueValue = hueBitmap.getPixel(hueBitmap.getWidth() / 2, bitmapOffsetY);
+                tempHSV[0] = Utils.clamp(ratioY, 0f, 1f) * 360.0f;
+
+                colorImage.setColorFilter(hueValue, PorterDuff.Mode.MULTIPLY);
+                colorPreview.setColorFilter(Color.HSVToColor(tempHSV), PorterDuff.Mode.SRC);
+                return true;
+            }
+        });
+
+        layout.findViewById(R.id.color_container).setOnTouchListener(new RatioTouchListener() {
+            @Override
+            public boolean onTouch(View view, float x, float y, float ratioX, float ratioY) {
+                colorSelector.animate()
+                        .x(x - colorSelector.getWidth()/2)
+                        .y(y - colorSelector.getHeight()/2)
+                        .setDuration(0)
+                        .start();
+
+                tempHSV[2] = Utils.clamp(ratioX, 0f, 1f);
+                tempHSV[1] = 1f - Utils.clamp(ratioY, 0f, 1f);
+                colorPreview.setColorFilter(Color.HSVToColor(tempHSV), PorterDuff.Mode.SRC);
+                return true;
+            }
+        });
+
+        layout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                float hueStep = (float) hueBitmap.getHeight() / 360f;
+                float offsetY = ((tempHSV[0]/360.0f) * hueImage.getHeight()) / hueStep;
+
+
+                int bitmapOffsetY = (int) ((hueBitmap.getHeight()-1) * (tempHSV[0] / 360.0f));
+                int hueValue = hueBitmap.getPixel(hueBitmap.getWidth() / 2, bitmapOffsetY);
+                colorImage.setColorFilter(hueValue, PorterDuff.Mode.MULTIPLY);
+
+                hueSelector.animate()
+                        .y(offsetY * hueStep - (hueSelector.getHeight()/2))
+                        .alpha(1)
+                        .setDuration(0);
+
+                colorSelector.animate()
+                        .x((tempHSV[2] * colorImage.getWidth()) - (colorSelector.getWidth()/2))
+                        .y(((1f - tempHSV[1]) * colorImage.getHeight()) - (colorSelector.getHeight()/2))
+                        .alpha(1)
+                        .setDuration(0);
+            }
+        });
+
+        PopupWindow popup = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popup.setAnimationStyle(android.R.style.Animation_Dialog);
+        popup.setFocusable(true);
+        popup.showAtLocation(layout, Gravity.NO_GRAVITY, mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
+        popup.setOnDismissListener(() -> mDrawingView.setBrushColor(Color.HSVToColor(tempHSV)));
     }
 
     public interface SketchFragmentCallback {

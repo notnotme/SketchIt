@@ -49,5 +49,9 @@ public final class Utils {
         contentResolver.delete(imageUri, null, null);
     }
 
+    public static float clamp(float value, float min, float max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
 }
 

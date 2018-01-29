@@ -2,12 +2,9 @@ package com.notnotme.sketchup;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 
 import java.io.File;
@@ -45,19 +42,6 @@ public final class Utils {
         }
 
         return imageFile;
-    }
-
-    public static @Nullable String getContentUriFilePath(@NonNull ContentResolver contentResolver, @NonNull Uri contentUri) {
-        final String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-        Cursor cursor = contentResolver.query(contentUri, filePathColumn, null, null, null);
-        if (cursor == null) return null;
-
-        cursor.moveToFirst();
-        String picturePath = cursor.getString(cursor.getColumnIndex(filePathColumn[0]));
-        cursor.close();
-
-        return picturePath;
     }
 
     public static void deleteFile(@NonNull Context context, @NonNull File file) {

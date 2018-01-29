@@ -215,7 +215,7 @@ public final class DrawingView extends View {
             @Override
             public void onGlobalLayout() {
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                mCanvasBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.RGB_565);
+                mCanvasBitmap = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.RGB_565);
                 mDrawCanvas = new Canvas(mCanvasBitmap);
 
                 if (bitmap != null) {

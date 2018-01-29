@@ -107,6 +107,8 @@ public final class SketchFragment extends Fragment {
             if (savedInstanceState.getBoolean(STATE_IS_IMPORTING)) {
                 mImportImage.setImageURI(Uri.parse(savedInstanceState.getString(STATE_IMPORT_IMAGE_PATH)));
                 enterImportMode();
+            } else {
+                mFab.setTag(false);
             }
         }
     }
@@ -170,7 +172,7 @@ public final class SketchFragment extends Fragment {
     }
 
     public boolean isInImport() {
-        if (mFab == null) return false;
+        if (mFab == null || mFab.getTag() == null) return false;
         return  (Boolean) mFab.getTag();
     }
 

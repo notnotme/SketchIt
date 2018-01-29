@@ -30,5 +30,7 @@
     <string name="share_this_app">Share this app to make you friends discover it</string>
     <string name="change_theme_color">You can change the color of the application by selecting another value below</string>
     <string name="more">More</string>
+    <string name="new_import">Import</string>
+    <string name="import_picture_from">Import picture from</string>
 
 </resources>

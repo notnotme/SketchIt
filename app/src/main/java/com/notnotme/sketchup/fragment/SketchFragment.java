@@ -1,12 +1,18 @@
 package com.notnotme.sketchup.fragment;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,13 +35,23 @@ import com.notnotme.sketchup.view.RatioTouchListener;
 
 import java.util.Arrays;
 
+import static android.provider.MediaStore.Images;
+
 public final class SketchFragment extends Fragment {
+
+    private final static String TAG = SketchFragment.class.getSimpleName();
+    private final static String STATE_EXTERNAL_FILE_URI = TAG + ".external_file_uri";
+
+    private static final int REQUEST_IMPORT_PICTURE = 1337;
+    private static final int REQUEST_READ_PERMISSION = 1338;
 
     private SketchFragmentCallback mCallback;
     private ImageButton mBtnPlus;
     private ImageButton mBtnPencil;
     private ImageButton mBtnColors;
     private DrawingView mDrawingView;
+    private String mExternalFile;
+    private PopupWindow mPopupWindow;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,6 +77,16 @@ public final class SketchFragment extends Fragment {
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            mExternalFile = savedInstanceState.getString(STATE_EXTERNAL_FILE_URI);
+        } else {
+            mDrawingView.setBitmap(null);
+        }
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mCallback = (SketchFragmentCallback) context;
@@ -72,25 +98,79 @@ public final class SketchFragment extends Fragment {
         mCallback = null;
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(STATE_EXTERNAL_FILE_URI, mExternalFile);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mPopupWindow != null && mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Context context = getContext();
+
+        if (requestCode == REQUEST_IMPORT_PICTURE && resultCode == Activity.RESULT_OK && context != null) {
+            Uri contentUri = data.getData();
+            if (contentUri != null) {
+                setSketch(Utils.getContentUriFilePath(context.getContentResolver(), contentUri));
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            switch (requestCode) {
+                case REQUEST_READ_PERMISSION:
+                    setSketch(mExternalFile);
+                    break;
+            }
+        }
+    }
+
     private void undoDrawing() {
         mDrawingView.undo();
     }
 
+    // todo: make async loading because photo can be uber huge
     public void setSketch(String path) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
         options.inPreferredConfig = Bitmap.Config.RGB_565;
-        mDrawingView.setBitmap(BitmapFactory.decodeFile(path, options));
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+
+        if (bitmap == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // We may need permission to read file (ex: for an import)
+            Context context = getContext();
+            if (context != null) {
+                if (context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    mExternalFile = path;
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_PERMISSION);
+                    return;
+                }
+            }
+        }
+
+        mDrawingView.setBitmap(bitmap);
         mDrawingView.resetHistory();
     }
 
     private void showPlusPopup() {
         Context context = getContext();
         View layout = View.inflate(context, R.layout.popup_plus, null);
-        PopupWindow popup = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
 
         layout.findViewById(R.id.btn_new).setOnClickListener(v -> {
-            popup.dismiss();
+            mPopupWindow.dismiss();
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage(R.string.start_drawing_question);
             builder.setPositiveButton(android.R.string.yes, (dialog, id) -> {
@@ -104,7 +184,7 @@ public final class SketchFragment extends Fragment {
         });
 
         layout.findViewById(R.id.btn_save).setOnClickListener(v -> {
-            popup.dismiss();
+            mPopupWindow.dismiss();
             AlertDialog.Builder saveDialog = new AlertDialog.Builder(context);
             saveDialog.setMessage(R.string.save_drawing_question);
             saveDialog.setPositiveButton(android.R.string.yes, (dialog, which) -> mCallback.saveSketch(mDrawingView.getBitmap()));
@@ -112,17 +192,24 @@ public final class SketchFragment extends Fragment {
             saveDialog.show();
         });
 
+        layout.findViewById(R.id.btn_import).setOnClickListener(view -> {
+            mPopupWindow.dismiss();
+            Intent intent = new Intent(Intent.ACTION_PICK, Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
+            startActivityForResult(Intent.createChooser(intent, getString(R.string.import_picture_from)), REQUEST_IMPORT_PICTURE);
+        });
+
         // Creating the PopupWindow
-        popup.setAnimationStyle(android.R.style.Animation_Dialog);
-        popup.setFocusable(true);
-        popup.showAtLocation(getView(), Gravity.NO_GRAVITY, mBtnPlus.getLeft() + mBtnPlus.getWidth() / 3, mBtnPlus.getBottom() + 50);
+        mPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.showAtLocation(getView(), Gravity.NO_GRAVITY, mBtnPlus.getLeft() + mBtnPlus.getWidth() / 3, mBtnPlus.getBottom() + 50);
     }
 
     private void showPencilPopup() {
         Context context = getContext();
         View layout = View.inflate(context, R.layout.popup_pencil, null);
 
-        PopupWindow popup = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         RecyclerView rc = layout.findViewById(R.id.recycler);
         rc.setHasFixedSize(true);
         rc.setAdapter(new PencilAdapter(Arrays.asList(
@@ -130,36 +217,36 @@ public final class SketchFragment extends Fragment {
                 new PencilAdapter.Pencil(DrawingView.STROKE_MEDIUM_SIZE, R.mipmap.pen_medium),
                 new PencilAdapter.Pencil(DrawingView.STROKE_LARGE_SIZE, R.mipmap.pen_large)),
                 pencil -> {
+                    mPopupWindow.dismiss();
                     mDrawingView.setBrushStrokeWidth(pencil.getSize());
-                    popup.dismiss();
                 }));
 
-        popup.setAnimationStyle(android.R.style.Animation_Dialog);
-        popup.setFocusable(true);
-        popup.showAtLocation(getView(), Gravity.NO_GRAVITY, mBtnPencil.getLeft() + mBtnPencil.getWidth() / 3, mBtnPencil.getBottom() + 50);
+        mPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.showAtLocation(getView(), Gravity.NO_GRAVITY, mBtnPencil.getLeft() + mBtnPencil.getWidth() / 3, mBtnPencil.getBottom() + 50);
     }
 
     private void showColorPopup() {
         View layout = View.inflate(getContext(), R.layout.popup_colors, null);
         RecyclerView rv = layout.findViewById(R.id.recycler);
 
-        PopupWindow popup = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         rv.setHasFixedSize(true);
         rv.setAdapter(new ColorAdapter(
                 Arrays.asList(getResources().getStringArray(R.array.colors_array)),
                 color -> {
+                    mPopupWindow.dismiss();
                     mDrawingView.setBrushColor(color);
-                    popup.dismiss();
                 }));
 
         layout.findViewById(R.id.more).setOnClickListener(view -> {
-            popup.dismiss();
+            mPopupWindow.dismiss();
             showHsvPopup(mDrawingView.getBrushColor());
         });
 
-        popup.setAnimationStyle(android.R.style.Animation_Dialog);
-        popup.setFocusable(true);
-        popup.showAtLocation(layout, Gravity.NO_GRAVITY, mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
+        mPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.showAtLocation(layout, Gravity.NO_GRAVITY, mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
     }
 
     private void showHsvPopup(int color) {
@@ -237,11 +324,11 @@ public final class SketchFragment extends Fragment {
             }
         });
 
-        PopupWindow popup = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popup.setAnimationStyle(android.R.style.Animation_Dialog);
-        popup.setFocusable(true);
-        popup.showAtLocation(layout, Gravity.NO_GRAVITY, mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
-        popup.setOnDismissListener(() -> mDrawingView.setBrushColor(Color.HSVToColor(tempHSV)));
+        mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.showAtLocation(layout, Gravity.NO_GRAVITY, mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
+        mPopupWindow.setOnDismissListener(() -> mDrawingView.setBrushColor(Color.HSVToColor(tempHSV)));
     }
 
     public interface SketchFragmentCallback {

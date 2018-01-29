@@ -29,5 +29,6 @@
     <string name="settings">configurações</string>
     <string name="change_theme_color">Você pode alterar a cor do aplicativo selecionando outro valor abaixo</string>
     <string name="more">Mais</string>
+    <string name="new_import">importação</string>
 
 </resources>

@@ -29,5 +29,6 @@
     <string name="share_this_app">Comparte esta aplicación para que tus amigos la descubran.</string>
     <string name="change_theme_color">Puede cambiar el color de la aplicación seleccionando otro valor a continuación</string>
     <string name="more">Más</string>
+    <string name="new_import">importación</string>
 
 </resources>

@@ -29,5 +29,6 @@
     <string name="settings">Paramètres</string>
     <string name="change_theme_color">Vous pouvez changer le thème de l\'application en sélectionnant une valeur ci-dessous</string>
     <string name="more">Plus</string>
+    <string name="new_import">Importer</string>
 
 </resources>

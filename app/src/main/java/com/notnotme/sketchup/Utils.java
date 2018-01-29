@@ -2,8 +2,12 @@ package com.notnotme.sketchup;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 
 import java.io.File;
@@ -12,7 +16,7 @@ import java.io.IOException;
 
 public final class Utils {
 
-    public static File saveImageToExternalStorage(Context context, String imageName, Bitmap image) throws IOException {
+    public static File saveImageToExternalStorage(@NonNull Context context, @NonNull String imageName, @NonNull Bitmap image) throws IOException {
         FileOutputStream fos = null;
 
         File imageFile;
@@ -43,7 +47,20 @@ public final class Utils {
         return imageFile;
     }
 
-    public static void deleteFile(Context context, File file) {
+    public static @Nullable String getContentUriFilePath(@NonNull ContentResolver contentResolver, @NonNull Uri contentUri) {
+        final String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+        Cursor cursor = contentResolver.query(contentUri, filePathColumn, null, null, null);
+        if (cursor == null) return null;
+
+        cursor.moveToFirst();
+        String picturePath = cursor.getString(cursor.getColumnIndex(filePathColumn[0]));
+        cursor.close();
+
+        return picturePath;
+    }
+
+    public static void deleteFile(@NonNull Context context, @NonNull File file) {
         Uri imageUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
         ContentResolver contentResolver = context.getContentResolver();
         contentResolver.delete(imageUri, null, null);

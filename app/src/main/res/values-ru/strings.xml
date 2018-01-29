@@ -29,5 +29,6 @@
     <string name="settings">настройки</string>
     <string name="change_theme_color">Вы можете изменить цвет приложения, выбрав другое значение ниже</string>
     <string name="more">Больше</string>
+    <string name="new_import">импорт</string>
 
 </resources>

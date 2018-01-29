@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.notnotme.sketchup.Utils;
 
@@ -68,24 +69,6 @@ public final class DrawingView extends View {
     public DrawingView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         setupDrawing();
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        if (mOriginalBitmap != null) {
-            mCanvasBitmap = mOriginalBitmap.copy(Bitmap.Config.RGB_565, true);
-            mDrawCanvas = new Canvas(mCanvasBitmap);
-        } else {
-            if (mCanvasBitmap != null) {
-                mCanvasBitmap.eraseColor(Color.WHITE);
-            } else {
-                mCanvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565);
-                mCanvasBitmap.eraseColor(Color.WHITE);
-                mDrawCanvas = new Canvas(mCanvasBitmap);
-            }
-        }
-        invalidate();
     }
 
     @Override
@@ -153,13 +136,13 @@ public final class DrawingView extends View {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
         options.inPreferredConfig = Bitmap.Config.RGB_565;
-        setBitmap(BitmapFactory.decodeFile(savedState.getString(SAVESTATE_SKETCH_FILE), options));
+        mOriginalBitmap = BitmapFactory.decodeFile(savedState.getString(SAVESTATE_SKETCH_FILE), options);
 
         mCurrentStrokeWidth = savedState.getFloat(STATE_STROKE_WIDTH);
         mCurrentColor = savedState.getInt(STATE_COLOR);
         mDrawPaint.setStrokeWidth(mCurrentStrokeWidth);
         mDrawPaint.setColor(mCurrentColor);
-
+        setBitmap(mOriginalBitmap);
         // todo: restore undo steps ETA: chrismas 2025+
         // todo: limit redo step to 10 ? yeah. 2025.
     }
@@ -179,15 +162,6 @@ public final class DrawingView extends View {
         setBrushColor(Color.BLACK);
     }
 
-    public void clearImage(int color) {
-        if (mCanvasBitmap == null) return;
-
-        mRedos.clear();
-        mCanvasBitmap.eraseColor(color);
-
-        invalidate();
-    }
-
     public boolean canUndo() {
         return !mRedos.empty();
     }
@@ -196,11 +170,9 @@ public final class DrawingView extends View {
         if (!canUndo()) return;
 
         mRedos.pop();
+        mDrawCanvas.drawColor(Color.WHITE);
         if (mOriginalBitmap != null) {
-            mCanvasBitmap = mOriginalBitmap.copy(Bitmap.Config.RGB_565, true);
-            mDrawCanvas = new Canvas(mCanvasBitmap);
-        } else {
-            mCanvasBitmap.eraseColor(Color.WHITE);
+            mDrawCanvas.drawBitmap(mOriginalBitmap, 0, 0, null);
         }
 
         int undoSize = mRedos.size();
@@ -239,20 +211,25 @@ public final class DrawingView extends View {
     }
 
     public void setBitmap(Bitmap bitmap) {
-        if (mOriginalBitmap != null && !mOriginalBitmap.isRecycled()) {
-            mOriginalBitmap.recycle();
-        }
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mCanvasBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.RGB_565);
+                mDrawCanvas = new Canvas(mCanvasBitmap);
 
-        if (bitmap != null) {
-            mOriginalBitmap = bitmap;
-            mCanvasBitmap = bitmap.copy(Bitmap.Config.RGB_565, true);
-        } else {
-            mOriginalBitmap = null;
-            mCanvasBitmap.eraseColor(Color.WHITE);
-        }
-
-        mDrawCanvas = new Canvas(mCanvasBitmap);
-        invalidate();
+                if (bitmap != null) {
+                    mOriginalBitmap = bitmap;
+                    mDrawCanvas.drawColor(Color.WHITE);
+                    mDrawCanvas.drawBitmap(mOriginalBitmap, 0, 0, null);
+                } else {
+                    mOriginalBitmap = null;
+                    mDrawCanvas.drawColor(Color.WHITE);
+                }
+                invalidate();
+            }
+        });
+        requestLayout();
     }
 
     public void resetHistory() {
@@ -266,13 +243,13 @@ public final class DrawingView extends View {
         private final int mColor;
         private final float mStrokeWidth;
 
-        public DrawingElement(Path path, int color, float strokeWidth) {
+        DrawingElement(Path path, int color, float strokeWidth) {
             mPath = path;
             mColor = color;
             mStrokeWidth = strokeWidth;
         }
 
-        public Path getPath() {
+        Path getPath() {
             return mPath;
         }
 
@@ -280,7 +257,7 @@ public final class DrawingView extends View {
             return mColor;
         }
 
-        public float getStrokeWidth() {
+        float getStrokeWidth() {
             return mStrokeWidth;
         }
 

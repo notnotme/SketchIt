@@ -29,5 +29,6 @@
     <string name="settings">pengaturan</string>
     <string name="change_theme_color">Anda dapat mengubah warna aplikasi dengan memilih nilai lain di bawah ini</string>
     <string name="more">Lebih</string>
+    <string name="new_import">impor</string>
 
 </resources>

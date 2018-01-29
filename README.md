@@ -1,5 +1,5 @@
-# SketchUp
-It's not made with tomatoes
+# SketchIt
+It's not made with tomatoes (because I named it SketchUp before I knew Google SketchUp!)
 
 Hello World!
 

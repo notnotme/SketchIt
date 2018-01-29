@@ -5,7 +5,7 @@
     <string name="app_name_settings">SketchIt - Paramètres</string>
 
     <string name="title_sketch">Dessin</string>
-    <string name="title_album">Gallerie</string>
+    <string name="title_album">Galerie</string>
     <string name="new_sketch">Nouveau</string>
     <string name="save">Sauvegarder</string>
     <string name="share">Partager</string>
@@ -13,7 +13,7 @@
     <string name="pen">Pinceau</string>
     <string name="color">Couleur</string>
     <string name="start_drawing_question">Démarrer un nouveau dessin?</string>
-    <string name="save_drawing_question">Sauvegarder dans la gallerie?</string>
+    <string name="save_drawing_question">Sauvegarder dans la galerie?</string>
     <string name="action">Action</string>
     <string name="ask_delete_selection">Voulez-vous vraiment effacer la sélection?</string>
     <string name="sketch_view">Visionneuse</string>

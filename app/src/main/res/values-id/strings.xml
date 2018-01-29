@@ -30,5 +30,6 @@
     <string name="change_theme_color">Anda dapat mengubah warna aplikasi dengan memilih nilai lain di bawah ini</string>
     <string name="more">Lebih</string>
     <string name="new_import">impor</string>
+    <string name="import_picture_from">Impor gambar dengan</string>
 
 </resources>

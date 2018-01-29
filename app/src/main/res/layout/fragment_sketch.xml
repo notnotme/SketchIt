@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -80,21 +81,47 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/appbar"
         android:layout_margin="16dp"
         app:cardUseCompatPadding="true"
         app:cardElevation="@dimen/cardview_default_elevation"
         app:cardCornerRadius="@dimen/cardview_default_radius">
 
-        <com.notnotme.sketchup.view.DrawingView
-            android:id="@+id/sketch_drawing"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <FrameLayout
             android:layout_margin="8dp"
-            android:background="@android:color/white"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.notnotme.sketchup.view.DrawingView
+                android:id="@+id/sketch_drawing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"/>
+
+            <com.github.chrisbanes.photoview.PhotoView
+                android:id="@+id/import_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:background="@android:color/white"/>
+
+        </FrameLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/import_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_up"
+            android:layout_gravity="bottom|end"
+            app:fabSize="normal"
+            app:useCompatPadding="true"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</RelativeLayout>

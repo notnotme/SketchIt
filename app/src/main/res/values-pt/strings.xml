@@ -30,5 +30,6 @@
     <string name="change_theme_color">Você pode alterar a cor do aplicativo selecionando outro valor abaixo</string>
     <string name="more">Mais</string>
     <string name="new_import">importação</string>
+    <string name="import_picture_from">Importe imagem com</string>
 
 </resources>

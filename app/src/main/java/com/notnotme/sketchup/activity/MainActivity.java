@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.text.emoji.EmojiCompat;
 import android.support.v4.app.ShareCompat;
@@ -57,6 +58,17 @@ public final class MainActivity extends BaseActivity
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        if (intent.getData() != null) {
+            onNewIntent(intent);
+            intent.setData(null);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mAlertDialog != null && mAlertDialog.isShowing()) {
@@ -72,15 +84,23 @@ public final class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (mViewSwitcher.getDisplayedChild() == SWITCHER_ALBUM) {
-            AlbumFragment albumFragment = (AlbumFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_album);
-            if (albumFragment.isInEditMode()) {
-                albumFragment.exitEditMode();
-                return;
-            } else {
-                showSketchFragment();
-                return;
-            }
+        switch (mViewSwitcher.getDisplayedChild()) {
+            case SWITCHER_ALBUM:
+                AlbumFragment albumFragment = (AlbumFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_album);
+                if (albumFragment.isInEditMode()) {
+                    albumFragment.exitEditMode();
+                    return;
+                } else {
+                    showSketchFragment();
+                    return;
+                }
+
+            case SWITCHER_SKETCH:
+                SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
+                if (sketchFragment.isInImport()) {
+                    sketchFragment.exitImportMode();
+                    return;
+                }
         }
 
         super.onBackPressed();
@@ -90,9 +110,13 @@ public final class MainActivity extends BaseActivity
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         String path = intent.getStringExtra(ARG_SKETCH);
+        if (path == null && intent.getData() != null) {
+            path = intent.getData().toString();
+        }
+
         if (path != null) {
             SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
-            sketchFragment.setSketch(path);
+            sketchFragment.setSketch(path, path.startsWith("content"));
 
             if (mViewSwitcher.getDisplayedChild() != SWITCHER_SKETCH) {
                 showSketchFragment();
@@ -109,6 +133,11 @@ public final class MainActivity extends BaseActivity
 
     @Override
     public void showAlbumFragment() {
+        SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
+        if (sketchFragment.isInImport()) {
+            sketchFragment.exitImportMode();
+        }
+
         mViewSwitcher.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_2));
         mViewSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out_2));
         mViewSwitcher.setDisplayedChild(SWITCHER_ALBUM);

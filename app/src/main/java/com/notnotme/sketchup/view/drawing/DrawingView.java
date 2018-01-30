@@ -1,4 +1,4 @@
-package com.notnotme.sketchup.view;
+package com.notnotme.sketchup.view.drawing;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -37,7 +37,7 @@ public final class DrawingView extends View {
     public static final int STROKE_LARGE_SIZE = 30;
 
     // todo: save state my ass it is feasible but boring :D
-    private Stack<DrawingElement> mRedos;
+    private Stack<CanvasDrawable> mRedos;
 
     private Path mDrawPath;
     private Paint mDrawPaint;
@@ -92,7 +92,7 @@ public final class DrawingView extends View {
                 mDrawPath.lineTo(touchX, touchY);
                 break;
             case MotionEvent.ACTION_UP:
-                mRedos.push(new DrawingElement(mDrawPath, mDrawPaint.getColor(), mDrawPaint.getStrokeWidth()));
+                mRedos.push(new PathDrawable(mDrawPaint.getColor(), mDrawPaint.getStrokeWidth(), Effect.NONE, mDrawPath));
                 mDrawCanvas.drawPath(mDrawPath, mDrawPaint);
                 mDrawPath = new Path();
                 break;
@@ -177,10 +177,7 @@ public final class DrawingView extends View {
 
         int undoSize = mRedos.size();
         for (int i=0; i<undoSize; i++) {
-            DrawingElement de = mRedos.get(i);
-            mDrawPaint.setColor(de.getColor());
-            mDrawPaint.setStrokeWidth(de.getStrokeWidth());
-            mDrawCanvas.drawPath(de.getPath(), mDrawPaint);
+            mRedos.get(i).draw(mDrawCanvas, mDrawPaint);
         }
 
         mDrawPaint.setColor(mCurrentColor);
@@ -237,30 +234,6 @@ public final class DrawingView extends View {
     }
 
 
-    public final static class DrawingElement {
 
-        private final Path mPath;
-        private final int mColor;
-        private final float mStrokeWidth;
-
-        DrawingElement(Path path, int color, float strokeWidth) {
-            mPath = path;
-            mColor = color;
-            mStrokeWidth = strokeWidth;
-        }
-
-        Path getPath() {
-            return mPath;
-        }
-
-        public int getColor() {
-            return mColor;
-        }
-
-        float getStrokeWidth() {
-            return mStrokeWidth;
-        }
-
-    }
 
 }

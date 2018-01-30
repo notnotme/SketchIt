@@ -27,7 +27,7 @@ import android.widget.PopupWindow;
 
 import com.jsibbold.zoomage.ZoomageView;
 import com.notnotme.sketchup.R;
-import com.notnotme.sketchup.view.DrawingView;
+import com.notnotme.sketchup.view.drawing.DrawingView;
 import com.notnotme.sketchup.view.RatioTouchListener;
 
 import java.util.Arrays;

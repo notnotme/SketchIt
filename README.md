@@ -18,7 +18,7 @@ About this part:
 
 Credits :
 - [Picasso](http://square.github.io/picasso/)
-- [PhotoView](https://github.com/chrisbanes/PhotoView)
+- [zoomage](https://github.com/jsibbold/zoomage)
 - [Room](https://developer.android.com/topic/libraries/architecture/room.html)
 - [Leakcanary](https://github.com/square/leakcanary)
 - [EmojiCompat](https://developer.android.com/guide/topics/ui/look-and-feel/emoji-compat.html)

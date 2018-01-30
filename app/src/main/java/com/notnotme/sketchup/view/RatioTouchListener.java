@@ -28,7 +28,7 @@ public abstract class RatioTouchListener implements View.OnTouchListener {
                 float ratioX = 1f / (view.getWidth() / x);
                 float ratioY = 1f / (view.getHeight() / y);
 
-                return onTouch(view, x, y, ratioX, ratioY);
+                return onTouch(view, x, y, Math.min(Math.max(ratioX, 0f), 1f), Math.min(Math.max(ratioY, 0f), 1f));
             default:
                 return false;
         }

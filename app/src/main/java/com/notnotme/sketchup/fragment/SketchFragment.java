@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
@@ -26,13 +25,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
-import com.github.chrisbanes.photoview.PhotoView;
+import com.jsibbold.zoomage.ZoomageView;
 import com.notnotme.sketchup.R;
-import com.notnotme.sketchup.Utils;
 import com.notnotme.sketchup.view.DrawingView;
 import com.notnotme.sketchup.view.RatioTouchListener;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 import static android.provider.MediaStore.Images;
@@ -49,11 +46,11 @@ public final class SketchFragment extends Fragment {
     private ImageButton mBtnPencil;
     private ImageButton mBtnColors;
     private DrawingView mDrawingView;
-    private PopupWindow mPopupWindow;
 
-    private PhotoView mImportImage;
+    private ZoomageView mImportImage;
     private FloatingActionButton mFab;
 
+    private PopupWindow mPopupWindow;
     private AlertDialog mAlertDialog;
 
     private View.OnClickListener mImportOkClickListener =
@@ -86,11 +83,10 @@ public final class SketchFragment extends Fragment {
         mBtnPlus.setOnClickListener(v -> showPlusPopup());
         mBtnPencil.setOnClickListener(v -> showPencilPopup());
         mBtnColors.setOnClickListener(v -> showColorPopup());
-        view.findViewById(R.id.undo).setOnClickListener(v -> undoDrawing());
+        view.findViewById(R.id.undo).setOnClickListener(v -> mDrawingView.undo());
         view.findViewById(R.id.btn_albums).setOnClickListener(v -> mCallback.showAlbumFragment());
 
         mImportImage = view.findViewById(R.id.import_image);
-        mImportImage.setMinimumScale(0.5f);
         mFab = view.findViewById(R.id.import_ok);
 
         mDrawingView.setBrushStrokeWidth(DrawingView.STROKE_MEDIUM_SIZE);
@@ -147,28 +143,15 @@ public final class SketchFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Context context = getContext();
 
-        if (requestCode == REQUEST_IMPORT_PICTURE && resultCode == Activity.RESULT_OK && context != null) {
+        if (requestCode == REQUEST_IMPORT_PICTURE && resultCode == Activity.RESULT_OK) {
             Uri contentUri = data.getData();
             if (contentUri != null) {
-                Uri imageUri = data.getData();
-                try {
-                    mImportImage.setTag(imageUri.toString());
-                    Bitmap bitmap = Images.Media.getBitmap(context.getContentResolver(), imageUri);
-                    setSketch(bitmap, true);
-                } catch (IOException e) {
-                    mAlertDialog = new AlertDialog.Builder(context)
-                            .setMessage(e.getLocalizedMessage())
-                            .setCancelable(true)
-                            .show();
-                }
+                String imageUri = data.getData().toString();
+                mImportImage.setTag(imageUri);
+                mCallback.loadSketch(imageUri, true);
             }
         }
-    }
-
-    private void undoDrawing() {
-        mDrawingView.undo();
     }
 
     public boolean isInImport() {
@@ -186,31 +169,18 @@ public final class SketchFragment extends Fragment {
     public void exitImportMode() {
         mFab.hide();
         mFab.setTag(false);
+        mImportImage.setImageResource(0);
+        mImportImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
         mImportImage.setVisibility(View.GONE);
     }
 
-    // todo: make async loading because photo can be uber huge
-    public void setSketch(String path, boolean imported) {
-        if (!imported) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inMutable = true;
-            options.inPreferredConfig = Bitmap.Config.RGB_565;
-
-            mDrawingView.setBitmap(BitmapFactory.decodeFile(path, options));
-            mDrawingView.resetHistory();
-        } else {
-            mImportImage.setImageURI(Uri.parse(path));
-            enterImportMode();
-        }
-    }
-
-    // todo: make async loading because photo can be uber huge
     public void setSketch(Bitmap bitmap, boolean imported) {
         if (!imported) {
             mDrawingView.setBitmap(bitmap);
             mDrawingView.resetHistory();
         } else {
             mImportImage.setImageBitmap(bitmap);
+            mImportImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
             enterImportMode();
         }
     }
@@ -224,25 +194,20 @@ public final class SketchFragment extends Fragment {
 
         layout.findViewById(R.id.btn_new).setOnClickListener(v -> {
             mPopupWindow.dismiss();
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(R.string.start_drawing_question);
-            builder.setPositiveButton(android.R.string.yes, (dialog, id) -> {
-                mDrawingView.setBitmap(null);
-                mDrawingView.resetHistory();
-                dialog.dismiss();
-            });
-            builder.setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.dismiss());
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            mAlertDialog = new AlertDialog.Builder(context)
+                .setMessage(R.string.start_drawing_question)
+                .setPositiveButton(android.R.string.yes, (dialog, id) -> mCallback.newSketch())
+                .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.dismiss())
+                .show();
         });
 
         layout.findViewById(R.id.btn_save).setOnClickListener(v -> {
             mPopupWindow.dismiss();
-            AlertDialog.Builder saveDialog = new AlertDialog.Builder(context);
-            saveDialog.setMessage(R.string.save_drawing_question);
-            saveDialog.setPositiveButton(android.R.string.yes, (dialog, which) -> mCallback.saveSketch(mDrawingView.getBitmap()));
-            saveDialog.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
-            saveDialog.show();
+            mAlertDialog = new AlertDialog.Builder(context)
+                .setMessage(R.string.save_drawing_question)
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> mCallback.saveSketch(mDrawingView.getBitmap()))
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .show();
         });
 
         layout.findViewById(R.id.btn_import).setOnClickListener(view -> {
@@ -331,7 +296,7 @@ public final class SketchFragment extends Fragment {
 
                 int bitmapOffsetY = (int) ((hueBitmap.getHeight()-1)*ratioY);
                 int hueValue = hueBitmap.getPixel(hueBitmap.getWidth() / 2, bitmapOffsetY);
-                tempHSV[0] = Utils.clamp(ratioY, 0f, 1f) * 360.0f;
+                tempHSV[0] = ratioY * 360.0f;
 
                 colorImage.setColorFilter(hueValue, PorterDuff.Mode.MULTIPLY);
                 colorPreview.setColorFilter(Color.HSVToColor(tempHSV), PorterDuff.Mode.SRC);
@@ -348,8 +313,8 @@ public final class SketchFragment extends Fragment {
                         .setDuration(0)
                         .start();
 
-                tempHSV[2] = Utils.clamp(ratioX, 0f, 1f);
-                tempHSV[1] = 1f - Utils.clamp(ratioY, 0f, 1f);
+                tempHSV[2] = ratioX;
+                tempHSV[1] = 1f - ratioY;
                 colorPreview.setColorFilter(Color.HSVToColor(tempHSV), PorterDuff.Mode.SRC);
                 return true;
             }
@@ -393,6 +358,10 @@ public final class SketchFragment extends Fragment {
         void showAlbumFragment();
 
         void saveSketch(Bitmap bitmap);
+
+        void newSketch();
+
+        void loadSketch(String path, boolean isImport);
     }
 
 }

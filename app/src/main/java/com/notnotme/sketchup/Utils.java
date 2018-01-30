@@ -27,7 +27,7 @@ public final class Utils {
 
             imageFile = new File(imagePath, imageName + ".png");
             fos = new FileOutputStream(imageFile);
-            image.compress(Bitmap.CompressFormat.PNG, 80, fos);
+            image.compress(Bitmap.CompressFormat.PNG, 90, fos);
             fos.flush();
             fos.close();
         } catch (IOException e) {
@@ -48,10 +48,6 @@ public final class Utils {
         Uri imageUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
         ContentResolver contentResolver = context.getContentResolver();
         contentResolver.delete(imageUri, null, null);
-    }
-
-    public static float clamp(float value, float min, float max) {
-        return Math.min(Math.max(value, min), max);
     }
 
 }

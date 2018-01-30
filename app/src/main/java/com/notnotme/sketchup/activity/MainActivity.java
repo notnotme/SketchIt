@@ -2,8 +2,11 @@ package com.notnotme.sketchup.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.text.emoji.EmojiCompat;
@@ -115,12 +118,7 @@ public final class MainActivity extends BaseActivity
         }
 
         if (path != null) {
-            SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
-            sketchFragment.setSketch(path, path.startsWith("content"));
-
-            if (mViewSwitcher.getDisplayedChild() != SWITCHER_SKETCH) {
-                showSketchFragment();
-            }
+            loadSketch(path, path.startsWith("content"));
         }
     }
 
@@ -188,6 +186,63 @@ public final class MainActivity extends BaseActivity
                             EmojiCompat.get().process(getString(R.string.sketch_saved, "\uD83D\uDE02")),
                             Snackbar.LENGTH_SHORT).show();
                 }
+            });
+        });
+    }
+
+    @Override
+    public void newSketch() {
+        SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
+
+        if (mViewSwitcher.getDisplayedChild() != SWITCHER_SKETCH) {
+            showSketchFragment();
+        } else if (sketchFragment.isInImport()) {
+            sketchFragment.exitImportMode();
+        }
+
+        sketchFragment.setSketch(null, false);
+    }
+
+    @Override
+    public void loadSketch(String path, boolean isImport) {
+        SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
+
+        if (mViewSwitcher.getDisplayedChild() != SWITCHER_SKETCH) {
+            showSketchFragment();
+        } else if (sketchFragment.isInImport()) {
+            sketchFragment.exitImportMode();
+        }
+
+
+        AsyncTask.execute(() -> {
+            if (isDestroyed() || isFinishing()) return;
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inMutable = true;
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            AtomicReference<Bitmap> bitmap = new AtomicReference<>();
+
+            if (path.startsWith("content")) {
+
+                try {
+                    bitmap.set(MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(path)));
+                } catch (Exception e) {
+                    getMainHandler().post(() ->  {
+                        if (isDestroyed() || isFinishing()) return;
+                        Snackbar.make(findViewById(R.id.coordinator),
+                                EmojiCompat.get().process("\uD83D\uDCA5 Error \uD83D\uDCA5 " + System.lineSeparator() +  e.getLocalizedMessage()),
+                                Snackbar.LENGTH_SHORT).show();
+                    });
+                    return;
+                }
+
+            } else {
+                bitmap.set(BitmapFactory.decodeFile(path, options));
+            }
+
+            getMainHandler().post(() -> {
+                if (isDestroyed() || isFinishing()) return;
+                sketchFragment.setSketch(bitmap.get(), isImport);
             });
         });
     }

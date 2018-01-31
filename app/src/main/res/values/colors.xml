@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#292929</color>
     <color name="colorAccent">#808080</color>
     <color name="darkgrey">#FF909090</color>
+    <color name="lightgrey">#FFE5E5E5</color>
 
     <color name="text_light">@android:color/primary_text_dark</color>
     <color name="text_dark">@android:color/primary_text_light</color>

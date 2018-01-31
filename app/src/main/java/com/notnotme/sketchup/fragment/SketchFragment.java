@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -190,8 +191,9 @@ public final class SketchFragment extends Fragment {
         if (isInImport()) exitImportMode();
 
         Context context = getContext();
+        if (context == null) return;
+
         View layout = View.inflate(context, R.layout.popup_plus, null);
-        mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
 
         layout.findViewById(R.id.btn_new).setOnClickListener(v -> {
             mPopupWindow.dismiss();
@@ -219,18 +221,21 @@ public final class SketchFragment extends Fragment {
         });
 
         // Creating the PopupWindow
+        mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
         mPopupWindow.setFocusable(true);
-        mPopupWindow.showAtLocation(getView(), Gravity.NO_GRAVITY, mBtnPlus.getLeft() + mBtnPlus.getWidth() / 3, mBtnPlus.getBottom() + 50);
+        mPopupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, android.R.color.transparent));
+        mPopupWindow.showAtLocation(mBtnPlus, Gravity.NO_GRAVITY, mBtnPlus.getLeft() + mBtnPlus.getWidth() / 3, mBtnPlus.getBottom() + 50);
     }
 
     private void showPencilPopup() {
         if (isInImport()) exitImportMode();
 
         Context context = getContext();
+        if (context == null) return;
+
         View layout = View.inflate(context, R.layout.popup_pencil, null);
 
-        mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         RecyclerView rcPen = layout.findViewById(R.id.recycler_pen);
         rcPen.setHasFixedSize(true);
         rcPen.setAdapter(new PencilAdapter(Arrays.asList(
@@ -298,18 +303,22 @@ public final class SketchFragment extends Fragment {
                     }
                 }));
 
+        mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
         mPopupWindow.setFocusable(true);
-        mPopupWindow.showAtLocation(getView(), Gravity.NO_GRAVITY, mBtnPencil.getLeft() + mBtnPencil.getWidth() / 3, mBtnPencil.getBottom() + 50);
+        mPopupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, android.R.color.transparent));
+        mPopupWindow.showAtLocation(mBtnPencil, Gravity.NO_GRAVITY, mBtnPencil.getLeft() + mBtnPencil.getWidth() / 3, mBtnPencil.getBottom() + 50);
     }
 
     private void showColorPopup() {
         if (isInImport()) exitImportMode();
 
+        Context context = getContext();
+        if (context == null) return;
+
         View layout = View.inflate(getContext(), R.layout.popup_colors, null);
         RecyclerView rv = layout.findViewById(R.id.recycler);
 
-        mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         rv.setHasFixedSize(true);
         rv.setAdapter(new ColorAdapter(
                 Arrays.asList(getResources().getStringArray(R.array.colors_array)),
@@ -323,14 +332,18 @@ public final class SketchFragment extends Fragment {
             showHsvPopup(mDrawingView.getBrushColor());
         });
 
+        mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
         mPopupWindow.setFocusable(true);
-        mPopupWindow.showAtLocation(layout, Gravity.NO_GRAVITY, mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
+        mPopupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, android.R.color.transparent));
+        mPopupWindow.showAtLocation(mBtnColors, Gravity.NO_GRAVITY, mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
     }
 
     private void showHsvPopup(int color) {
-        View layout = View.inflate(getContext(), R.layout.popup_hsv, null);
+        Context context = getContext();
+        if (context == null) return;
 
+        View layout = View.inflate(getContext(), R.layout.popup_hsv, null);
         ImageView hueImage = layout.findViewById(R.id.hue_color);
         ImageView hueSelector = layout.findViewById(R.id.hue_selector);
         ImageView colorImage = layout.findViewById(R.id.hue_mask);
@@ -406,8 +419,9 @@ public final class SketchFragment extends Fragment {
         mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
         mPopupWindow.setFocusable(true);
-        mPopupWindow.showAtLocation(layout, Gravity.NO_GRAVITY, mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
+        mPopupWindow.setBackgroundDrawable(ContextCompat.getDrawable(context, android.R.color.transparent));
         mPopupWindow.setOnDismissListener(() -> mDrawingView.setBrushColor(Color.HSVToColor(tempHSV)));
+        mPopupWindow.showAtLocation(mBtnColors, Gravity.NO_GRAVITY, mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
     }
 
 

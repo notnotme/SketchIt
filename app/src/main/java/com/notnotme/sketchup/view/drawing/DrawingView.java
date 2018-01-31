@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathEffect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -25,6 +26,11 @@ import java.util.Stack;
 
 public final class DrawingView extends View {
 
+    public enum DrawMode {
+        FREE,
+        LINES
+    }
+
     private static final String TAG = DrawingView.class.getSimpleName();
 
     private static final String SAVESTATE_SKETCH_FILE = TAG + ".state_sketch";
@@ -32,13 +38,9 @@ public final class DrawingView extends View {
     private static final String STATE_COLOR = TAG + ".state_color";
     private static final String STATE_BASE = TAG + ".state_base";
 
-    public static final int STROKE_SMALL_SIZE = 5;
-    public static final int STROKE_MEDIUM_SIZE = 15;
-    public static final int STROKE_LARGE_SIZE = 30;
+    public static final int STROKE_DEFAULT_SIZE = 15;
 
-    // todo: save state my ass it is feasible but boring :D
     private Stack<CanvasDrawable> mRedos;
-
     private Path mDrawPath;
     private Paint mDrawPaint;
     private Paint mCanvasPaint;
@@ -48,7 +50,11 @@ public final class DrawingView extends View {
 
     private int mCurrentColor;
     private float mCurrentStrokeWidth;
+    private PathEffect mCurrentEffect;
+    private DrawMode mDrawMode;
 
+    private float mTouchX;
+    private float mTouchY;
 
     public DrawingView(Context context) {
         super(context);
@@ -84,20 +90,47 @@ public final class DrawingView extends View {
 
         float touchX = event.getX();
         float touchY = event.getY();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mDrawPath.moveTo(touchX, touchY);
+        int eventAction = event.getAction();
+
+        if (eventAction == MotionEvent.ACTION_DOWN) {
+            mTouchX = touchX;
+            mTouchY = touchY;
+        }
+
+        switch (mDrawMode) {
+            case FREE:
+                switch (eventAction) {
+                    case MotionEvent.ACTION_DOWN:
+                        mDrawPath.moveTo(touchX, touchY);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        mDrawPath.lineTo(touchX, touchY);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        mRedos.push(new PathDrawable(mDrawPaint.getColor(), mDrawPaint.getStrokeWidth(), mCurrentEffect, mDrawPath));
+                        mDrawCanvas.drawPath(mDrawPath, mDrawPaint);
+                        break;
+                }
                 break;
-            case MotionEvent.ACTION_MOVE:
-                mDrawPath.lineTo(touchX, touchY);
+
+            case LINES:
+                switch (eventAction) {
+                    case MotionEvent.ACTION_MOVE:
+                        mDrawPath.rewind();
+                        mDrawPath.moveTo(mTouchX, mTouchY);
+                        mDrawPath.lineTo(touchX, touchY);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        mRedos.push(new PathDrawable(mDrawPaint.getColor(), mDrawPaint.getStrokeWidth(), mCurrentEffect, mDrawPath));
+                        mDrawCanvas.drawPath(mDrawPath, mDrawPaint);
+                        break;
+                }
                 break;
-            case MotionEvent.ACTION_UP:
-                mRedos.push(new PathDrawable(mDrawPaint.getColor(), mDrawPaint.getStrokeWidth(), Effect.NONE, mDrawPath));
-                mDrawCanvas.drawPath(mDrawPath, mDrawPaint);
-                mDrawPath = new Path();
-                break;
-            default:
-                return false;
+        }
+
+
+        if (eventAction == MotionEvent.ACTION_UP) {
+            mDrawPath = new Path();
         }
 
         invalidate();
@@ -143,8 +176,6 @@ public final class DrawingView extends View {
         mDrawPaint.setStrokeWidth(mCurrentStrokeWidth);
         mDrawPaint.setColor(mCurrentColor);
         setBitmap(mOriginalBitmap);
-        // todo: restore undo steps ETA: chrismas 2025+
-        // todo: limit redo step to 10 ? yeah. 2025.
     }
 
     private void setupDrawing() {
@@ -158,8 +189,10 @@ public final class DrawingView extends View {
         mDrawPaint.setAntiAlias(true);
         mCanvasPaint = new Paint(Paint.DITHER_FLAG);
 
-        setBrushStrokeWidth(STROKE_MEDIUM_SIZE);
+        mDrawMode = DrawMode.FREE;
+        setBrushWidth(STROKE_DEFAULT_SIZE);
         setBrushColor(Color.BLACK);
+        setCurrentEffect(null);
     }
 
     public boolean canUndo() {
@@ -182,14 +215,15 @@ public final class DrawingView extends View {
 
         mDrawPaint.setColor(mCurrentColor);
         mDrawPaint.setStrokeWidth(mCurrentStrokeWidth);
+        mDrawPaint.setPathEffect(mCurrentEffect);
         invalidate();
     }
 
-    public float getbrushStrokeWidth() {
+    public float getBrushWidth() {
         return mDrawPaint.getStrokeWidth();
     }
 
-    public void setBrushStrokeWidth(float strokeWidth) {
+    public void setBrushWidth(float strokeWidth) {
         mCurrentStrokeWidth = strokeWidth;
         mDrawPaint.setStrokeWidth(strokeWidth);
     }
@@ -201,6 +235,23 @@ public final class DrawingView extends View {
     public void setBrushColor(int color) {
         mCurrentColor = color;
         mDrawPaint.setColor(color);
+    }
+
+    public PathEffect getEffect() {
+        return mCurrentEffect;
+    }
+
+    public void setCurrentEffect(PathEffect pathEffect) {
+        mCurrentEffect = pathEffect;
+        mDrawPaint.setPathEffect(pathEffect);
+    }
+
+    public DrawMode getDrawMode() {
+        return mDrawMode;
+    }
+
+    public void setDrawMode(DrawMode drawMode) {
+        mDrawMode = drawMode;
     }
 
     public Bitmap getBitmap() {

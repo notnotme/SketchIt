@@ -35,7 +35,30 @@
                 android:layout_marginBottom="2dp"/>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler"
+                android:id="@+id/recycler_pen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="GridLayoutManager"
+                app:spanCount="3"
+                tools:listitem="@layout/item_pencil"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="GridLayoutManager"
+                app:spanCount="3"
+                tools:listitem="@layout/item_pencil"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/darkgrey"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layoutManager="GridLayoutManager"

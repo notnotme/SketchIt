@@ -13,10 +13,10 @@ import java.util.List;
 
 public final class PencilAdapter extends RecyclerView.Adapter<PencilAdapter.ViewHolder> {
 
-    private ArrayList<Pencil> mItems;
+    private ArrayList<Item> mItems;
     private PencilAdapterListener mPencilAdapterListener;
 
-    PencilAdapter(List<Pencil> pencilList, PencilAdapterListener listener) {
+    PencilAdapter(List<Item> pencilList, PencilAdapterListener listener) {
         mItems = new ArrayList<>();
         mItems.addAll(pencilList);
         mPencilAdapterListener = listener;
@@ -25,15 +25,15 @@ public final class PencilAdapter extends RecyclerView.Adapter<PencilAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_color, parent, false));
-        holder.itemView.setOnClickListener(view -> mPencilAdapterListener.onItemClick((Pencil) view.getTag()));
+        holder.itemView.setOnClickListener(view -> mPencilAdapterListener.onItemClick((Item) view.getTag()));
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Pencil pencil = mItems.get(position);
-        holder.itemView.setTag(pencil);
-        holder.icon.setImageResource(pencil.getIconRes());
+        Item item = mItems.get(position);
+        holder.itemView.setTag(item);
+        holder.icon.setImageResource(item.getIconRes());
     }
 
     @Override
@@ -42,20 +42,14 @@ public final class PencilAdapter extends RecyclerView.Adapter<PencilAdapter.View
     }
 
     public interface PencilAdapterListener {
-        void onItemClick(Pencil pencil);
+        void onItemClick(Item pencil);
     }
 
-    static class Pencil {
-        private float size;
+    static class Item {
         private int iconRes;
 
-        Pencil(float size, int iconRes) {
-            this.size = size;
+        Item(int iconRes) {
             this.iconRes = iconRes;
-        }
-
-        float getSize() {
-            return size;
         }
 
         int getIconRes() {

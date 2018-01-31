@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -27,8 +28,8 @@ import android.widget.PopupWindow;
 
 import com.jsibbold.zoomage.ZoomageView;
 import com.notnotme.sketchup.R;
-import com.notnotme.sketchup.view.drawing.DrawingView;
 import com.notnotme.sketchup.view.RatioTouchListener;
+import com.notnotme.sketchup.view.drawing.DrawingView;
 
 import java.util.Arrays;
 
@@ -89,7 +90,7 @@ public final class SketchFragment extends Fragment {
         mImportImage = view.findViewById(R.id.import_image);
         mFab = view.findViewById(R.id.import_ok);
 
-        mDrawingView.setBrushStrokeWidth(DrawingView.STROKE_MEDIUM_SIZE);
+        mDrawingView.setBrushWidth(DrawingView.STROKE_DEFAULT_SIZE);
         mDrawingView.setBrushColor(Color.BLACK);
     }
 
@@ -230,15 +231,71 @@ public final class SketchFragment extends Fragment {
         View layout = View.inflate(context, R.layout.popup_pencil, null);
 
         mPopupWindow = new PopupWindow(layout, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        RecyclerView rc = layout.findViewById(R.id.recycler);
-        rc.setHasFixedSize(true);
-        rc.setAdapter(new PencilAdapter(Arrays.asList(
-                new PencilAdapter.Pencil(DrawingView.STROKE_SMALL_SIZE, R.mipmap.pen_small),
-                new PencilAdapter.Pencil(DrawingView.STROKE_MEDIUM_SIZE, R.mipmap.pen_medium),
-                new PencilAdapter.Pencil(DrawingView.STROKE_LARGE_SIZE, R.mipmap.pen_large)),
-                pencil -> {
+        RecyclerView rcPen = layout.findViewById(R.id.recycler_pen);
+        rcPen.setHasFixedSize(true);
+        rcPen.setAdapter(new PencilAdapter(Arrays.asList(
+                new PencilAdapter.Item(R.mipmap.pen_small),
+                new PencilAdapter.Item(R.mipmap.pen_medium),
+                new PencilAdapter.Item(R.mipmap.pen_large)),
+                item -> {
                     mPopupWindow.dismiss();
-                    mDrawingView.setBrushStrokeWidth(pencil.getSize());
+                    mDrawingView.setDrawMode(DrawingView.DrawMode.FREE);
+                    switch (item.getIconRes()) {
+                        case R.mipmap.pen_small:
+                            mDrawingView.setBrushWidth(DrawingView.STROKE_DEFAULT_SIZE - 10);
+                            break;
+                        case R.mipmap.pen_medium:
+                            mDrawingView.setBrushWidth(DrawingView.STROKE_DEFAULT_SIZE);
+                            break;
+                        case R.mipmap.pen_large:
+                            mDrawingView.setBrushWidth(DrawingView.STROKE_DEFAULT_SIZE + 10);
+                            break;
+                    }
+                }));
+
+        RecyclerView rcLine = layout.findViewById(R.id.recycler_line);
+        rcLine.setHasFixedSize(true);
+        rcLine.setAdapter(new PencilAdapter(Arrays.asList(
+                new PencilAdapter.Item(R.mipmap.line_small),
+                new PencilAdapter.Item(R.mipmap.line_medium),
+                new PencilAdapter.Item(R.mipmap.line_large)),
+                item -> {
+                    mPopupWindow.dismiss();
+                    mDrawingView.setDrawMode(DrawingView.DrawMode.LINES);
+                    switch (item.getIconRes()) {
+                        case R.mipmap.line_small:
+                            mDrawingView.setBrushWidth(DrawingView.STROKE_DEFAULT_SIZE - 10);
+                            break;
+                        case R.mipmap.line_medium:
+                            mDrawingView.setBrushWidth(DrawingView.STROKE_DEFAULT_SIZE);
+                            break;
+                        case R.mipmap.line_large:
+                            mDrawingView.setBrushWidth(DrawingView.STROKE_DEFAULT_SIZE + 10);
+                            break;
+                    }
+                }));
+
+        RecyclerView rcStyle = layout.findViewById(R.id.recycler_style);
+        rcStyle.setHasFixedSize(true);
+        rcStyle.setAdapter(new PencilAdapter(Arrays.asList(
+                new PencilAdapter.Item(R.mipmap.style_line),
+                new PencilAdapter.Item(R.mipmap.style_dot),
+                new PencilAdapter.Item(R.mipmap.style_dash)),
+                item -> {
+                    mPopupWindow.dismiss();
+                    switch (item.getIconRes()) {
+                        case R.mipmap.style_line:
+                            mDrawingView.setCurrentEffect(null);
+                            break;
+
+                        case R.mipmap.style_dash:
+                            mDrawingView.setCurrentEffect(new DashPathEffect(new float[] {50, 50}, 0));
+                            break;
+
+                        case R.mipmap.style_dot:
+                            mDrawingView.setCurrentEffect(new DashPathEffect(new float[] {0,  40}, 0));
+                            break;
+                    }
                 }));
 
         mPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);

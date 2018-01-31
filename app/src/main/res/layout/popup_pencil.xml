@@ -50,6 +50,13 @@
                 app:spanCount="3"
                 tools:listitem="@layout/item_pencil"/>
 
+
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/style"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

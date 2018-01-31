@@ -10,7 +10,6 @@
     <string name="save">salvar</string>
     <string name="share">ação</string>
     <string name="edit">editar</string>
-    <string name="pen">escova</string>
     <string name="color">cor</string>
     <string name="start_drawing_question">Iniciar um novo desenho?</string>
     <string name="save_drawing_question">Salvar na galeria?</string>
@@ -31,5 +30,7 @@
     <string name="more">Mais</string>
     <string name="new_import">importação</string>
     <string name="import_picture_from">Importe imagem com</string>
+    <string name="pen">escova</string>
+    <string name="style">estilo</string>
 
 </resources>

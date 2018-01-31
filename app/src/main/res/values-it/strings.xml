@@ -10,7 +10,6 @@
     <string name="save">salvare</string>
     <string name="share">suddividere</string>
     <string name="edit">modifica</string>
-    <string name="pen">spazzola</string>
     <string name="color">colore</string>
     <string name="start_drawing_question">Inizia un nuovo disegno?</string>
     <string name="save_drawing_question">Salva nella galleria?</string>
@@ -31,5 +30,7 @@
     <string name="more">Di Più</string>
     <string name="new_import">importazione</string>
     <string name="import_picture_from">Importa foto con</string>
+    <string name="pen">spazzola</string>
+    <string name="style">stile</string>
 
 </resources>

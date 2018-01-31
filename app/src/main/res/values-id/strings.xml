@@ -10,7 +10,6 @@
     <string name="save">menyimpan</string>
     <string name="share">saham</string>
     <string name="edit">mengedit</string>
-    <string name="pen">sikat</string>
     <string name="color">warna</string>
     <string name="start_drawing_question">Mulai gambar baru?</string>
     <string name="save_drawing_question">Simpan di galeri?</string>
@@ -31,5 +30,7 @@
     <string name="more">Lebih</string>
     <string name="new_import">impor</string>
     <string name="import_picture_from">Impor gambar dengan</string>
+    <string name="pen">sikat</string>
+    <string name="style">gaya</string>
 
 </resources>

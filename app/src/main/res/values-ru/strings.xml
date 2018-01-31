@@ -10,7 +10,6 @@
     <string name="save">экономить</string>
     <string name="share">доля</string>
     <string name="edit">редактировать</string>
-    <string name="pen">щетка</string>
     <string name="color">цвет</string>
     <string name="start_drawing_question">Начните новый чертеж?</string>
     <string name="save_drawing_question">Сохранить в галерее?</string>
@@ -31,5 +30,7 @@
     <string name="more">Больше</string>
     <string name="new_import">импорт</string>
     <string name="import_picture_from">Импортировать изображение с помощью</string>
+    <string name="pen">щетка</string>
+    <string name="style">стиль</string>
 
 </resources>

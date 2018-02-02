@@ -74,7 +74,7 @@ public final class SettingsActivity extends BaseActivity {
 
         findViewById(R.id.rate).setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("market://details?id=" + getPackageName()));
+            intent.setData(Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID));
             try {
                 startActivity(intent);
             } catch (ActivityNotFoundException e) {

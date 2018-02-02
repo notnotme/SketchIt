@@ -1,6 +1,5 @@
-package com.notnotme.sketchup.fragment;
+package com.notnotme.sketchup.popup;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,30 +11,29 @@ import com.notnotme.sketchup.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> {
+public final class PencilAdapter extends RecyclerView.Adapter<PencilAdapter.ViewHolder> {
 
-    private ArrayList<String> mItems;
-    private ColorAdapterListener mColorAdapterListener;
+    private ArrayList<Item> mItems;
+    private PencilAdapterListener mPencilAdapterListener;
 
-    ColorAdapter(List<String> colorList, ColorAdapterListener listener) {
+    PencilAdapter(List<Item> pencilList, PencilAdapterListener listener) {
         mItems = new ArrayList<>();
-        mItems.addAll(colorList);
-        mColorAdapterListener = listener;
+        mItems.addAll(pencilList);
+        mPencilAdapterListener = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_color, parent, false));
-        holder.itemView.setOnClickListener(view -> mColorAdapterListener.onItemClick((int) view.getTag()));
+        holder.itemView.setOnClickListener(view -> mPencilAdapterListener.onItemClick((Item) view.getTag()));
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        int color = Color.parseColor(mItems.get(position));
-
-        holder.itemView.setTag(color);
-        holder.icon.setBackgroundColor(color);
+        Item item = mItems.get(position);
+        holder.itemView.setTag(item);
+        holder.icon.setImageResource(item.getIconRes());
     }
 
     @Override
@@ -43,8 +41,20 @@ public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHo
         return mItems.size();
     }
 
-    public interface ColorAdapterListener {
-        void onItemClick(int color);
+    public interface PencilAdapterListener {
+        void onItemClick(Item pencil);
+    }
+
+    static class Item {
+        private int iconRes;
+
+        Item(int iconRes) {
+            this.iconRes = iconRes;
+        }
+
+        int getIconRes() {
+            return iconRes;
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

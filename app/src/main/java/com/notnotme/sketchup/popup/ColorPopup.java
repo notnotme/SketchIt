@@ -11,7 +11,7 @@ import com.notnotme.sketchup.R;
 
 import java.util.Arrays;
 
-public class ColorPopup extends PopupWindow {
+public final class ColorPopup extends PopupWindow {
 
     private PopupListener mPopupListener;
 

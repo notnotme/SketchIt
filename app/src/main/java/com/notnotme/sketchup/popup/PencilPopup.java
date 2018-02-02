@@ -14,7 +14,7 @@ import com.notnotme.sketchup.view.drawing.DrawingView;
 
 import java.util.Arrays;
 
-public class PencilPopup extends PopupWindow {
+public final class PencilPopup extends PopupWindow {
 
     private PopupListener mPopupListener;
 

@@ -15,7 +15,7 @@ import android.widget.PopupWindow;
 import com.notnotme.sketchup.R;
 import com.notnotme.sketchup.view.RatioTouchListener;
 
-public class HSVColorPopup extends PopupWindow {
+public final class HSVColorPopup extends PopupWindow {
 
     private final ImageView mColorPreview;
     private final ImageView mColorImage;

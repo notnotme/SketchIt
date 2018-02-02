@@ -8,7 +8,7 @@ import android.widget.PopupWindow;
 
 import com.notnotme.sketchup.R;
 
-public class MainMenuPopup extends PopupWindow {
+public final class MainMenuPopup extends PopupWindow {
 
     private PopupListener mPopupListener;
 

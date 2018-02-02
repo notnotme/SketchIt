@@ -8,7 +8,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 @Entity(indices = {@Index(value = {"mPath"}), @Index(value = {"mCreationDate"})})
-public final class Sketch  implements Parcelable {
+public final class Sketch implements Parcelable {
 
     @PrimaryKey
     @NonNull
@@ -23,6 +23,11 @@ public final class Sketch  implements Parcelable {
     public Sketch(@NonNull String uri, long creationDate) {
         mPath = uri;
         mCreationDate = creationDate;
+    }
+
+    protected Sketch(Parcel in) {
+        mPath = in.readString();
+        mCreationDate = in.readLong();
     }
 
     @NonNull
@@ -50,11 +55,6 @@ public final class Sketch  implements Parcelable {
         }
 
         return super.equals(obj);
-    }
-
-    protected Sketch(Parcel in) {
-        mPath = in.readString();
-        mCreationDate = in.readLong();
     }
 
     @Override

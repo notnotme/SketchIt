@@ -26,20 +26,13 @@ import java.util.Stack;
 
 public final class DrawingView extends View {
 
-    public enum DrawMode {
-        FREE,
-        LINES
-    }
-
+    public static final int STROKE_DEFAULT_SIZE = 15;
     private static final String TAG = DrawingView.class.getSimpleName();
 
     private static final String SAVESTATE_SKETCH_FILE = TAG + ".state_sketch";
     private static final String STATE_STROKE_WIDTH = TAG + ".state_stroke_width";
     private static final String STATE_COLOR = TAG + ".state_color";
     private static final String STATE_BASE = TAG + ".state_base";
-
-    public static final int STROKE_DEFAULT_SIZE = 15;
-
     private Stack<CanvasDrawable> mRedos;
     private Path mDrawPath;
     private Paint mDrawPaint;
@@ -47,15 +40,12 @@ public final class DrawingView extends View {
     private Canvas mDrawCanvas;
     private Bitmap mCanvasBitmap;
     private Bitmap mOriginalBitmap;
-
     private int mCurrentColor;
     private float mCurrentStrokeWidth;
     private PathEffect mCurrentEffect;
     private DrawMode mDrawMode;
-
     private float mTouchX;
     private float mTouchY;
-
     public DrawingView(Context context) {
         super(context);
         setupDrawing();
@@ -209,7 +199,7 @@ public final class DrawingView extends View {
         }
 
         int undoSize = mRedos.size();
-        for (int i=0; i<undoSize; i++) {
+        for (int i = 0; i < undoSize; i++) {
             mRedos.get(i).draw(mDrawCanvas, mDrawPaint);
         }
 
@@ -284,7 +274,10 @@ public final class DrawingView extends View {
         mRedos.clear();
     }
 
-
+    public enum DrawMode {
+        FREE,
+        LINES
+    }
 
 
 }

@@ -66,14 +66,14 @@ public final class SketchAdapter extends RecyclerView.Adapter<SketchAdapter.View
         return mItems.size();
     }
 
+    boolean isInEditMode() {
+        return mInEditMode;
+    }
+
     void setInEditMode(boolean inEditMode) {
         mInEditMode = inEditMode;
         mSelected.clear();
         notifyDataSetChanged();
-    }
-
-    boolean isInEditMode() {
-        return mInEditMode;
     }
 
     void setSelected(Sketch item, boolean selected) {
@@ -90,7 +90,7 @@ public final class SketchAdapter extends RecyclerView.Adapter<SketchAdapter.View
         ArrayList<Sketch> selected = new ArrayList<>();
 
         int itemSize = mItems.size();
-        for (int i=0; i<itemSize; i++) {
+        for (int i = 0; i < itemSize; i++) {
             if (mSelected.get(i, false)) {
                 selected.add(mItems.get(i));
             }
@@ -105,6 +105,7 @@ public final class SketchAdapter extends RecyclerView.Adapter<SketchAdapter.View
 
     public interface SketchAdapterListener {
         void onSketchClicked(Sketch sketch);
+
         void onSketchLongClick(Sketch sketch);
     }
 

@@ -256,7 +256,7 @@ public final class SketchFragment extends Fragment {
 
     public boolean isInImport() {
         if (mFab == null || mFab.getTag() == null) return false;
-        return  (Boolean) mFab.getTag();
+        return (Boolean) mFab.getTag();
     }
 
     public void enterImportMode() {
@@ -285,7 +285,7 @@ public final class SketchFragment extends Fragment {
         }
     }
 
-     public interface SketchFragmentCallback {
+    public interface SketchFragmentCallback {
         void showAlbumFragment();
 
         void saveSketch(Bitmap bitmap);

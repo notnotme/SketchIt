@@ -14,13 +14,12 @@ public final class SettingsManager {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
+    public Theme getTheme() {
+        return Theme.valueOf(mSharedPreferences.getString(THEME_KEY, Theme.Blue.name()));
+    }
 
     public void setTheme(Theme theme) {
         mSharedPreferences.edit().putString(THEME_KEY, theme.name()).apply();
-    }
-
-    public Theme getTheme() {
-        return Theme.valueOf(mSharedPreferences.getString(THEME_KEY, Theme.Blue.name()));
     }
 
 }

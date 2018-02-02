@@ -52,8 +52,12 @@ public final class MainActivity extends BaseActivity
 
         if (savedInstanceState != null) {
             switch (savedInstanceState.getInt(STATE_SWITCHER)) {
-                case SWITCHER_ALBUM: showAlbumFragment(); break;
-                case SWITCHER_SKETCH: showSketchFragment(); break;
+                case SWITCHER_ALBUM:
+                    showAlbumFragment();
+                    break;
+                case SWITCHER_SKETCH:
+                    showSketchFragment();
+                    break;
             }
         } else {
             showSketchFragment();
@@ -227,10 +231,10 @@ public final class MainActivity extends BaseActivity
                 try {
                     bitmap.set(MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(path)));
                 } catch (Exception e) {
-                    getMainHandler().post(() ->  {
+                    getMainHandler().post(() -> {
                         if (isDestroyed() || isFinishing()) return;
                         Snackbar.make(findViewById(R.id.coordinator),
-                                EmojiCompat.get().process("\uD83D\uDCA5 Error \uD83D\uDCA5 " + System.lineSeparator() +  e.getLocalizedMessage()),
+                                EmojiCompat.get().process("\uD83D\uDCA5 Error \uD83D\uDCA5 " + System.lineSeparator() + e.getLocalizedMessage()),
                                 Snackbar.LENGTH_SHORT).show();
                     });
                     return;
@@ -294,7 +298,7 @@ public final class MainActivity extends BaseActivity
                     .getUriForFile(this, getPackageName() + ".provider", new File(sketches.get(0).getPath())));
         }
 
-        if (shareIntentBuilder.getIntent().resolveActivity(getPackageManager()) != null){
+        if (shareIntentBuilder.getIntent().resolveActivity(getPackageManager()) != null) {
             startActivity(shareIntentBuilder.createChooserIntent());
         }
     }

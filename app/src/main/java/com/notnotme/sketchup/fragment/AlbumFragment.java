@@ -54,56 +54,56 @@ public final class AlbumFragment extends Fragment {
         });
 
         view.findViewById(R.id.btn_sketch).setOnClickListener(v -> {
-                mCallback.showSketchFragment();
-                exitEditMode();
-            });
+            mCallback.showSketchFragment();
+            exitEditMode();
+        });
 
         view.findViewById(R.id.share).setOnClickListener(v -> {
-                mCallback.shareSketches(mAdapter.getSelected());
-                exitEditMode();
-            });
+            mCallback.shareSketches(mAdapter.getSelected());
+            exitEditMode();
+        });
 
         view.findViewById(R.id.delete).setOnClickListener(v -> mAlertDialog = new AlertDialog.Builder(getContext())
-            .setMessage(R.string.ask_delete_selection)
-            .setNegativeButton(android.R.string.cancel, null)
-            .setPositiveButton(android.R.string.ok, (dialog, i) -> mCallback.deleteSketches(mAdapter.getSelected(),
-                    new Callback<List<Sketch>>() {
-                        @Override
-                        public void success(List<Sketch> success) {
-                            if (isDetached()) return;
-                            mAdapter.getItems().removeAll(success);
-                            exitEditMode();
-                        }
+                .setMessage(R.string.ask_delete_selection)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(android.R.string.ok, (dialog, i) -> mCallback.deleteSketches(mAdapter.getSelected(),
+                        new Callback<List<Sketch>>() {
+                            @Override
+                            public void success(List<Sketch> success) {
+                                if (isDetached()) return;
+                                mAdapter.getItems().removeAll(success);
+                                exitEditMode();
+                            }
 
-                        @Override
-                        public void failure(Throwable error) {
-                            if (isDetached()) return;
-                            mAlertDialog = new AlertDialog.Builder(getContext())
-                                    .setMessage(error.getMessage())
-                                    .setPositiveButton(android.R.string.ok, null)
-                                    .show();
-                        }
-                    }))
-            .show());
+                            @Override
+                            public void failure(Throwable error) {
+                                if (isDetached()) return;
+                                mAlertDialog = new AlertDialog.Builder(getContext())
+                                        .setMessage(error.getMessage())
+                                        .setPositiveButton(android.R.string.ok, null)
+                                        .show();
+                            }
+                        }))
+                .show());
 
         mAdapter = new SketchAdapter(new SketchAdapter.SketchAdapterListener() {
-                @Override
-                public void onSketchClicked(Sketch sketch) {
-                    if (!mAdapter.isInEditMode()) {
-                        mCallback.showSketch(sketch);
-                    } else {
-                        mAdapter.setSelected(sketch, !mAdapter.isSelected(sketch));
-                    }
+            @Override
+            public void onSketchClicked(Sketch sketch) {
+                if (!mAdapter.isInEditMode()) {
+                    mCallback.showSketch(sketch);
+                } else {
+                    mAdapter.setSelected(sketch, !mAdapter.isSelected(sketch));
                 }
+            }
 
-                @Override
-                public void onSketchLongClick(Sketch sketch) {
-                    if (!mAdapter.isInEditMode()) {
-                        enterEditMode();
-                        mAdapter.setSelected(sketch, true);
-                    }
+            @Override
+            public void onSketchLongClick(Sketch sketch) {
+                if (!mAdapter.isInEditMode()) {
+                    enterEditMode();
+                    mAdapter.setSelected(sketch, true);
                 }
-            });
+            }
+        });
 
         mActionLayout = view.findViewById(R.id.action_layout);
         mRecyclerView = view.findViewById(R.id.recycler);

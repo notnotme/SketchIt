@@ -39,7 +39,10 @@ public final class SettingsActivity extends BaseActivity {
 
     private AdapterView.OnItemSelectedListener mOnThemeSelectionListener =
             new AdapterView.OnItemSelectedListener() {
-                @Override public void onNothingSelected(AdapterView<?> adapterView) {}
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     Theme theme = (Theme) adapterView.getAdapter().getItem(i);
@@ -70,22 +73,22 @@ public final class SettingsActivity extends BaseActivity {
                 .show());
 
         findViewById(R.id.rate).setOnClickListener(v -> {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("market://details?id=" + getPackageName()));
-                try {
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
-                    startActivity(intent);
-                }
-            });
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://details?id=" + getPackageName()));
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID));
+                startActivity(intent);
+            }
+        });
 
         findViewById(R.id.share).setOnClickListener(v -> {
-                ShareCompat.IntentBuilder intentBuilder = ShareCompat.IntentBuilder.from(this);
-                intentBuilder.setType("text/plain")
-                        .setText("https://play.google.com/store/apps/details?id=" + getPackageName())
-                        .startChooser();
-            });
+            ShareCompat.IntentBuilder intentBuilder = ShareCompat.IntentBuilder.from(this);
+            intentBuilder.setType("text/plain")
+                    .setText("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)
+                    .startChooser();
+        });
 
         findViewById(R.id.egg).setOnClickListener(v -> {
             mEggCounter = mEggCounter + 1;

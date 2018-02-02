@@ -4,7 +4,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.StyleRes;
 
 public enum Theme {
-    Classic(R.color.colorPrimary, R.color.colorPrimaryDark,R.style.AppTheme),
+    Classic(R.color.colorPrimary, R.color.colorPrimaryDark, R.style.AppTheme),
     Blue(R.color.theme_blue_primary, R.color.theme_blue_primary_dark, R.style.AppTheme_Blue),
     Green(R.color.theme_green_primary, R.color.theme_green_primary_dark, R.style.AppTheme_Green),
     Purple(R.color.theme_purple_primary, R.color.theme_purple_primary_dark, R.style.AppTheme_Purple),

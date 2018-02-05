@@ -52,6 +52,7 @@ public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHo
 
     public interface ColorAdapterListener {
         void onItemClick(int color);
+
         int getCurrentColor();
     }
 

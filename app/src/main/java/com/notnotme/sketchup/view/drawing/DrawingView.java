@@ -8,10 +8,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathEffect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -33,7 +33,9 @@ public final class DrawingView extends View {
     private static final String STATE_STROKE_WIDTH = TAG + ".state_stroke_width";
     private static final String STATE_COLOR = TAG + ".state_color";
     private static final String STATE_DRAW_MODE = TAG + ".state_draw_mode";
+    private static final String STATE_DRAW_EFFECT = TAG + ".state_effect";
     private static final String STATE_BASE = TAG + ".state_base";
+
     private Stack<CanvasDrawable> mRedos;
     private Path mDrawPath;
     private Paint mDrawPaint;
@@ -43,10 +45,11 @@ public final class DrawingView extends View {
     private Bitmap mOriginalBitmap;
     private int mCurrentColor;
     private float mCurrentStrokeWidth;
-    private PathEffect mCurrentEffect;
+    private Effect mCurrentEffect;
     private DrawMode mDrawMode;
     private float mTouchX;
     private float mTouchY;
+
     public DrawingView(Context context) {
         super(context);
         setupDrawing();
@@ -98,7 +101,7 @@ public final class DrawingView extends View {
                         mDrawPath.lineTo(touchX, touchY);
                         break;
                     case MotionEvent.ACTION_UP:
-                        mRedos.push(new PathDrawable(mDrawPaint.getColor(), mDrawPaint.getStrokeWidth(), mCurrentEffect, mDrawPath));
+                        mRedos.push(new PathDrawable(mDrawPaint.getColor(), mDrawPaint.getStrokeWidth(), mCurrentEffect.mPathEffect, mDrawPath));
                         mDrawCanvas.drawPath(mDrawPath, mDrawPaint);
                         break;
                 }
@@ -112,7 +115,7 @@ public final class DrawingView extends View {
                         mDrawPath.lineTo(touchX, touchY);
                         break;
                     case MotionEvent.ACTION_UP:
-                        mRedos.push(new PathDrawable(mDrawPaint.getColor(), mDrawPaint.getStrokeWidth(), mCurrentEffect, mDrawPath));
+                        mRedos.push(new PathDrawable(mDrawPaint.getColor(), mDrawPaint.getStrokeWidth(), mCurrentEffect.mPathEffect, mDrawPath));
                         mDrawCanvas.drawPath(mDrawPath, mDrawPaint);
                         break;
                 }
@@ -141,6 +144,7 @@ public final class DrawingView extends View {
         state.putFloat(STATE_STROKE_WIDTH, mCurrentStrokeWidth);
         state.putInt(STATE_COLOR, mCurrentColor);
         state.putString(STATE_DRAW_MODE, mDrawMode.name());
+        state.putString(STATE_DRAW_EFFECT, mCurrentEffect.name());
 
         // Save sketch to a temporary file
         try {
@@ -163,11 +167,10 @@ public final class DrawingView extends View {
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         mOriginalBitmap = BitmapFactory.decodeFile(savedState.getString(SAVESTATE_SKETCH_FILE), options);
 
-        mDrawMode = DrawMode.valueOf(savedState.getString(STATE_DRAW_MODE));
-        mCurrentStrokeWidth = savedState.getFloat(STATE_STROKE_WIDTH);
-        mCurrentColor = savedState.getInt(STATE_COLOR);
-        mDrawPaint.setStrokeWidth(mCurrentStrokeWidth);
-        mDrawPaint.setColor(mCurrentColor);
+        setDrawMode(DrawMode.valueOf(savedState.getString(STATE_DRAW_MODE)));
+        setBrushWidth(savedState.getFloat(STATE_STROKE_WIDTH));
+        setBrushColor(savedState.getInt(STATE_COLOR));
+        setCurrentEffect(Effect.valueOf(savedState.getString(STATE_DRAW_EFFECT)));
         setBitmap(mOriginalBitmap);
     }
 
@@ -182,10 +185,10 @@ public final class DrawingView extends View {
         mDrawPaint.setAntiAlias(true);
         mCanvasPaint = new Paint(Paint.DITHER_FLAG);
 
-        mDrawMode = DrawMode.FREE;
+        setDrawMode(DrawMode.FREE);
         setBrushWidth(STROKE_DEFAULT_SIZE);
         setBrushColor(Color.BLACK);
-        setCurrentEffect(null);
+        setCurrentEffect(Effect.NONE);
     }
 
     public boolean canUndo() {
@@ -208,7 +211,7 @@ public final class DrawingView extends View {
 
         mDrawPaint.setColor(mCurrentColor);
         mDrawPaint.setStrokeWidth(mCurrentStrokeWidth);
-        mDrawPaint.setPathEffect(mCurrentEffect);
+        mDrawPaint.setPathEffect(mCurrentEffect.mPathEffect);
         invalidate();
     }
 
@@ -230,13 +233,13 @@ public final class DrawingView extends View {
         mDrawPaint.setColor(color);
     }
 
-    public PathEffect getEffect() {
+    public Effect getEffect() {
         return mCurrentEffect;
     }
 
-    public void setCurrentEffect(PathEffect pathEffect) {
-        mCurrentEffect = pathEffect;
-        mDrawPaint.setPathEffect(pathEffect);
+    public void setCurrentEffect(@NonNull Effect effect) {
+        mCurrentEffect = effect;
+        mDrawPaint.setPathEffect(effect.mPathEffect);
     }
 
     public DrawMode getDrawMode() {

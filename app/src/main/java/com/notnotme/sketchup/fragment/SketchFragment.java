@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.PathEffect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,6 +28,7 @@ import com.notnotme.sketchup.popup.HSVColorPopup;
 import com.notnotme.sketchup.popup.MainMenuPopup;
 import com.notnotme.sketchup.popup.PencilPopup;
 import com.notnotme.sketchup.view.drawing.DrawingView;
+import com.notnotme.sketchup.view.drawing.Effect;
 
 public final class SketchFragment extends Fragment {
 
@@ -141,14 +141,14 @@ public final class SketchFragment extends Fragment {
                 }
 
                 @Override
-                public void setCurrentEffect(PathEffect effect) {
-                    mPopupWindow.dismiss();
-                    mDrawingView.setCurrentEffect(effect);
+                public Effect getCurrentEffect() {
+                    return mDrawingView.getEffect();
                 }
 
                 @Override
-                public PathEffect getCurrentEffect() {
-                    return mDrawingView.getEffect();
+                public void setCurrentEffect(Effect effect) {
+                    mPopupWindow.dismiss();
+                    mDrawingView.setCurrentEffect(effect);
                 }
 
                 @Override

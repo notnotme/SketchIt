@@ -26,16 +26,16 @@ public final class ColorPopup extends PopupWindow {
         rv.setHasFixedSize(true);
         rv.setAdapter(new ColorAdapter(
                 Arrays.asList(context.getResources().getStringArray(R.array.colors_array)), new ColorAdapter.ColorAdapterListener() {
-                    @Override
-                    public void onItemClick(int color) {
-                        mPopupListener.setColor(color);
-                    }
+            @Override
+            public void onItemClick(int color) {
+                mPopupListener.setColor(color);
+            }
 
-                    @Override
-                    public int getCurrentColor() {
-                        return mPopupListener.getCurrentColor();
-                    }
-                }));
+            @Override
+            public int getCurrentColor() {
+                return mPopupListener.getCurrentColor();
+            }
+        }));
 
         setAnimationStyle(android.R.style.Animation_Dialog);
         setFocusable(true);

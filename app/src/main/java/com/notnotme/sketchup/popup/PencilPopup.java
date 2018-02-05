@@ -1,8 +1,6 @@
 package com.notnotme.sketchup.popup;
 
 import android.content.Context;
-import android.graphics.DashPathEffect;
-import android.graphics.PathEffect;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,6 +9,7 @@ import android.widget.PopupWindow;
 
 import com.notnotme.sketchup.R;
 import com.notnotme.sketchup.view.drawing.DrawingView;
+import com.notnotme.sketchup.view.drawing.Effect;
 
 import java.util.Arrays;
 
@@ -57,15 +56,15 @@ public final class PencilPopup extends PopupWindow {
                             mPenAdapter.notifyDataSetChanged();
                             break;
                         case R.mipmap.style_line:
-                            mPopupListener.setCurrentEffect(null);
+                            mPopupListener.setCurrentEffect(Effect.NONE);
                             break;
 
                         case R.mipmap.style_dash:
-                            mPopupListener.setCurrentEffect(new DashPathEffect(new float[]{50, 50}, 0));
+                            mPopupListener.setCurrentEffect(Effect.DASHED);
                             break;
 
                         case R.mipmap.style_dot:
-                            mPopupListener.setCurrentEffect(new DashPathEffect(new float[]{0, 40}, 0));
+                            mPopupListener.setCurrentEffect(Effect.DOTTED);
                             break;
                     }
                 }
@@ -106,7 +105,7 @@ public final class PencilPopup extends PopupWindow {
                 new PencilAdapter.Item(R.mipmap.style_line),
                 new PencilAdapter.Item(R.mipmap.style_dot),
                 new PencilAdapter.Item(R.mipmap.style_dash)),
-                popupListener.getCurrentEffect() != null ? 1 : -1,
+                getCurrentEffectSelected(),
                 mPencilAdapterListener);
 
         RecyclerView rcStyle = layout.findViewById(R.id.recycler_style);
@@ -134,12 +133,23 @@ public final class PencilPopup extends PopupWindow {
         else return 0;
     }
 
+    private int getCurrentEffectSelected() {
+        switch (mPopupListener.getCurrentEffect()) {
+            case DOTTED:
+                return 1;
+            case DASHED:
+                return 2;
+            default:
+                return 0;
+        }
+    }
+
     public interface PopupListener {
         void setDrawMode(DrawingView.DrawMode mode, float width);
 
-        void setCurrentEffect(PathEffect effect);
+        Effect getCurrentEffect();
 
-        PathEffect getCurrentEffect();
+        void setCurrentEffect(Effect effect);
 
         DrawingView.DrawMode getCurrentDrawMode();
 

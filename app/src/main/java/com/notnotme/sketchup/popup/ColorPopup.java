@@ -25,8 +25,18 @@ public final class ColorPopup extends PopupWindow {
         RecyclerView rv = layout.findViewById(R.id.recycler);
         rv.setHasFixedSize(true);
         rv.setAdapter(new ColorAdapter(
-                Arrays.asList(context.getResources().getStringArray(R.array.colors_array)),
-                color -> mPopupListener.setColor(color)));
+                Arrays.asList(context.getResources().getStringArray(R.array.colors_array)), new ColorAdapter.ColorAdapterListener() {
+                    @Override
+                    public void onItemClick(ColorAdapter adapter, int color) {
+                        mPopupListener.setColor(color);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public int getCurrentColor() {
+                        return mPopupListener.getCurrentColor();
+                    }
+                }));
 
         setAnimationStyle(android.R.style.Animation_Dialog);
         setFocusable(true);
@@ -39,6 +49,8 @@ public final class ColorPopup extends PopupWindow {
         void setColor(int color);
 
         void moreColor();
+
+        int getCurrentColor();
     }
 
 }

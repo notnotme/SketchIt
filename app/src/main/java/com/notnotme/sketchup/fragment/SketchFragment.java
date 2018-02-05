@@ -115,6 +115,11 @@ public final class SketchFragment extends Fragment {
                     mHSVColorPopup.showAtLocation(mBtnColors, Gravity.NO_GRAVITY,
                             mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
                 }
+
+                @Override
+                public int getCurrentColor() {
+                    return mDrawingView.getBrushColor();
+                }
             };
 
     private HSVColorPopup.PopupListener mHSVColorPopupListener =

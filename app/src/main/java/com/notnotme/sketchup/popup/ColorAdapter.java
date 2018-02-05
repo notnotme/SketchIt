@@ -1,6 +1,7 @@
 package com.notnotme.sketchup.popup;
 
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +27,16 @@ public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_color, parent, false));
-        holder.itemView.setOnClickListener(view -> mColorAdapterListener.onItemClick((int) view.getTag()));
+        holder.itemView.setOnClickListener(view -> mColorAdapterListener.onItemClick(this, (int) view.getTag()));
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         int color = Color.parseColor(mItems.get(position));
+
+        int backgroundSelected = ContextCompat.getColor(holder.itemView.getContext(), R.color.lightgrey);
+        holder.itemView.setBackgroundColor(mColorAdapterListener.getCurrentColor() == color ? backgroundSelected : Color.TRANSPARENT);
 
         holder.itemView.setTag(color);
         holder.icon.setBackgroundColor(color);
@@ -44,7 +48,8 @@ public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHo
     }
 
     public interface ColorAdapterListener {
-        void onItemClick(int color);
+        void onItemClick(ColorAdapter adapter, int color);
+        int getCurrentColor();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

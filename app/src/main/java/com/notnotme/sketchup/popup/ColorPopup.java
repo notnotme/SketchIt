@@ -14,6 +14,7 @@ import java.util.Arrays;
 public final class ColorPopup extends PopupWindow {
 
     private PopupListener mPopupListener;
+    private ColorAdapter mColorAdapter;
 
     public ColorPopup(Context context, PopupListener popupListener) {
         super(View.inflate(context, R.layout.popup_color, null),
@@ -24,7 +25,8 @@ public final class ColorPopup extends PopupWindow {
 
         RecyclerView rv = layout.findViewById(R.id.recycler);
         rv.setHasFixedSize(true);
-        rv.setAdapter(new ColorAdapter(
+
+        mColorAdapter = new ColorAdapter(
                 Arrays.asList(context.getResources().getStringArray(R.array.colors_array)), new ColorAdapter.ColorAdapterListener() {
             @Override
             public void onItemClick(int color) {
@@ -35,13 +37,19 @@ public final class ColorPopup extends PopupWindow {
             public int getCurrentColor() {
                 return mPopupListener.getCurrentColor();
             }
-        }));
+        });
+
+        rv.setAdapter(mColorAdapter);
 
         setAnimationStyle(android.R.style.Animation_Dialog);
         setFocusable(true);
         setBackgroundDrawable(ContextCompat.getDrawable(context, android.R.color.transparent));
 
         mPopupListener = popupListener;
+    }
+
+    public void notifyColorChanged() {
+        mColorAdapter.notifyDataSetChanged();
     }
 
     public interface PopupListener {

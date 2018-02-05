@@ -128,6 +128,7 @@ public final class SketchFragment extends Fragment {
                 public void setColor(int color) {
                     mPopupWindow.dismiss();
                     mDrawingView.setBrushColor(color);
+                    mColorPopup.notifyColorChanged();
                 }
             };
 

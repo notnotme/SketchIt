@@ -145,6 +145,21 @@ public final class SketchFragment extends Fragment {
                     mPopupWindow.dismiss();
                     mDrawingView.setCurrentEffect(effect);
                 }
+
+                @Override
+                public PathEffect getCurrentEffect() {
+                    return mDrawingView.getEffect();
+                }
+
+                @Override
+                public DrawingView.DrawMode getCurrentDrawMode() {
+                    return mDrawingView.getDrawMode();
+                }
+
+                @Override
+                public float getBrushWidth() {
+                    return mDrawingView.getBrushWidth();
+                }
             };
 
     @Override
@@ -155,12 +170,6 @@ public final class SketchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Context context = getContext();
-
-        mFilePopup = new MainMenuPopup(context, mFilePopupListener);
-        mColorPopup = new ColorPopup(context, mColorPopupListener);
-        mHSVColorPopup = new HSVColorPopup(context, mHSVColorPopupListener);
-        mPencilPopup = new PencilPopup(context, mPencilPopupListener);
 
         mDrawingView = view.findViewById(R.id.sketch_drawing);
         mBtnPlus = view.findViewById(R.id.btn_plus);
@@ -212,6 +221,12 @@ public final class SketchFragment extends Fragment {
                 mFab.setTag(false);
             }
         }
+
+        Context context = getContext();
+        mFilePopup = new MainMenuPopup(context, mFilePopupListener);
+        mColorPopup = new ColorPopup(context, mColorPopupListener);
+        mHSVColorPopup = new HSVColorPopup(context, mHSVColorPopupListener);
+        mPencilPopup = new PencilPopup(context, mPencilPopupListener);
     }
 
     @Override

@@ -32,6 +32,7 @@ public final class DrawingView extends View {
     private static final String SAVESTATE_SKETCH_FILE = TAG + ".state_sketch";
     private static final String STATE_STROKE_WIDTH = TAG + ".state_stroke_width";
     private static final String STATE_COLOR = TAG + ".state_color";
+    private static final String STATE_DRAW_MODE = TAG + ".state_draw_mode";
     private static final String STATE_BASE = TAG + ".state_base";
     private Stack<CanvasDrawable> mRedos;
     private Path mDrawPath;
@@ -139,6 +140,7 @@ public final class DrawingView extends View {
         state.putParcelable(STATE_BASE, super.onSaveInstanceState());
         state.putFloat(STATE_STROKE_WIDTH, mCurrentStrokeWidth);
         state.putInt(STATE_COLOR, mCurrentColor);
+        state.putString(STATE_DRAW_MODE, mDrawMode.name());
 
         // Save sketch to a temporary file
         try {
@@ -161,6 +163,7 @@ public final class DrawingView extends View {
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         mOriginalBitmap = BitmapFactory.decodeFile(savedState.getString(SAVESTATE_SKETCH_FILE), options);
 
+        mDrawMode = DrawMode.valueOf(savedState.getString(STATE_DRAW_MODE));
         mCurrentStrokeWidth = savedState.getFloat(STATE_STROKE_WIDTH);
         mCurrentColor = savedState.getInt(STATE_COLOR);
         mDrawPaint.setStrokeWidth(mCurrentStrokeWidth);

@@ -27,7 +27,10 @@ public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_color, parent, false));
-        holder.itemView.setOnClickListener(view -> mColorAdapterListener.onItemClick(this, (int) view.getTag()));
+        holder.itemView.setOnClickListener(view -> {
+            mColorAdapterListener.onItemClick((int) view.getTag());
+            notifyDataSetChanged();
+        });
         return holder;
     }
 
@@ -48,7 +51,7 @@ public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHo
     }
 
     public interface ColorAdapterListener {
-        void onItemClick(ColorAdapter adapter, int color);
+        void onItemClick(int color);
         int getCurrentColor();
     }
 

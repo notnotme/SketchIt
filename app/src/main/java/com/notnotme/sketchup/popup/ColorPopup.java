@@ -27,9 +27,8 @@ public final class ColorPopup extends PopupWindow {
         rv.setAdapter(new ColorAdapter(
                 Arrays.asList(context.getResources().getStringArray(R.array.colors_array)), new ColorAdapter.ColorAdapterListener() {
                     @Override
-                    public void onItemClick(ColorAdapter adapter, int color) {
+                    public void onItemClick(int color) {
                         mPopupListener.setColor(color);
-                        adapter.notifyDataSetChanged();
                     }
 
                     @Override

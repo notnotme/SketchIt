@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public final class Utils {
 
-    public static File saveImageToExternalStorage(@NonNull Context context, @NonNull String imageName, @NonNull Bitmap image) throws IOException {
+    public static File saveImageToAppStorage(@NonNull Context context, @NonNull String filename, @NonNull Bitmap image) throws IOException {
         FileOutputStream fos = null;
 
         File imageFile;
@@ -25,7 +25,38 @@ public final class Utils {
                 }
             }
 
-            imageFile = new File(imagePath, imageName + ".png");
+            imageFile = new File(imagePath, filename + ".png");
+            fos = new FileOutputStream(imageFile);
+            image.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            throw e;
+        }
+
+        return imageFile;
+    }
+
+    public static File saveTempImage(@NonNull Context context, Bitmap image) throws IOException {
+        FileOutputStream fos = null;
+
+        File imageFile;
+        try {
+            File imagePath = new File(context.getFilesDir(), "images");
+            if (!imagePath.exists()) {
+                if (!imagePath.mkdir()) {
+                    throw new IOException("Cannot create cache directory");
+                }
+            }
+
+            imageFile = new File(imagePath, "share.png");
             fos = new FileOutputStream(imageFile);
             image.compress(Bitmap.CompressFormat.PNG, 90, fos);
             fos.flush();

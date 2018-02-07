@@ -1,11 +1,8 @@
 package com.notnotme.sketchup.popup;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.PopupWindow;
 
 import com.notnotme.sketchup.R;
 import com.notnotme.sketchup.view.drawing.DrawingView;
@@ -13,7 +10,7 @@ import com.notnotme.sketchup.view.drawing.Effect;
 
 import java.util.Arrays;
 
-public final class PencilPopup extends PopupWindow {
+public final class PencilPopup extends BasePopup {
 
     private PopupListener mPopupListener;
     private PencilAdapter mPenAdapter;
@@ -71,9 +68,7 @@ public final class PencilPopup extends PopupWindow {
             };
 
     public PencilPopup(Context context, PopupListener popupListener) {
-        super(View.inflate(context, R.layout.popup_pencil, null),
-                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-
+        super(context, R.layout.popup_pencil);
         mPopupListener = popupListener;
 
         mPenAdapter = new PencilAdapter(Arrays.asList(
@@ -111,10 +106,6 @@ public final class PencilPopup extends PopupWindow {
         RecyclerView rcStyle = layout.findViewById(R.id.recycler_style);
         rcStyle.setHasFixedSize(true);
         rcStyle.setAdapter(mEffectAdapter);
-
-        setAnimationStyle(android.R.style.Animation_Dialog);
-        setFocusable(true);
-        setBackgroundDrawable(ContextCompat.getDrawable(context, android.R.color.transparent));
     }
 
     private int getCurrentPenSelected() {

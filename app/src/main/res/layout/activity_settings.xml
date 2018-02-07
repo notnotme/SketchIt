@@ -19,114 +19,126 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            app:layout_scrollFlags="snap"
             app:title="@string/settings"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_below="@id/appbar"
-        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/delete_all_sketches_hint"/>
+            android:orientation="vertical">
 
-        <Button
-            style="?borderlessButtonStyle"
-            android:id="@+id/delete_all_sketches"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/delete_all_sketches"
-            android:textColor="@android:color/holo_red_light"/>
+            <LinearLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="16dp">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="32dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/delete_all_sketches_hint"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/change_theme_color"/>
+                <Button
+                    style="?borderlessButtonStyle"
+                    android:id="@+id/delete_all_sketches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete_all_sketches"
+                    android:textColor="@android:color/holo_red_light"/>
 
-        <Spinner
-            android:id="@+id/theme_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            tools:listitem="@layout/item_spinner"/>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="32dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/change_theme_color"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/rate_hint"/>
+                <Spinner
+                    android:id="@+id/theme_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    tools:listitem="@layout/item_spinner"/>
 
-        <Button
-            style="?borderlessButtonStyle"
-            android:id="@+id/rate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/rate"
-            android:textColor="@android:color/holo_green_light"/>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="32dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/rate_hint"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/share_this_app"/>
+                <Button
+                    style="?borderlessButtonStyle"
+                    android:id="@+id/rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rate"
+                    android:textColor="@android:color/holo_green_light"/>
 
-        <Button
-            style="?borderlessButtonStyle"
-            android:id="@+id/share"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/share"
-            android:layout_gravity="end"
-            android:textColor="@android:color/holo_green_light"/>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp" />
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/share_this_app"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_marginBottom="32dp"
-        app:layout_anchor="@id/content"
-        app:layout_anchorGravity="bottom|center">
+                <Button
+                    style="?borderlessButtonStyle"
+                    android:id="@+id/share"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/share"
+                    android:layout_gravity="end"
+                    android:textColor="@android:color/holo_green_light"/>
 
-        <ImageView
-            android:id="@+id/egg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="centerInside"
-            android:src="@mipmap/ic_launcher_round"/>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            tools:text="AppName 1.0\n(debug/release)"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center"
+                app:layout_anchor="@id/content">
 
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/egg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ic_launcher_round"/>
+
+                <TextView
+                    android:id="@+id/version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    tools:text="AppName 1.0\n(debug/release)"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

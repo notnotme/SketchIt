@@ -5,17 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 
 import com.notnotme.sketchup.R;
 import com.notnotme.sketchup.view.RatioTouchListener;
 
-public final class HSVColorPopup extends PopupWindow {
+public final class HSVColorPopup extends BasePopup {
 
     private final ImageView mColorPreview;
     private final ImageView mColorImage;
@@ -23,8 +20,8 @@ public final class HSVColorPopup extends PopupWindow {
     private float mTempHSV[];
 
     public HSVColorPopup(Context context, PopupListener popupListener) {
-        super(View.inflate(context, R.layout.popup_hsv, null),
-                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        super(context, R.layout.popup_hsv);
+        mPopupListener = popupListener;
 
         View layout = getContentView();
         mColorPreview = layout.findViewById(R.id.color_preview);
@@ -96,12 +93,7 @@ public final class HSVColorPopup extends PopupWindow {
             }
         });
 
-        setAnimationStyle(android.R.style.Animation_Dialog);
-        setFocusable(true);
-        setBackgroundDrawable(ContextCompat.getDrawable(context, android.R.color.transparent));
         setOnDismissListener(() -> mPopupListener.setColor(Color.HSVToColor(mTempHSV)));
-
-        mPopupListener = popupListener;
     }
 
     public void setColor(int color) {

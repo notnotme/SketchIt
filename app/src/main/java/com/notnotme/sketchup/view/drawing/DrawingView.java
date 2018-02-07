@@ -148,7 +148,7 @@ public final class DrawingView extends View {
 
         // Save sketch to a temporary file
         try {
-            File tempSketch = Utils.saveImageToExternalStorage(getContext(), SAVESTATE_SKETCH_FILE, mCanvasBitmap);
+            File tempSketch = Utils.saveImageToAppStorage(getContext(), SAVESTATE_SKETCH_FILE, mCanvasBitmap);
             state.putString(SAVESTATE_SKETCH_FILE, tempSketch.getPath());
         } catch (IOException e) {
             Log.e(TAG, "Unable to save sketch while saving instance state: " + e.getMessage());

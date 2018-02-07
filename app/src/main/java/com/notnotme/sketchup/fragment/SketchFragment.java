@@ -75,7 +75,7 @@ public final class SketchFragment extends Fragment {
                     mAlertDialog = new AlertDialog.Builder(getContext())
                             .setMessage(R.string.start_drawing_question)
                             .setPositiveButton(android.R.string.yes, (dialog, id) -> mCallback.newSketch())
-                            .setNegativeButton(android.R.string.cancel, (dialog, id) -> dialog.dismiss())
+                            .setNegativeButton(android.R.string.cancel, null)
                             .show();
                 }
 
@@ -85,7 +85,7 @@ public final class SketchFragment extends Fragment {
                     mAlertDialog = new AlertDialog.Builder(getContext())
                             .setMessage(R.string.save_drawing_question)
                             .setPositiveButton(android.R.string.yes, (dialog, which) -> mCallback.saveSketch(mDrawingView.getBitmap()))
-                            .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
+                            .setNegativeButton(android.R.string.cancel, null)
                             .show();
                 }
 
@@ -95,6 +95,11 @@ public final class SketchFragment extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(Intent.createChooser(intent, getString(R.string.import_picture_from)), REQUEST_IMPORT_PICTURE);
+                }
+
+                @Override
+                public void shareSketch() {
+                    mCallback.shareSketch(mDrawingView.getBitmap());
                 }
             };
 
@@ -310,6 +315,8 @@ public final class SketchFragment extends Fragment {
         void showAlbumFragment();
 
         void saveSketch(Bitmap bitmap);
+
+        void shareSketch(Bitmap bitmap);
 
         void newSketch();
 

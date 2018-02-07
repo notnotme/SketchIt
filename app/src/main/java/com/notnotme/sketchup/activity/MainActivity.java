@@ -167,7 +167,7 @@ public final class MainActivity extends BaseActivity
             try {
                 long now = new Date().getTime();
 
-                picturePath.set(Utils.saveImageToExternalStorage(this, String.valueOf(now), bitmap).getPath());
+                picturePath.set(Utils.saveImageToAppStorage(this, String.valueOf(now), bitmap).getPath());
                 getLocalDatabase().getDaoManager().saveSketch(new Sketch(picturePath.get(), now));
             } catch (Exception e) {
                 exceptionAtomicReference.set(e);
@@ -301,6 +301,41 @@ public final class MainActivity extends BaseActivity
         if (shareIntentBuilder.getIntent().resolveActivity(getPackageManager()) != null) {
             startActivity(shareIntentBuilder.createChooserIntent());
         }
+    }
+
+    @Override
+    public void shareSketch(Bitmap bitmap) {
+        AsyncTask.execute(() -> {
+            if (isDestroyed() || isFinishing()) return;
+
+            AtomicReference<File> picturePath = new AtomicReference<>();
+            AtomicReference<Exception> exceptionAtomicReference = new AtomicReference<>();
+            try {
+                picturePath.set(Utils.saveTempImage(this, bitmap));
+            } catch (Exception e) {
+                exceptionAtomicReference.set(e);
+            }
+
+            getMainHandler().post(() -> {
+                if (isDestroyed() || isFinishing()) return;
+
+                Exception exception = exceptionAtomicReference.get();
+                if (exception != null) {
+                    mAlertDialog = new AlertDialog.Builder(this)
+                            .setMessage(exception.getMessage())
+                            .setPositiveButton(android.R.string.ok, null)
+                            .show();
+                } else {
+                    ShareCompat.IntentBuilder shareIntentBuilder = ShareCompat.IntentBuilder.from(this).setType("image/png");
+                    shareIntentBuilder.setStream(FileProvider
+                            .getUriForFile(this, getPackageName() + ".provider", picturePath.get()));
+
+                    if (shareIntentBuilder.getIntent().resolveActivity(getPackageManager()) != null) {
+                        startActivity(shareIntentBuilder.createChooserIntent());
+                    }
+                }
+            });
+        });
     }
 
     @Override

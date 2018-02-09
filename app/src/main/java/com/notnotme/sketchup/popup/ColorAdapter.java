@@ -15,10 +15,10 @@ import java.util.List;
 
 public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> {
 
-    private ArrayList<String> mItems;
+    private ArrayList<Integer> mItems;
     private ColorAdapterListener mColorAdapterListener;
 
-    ColorAdapter(List<String> colorList, ColorAdapterListener listener) {
+    ColorAdapter(List<Integer> colorList, ColorAdapterListener listener) {
         mItems = new ArrayList<>();
         mItems.addAll(colorList);
         mColorAdapterListener = listener;
@@ -36,7 +36,7 @@ public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        int color = Color.parseColor(mItems.get(position));
+        int color = mItems.get(position);
 
         int backgroundSelected = ContextCompat.getColor(holder.itemView.getContext(), R.color.lightgrey);
         holder.itemView.setBackgroundColor(mColorAdapterListener.getCurrentColor() == color ? backgroundSelected : Color.TRANSPARENT);

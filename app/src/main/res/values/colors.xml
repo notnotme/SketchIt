@@ -10,24 +10,6 @@
     <color name="text_light">@android:color/primary_text_dark</color>
     <color name="text_dark">@android:color/primary_text_light</color>
 
-    <string-array name="colors_array" translatable="false">
-        <item>#FF33B5E5</item>
-        <item>#FF0099CC</item>
-        <item>#FFAA66CC</item>
-        <item>#FF9933CC</item>
-        <item>#FF99CC00</item>
-        <item>#FF669900</item>
-        <item>#FFFFBB33</item>
-        <item>#FFFF8800</item>
-        <item>#FFFF4444</item>
-        <item>#FFCC0000</item>
-        <item>#FF000000</item>
-        <item>#FF909090</item>
-        <item>#FFC0C0C0</item>
-        <item>#FFE0E0E0</item>
-        <item>#FFFFFFFF</item>
-    </string-array>
-
     <!-- theme colors -->
     <color name="theme_blue_primary">#03a9f4</color>
     <color name="theme_blue_accent">#3871e3</color>
@@ -53,6 +35,23 @@
     <color name="theme_orange_accent">#ffa031</color>
     <color name="theme_orange_primary_dark">#ea9f35</color>
     <color name="theme_orange_text">@color/text_dark</color>
+
+    <!-- palette -->
+    <color name="palette_0">#FF33B5E5</color>
+    <color name="palette_1">#FF0099CC</color>
+    <color name="palette_2">#FFAA66CC</color>
+    <color name="palette_3">#FF9933CC</color>
+    <color name="palette_4">#FF99CC00</color>
+    <color name="palette_5">#FF669900</color>
+    <color name="palette_6">#FFFFBB33</color>
+    <color name="palette_7">#FFFF8800</color>
+    <color name="palette_8">#FFFF4444</color>
+    <color name="palette_9">#FFCC0000</color>
+    <color name="palette_10">#FF000000</color>
+    <color name="palette_11">#FF909090</color>
+    <color name="palette_12">#FFC0C0C0</color>
+    <color name="palette_13">#FFE0E0E0</color>
+    <color name="palette_14">#FFFFFFFF</color>
 
 </resources>
 

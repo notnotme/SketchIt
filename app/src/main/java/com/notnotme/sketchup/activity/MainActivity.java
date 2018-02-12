@@ -259,7 +259,7 @@ public final class MainActivity extends BaseActivity
             try {
                 getLocalDatabase().getDaoManager().deleteSketches(sketches);
                 for (Sketch sketch : sketches) {
-                    Utils.deleteFile(this, new File(sketch.getPath()));
+                    Utils.deleteImageFile(this, new File(sketch.getPath()));
                 }
             } catch (Exception e) {
                 exceptionAtomicReference.set(e);

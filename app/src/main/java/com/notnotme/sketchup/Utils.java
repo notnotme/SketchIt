@@ -44,7 +44,7 @@ public final class Utils {
         return imageFile;
     }
 
-    public static File saveTempImage(@NonNull Context context, Bitmap image) throws IOException {
+    public static File saveTempImage(@NonNull Context context, @NonNull Bitmap image) throws IOException {
         FileOutputStream fos = null;
 
         File imageFile;
@@ -75,7 +75,7 @@ public final class Utils {
         return imageFile;
     }
 
-    public static void deleteFile(@NonNull Context context, @NonNull File file) {
+    public static void deleteImageFile(@NonNull Context context, @NonNull File file) {
         Uri imageUri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
         ContentResolver contentResolver = context.getContentResolver();
         contentResolver.delete(imageUri, null, null);

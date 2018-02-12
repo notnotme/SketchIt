@@ -131,7 +131,7 @@ public final class SettingsActivity extends BaseActivity {
                 List<Sketch> sketches = daoManager.getAllSketch();
                 daoManager.deleteSketches(sketches);
                 for (Sketch sketch : sketches) {
-                    Utils.deleteFile(this, new File(sketch.getPath()));
+                    Utils.deleteImageFile(this, new File(sketch.getPath()));
                 }
             } catch (Exception e) {
                 exceptionAtomicReference.set(e);

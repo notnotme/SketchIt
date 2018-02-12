@@ -16,11 +16,11 @@
     <string name="action">ação</string>
     <string name="ask_delete_selection">Tem certeza de que deseja excluir a seleção?</string>
     <string name="sketch_view">espectador</string>
-    <string name="sketch_saved">Desenho salvo %1$s</string>
-    <string name="sketch_deleted">%1$s elementos excluídos %2$s</string>
+    <string name="sketch_saved">Desenho salvo</string>
+    <string name="sketch_deleted">%1$s elementos excluídos</string>
     <string name="delete_all_sketches_hint">Você pode apagar todos os desenhos clicando no botão abaixo.</string>
     <string name="delete_all_sketches">Limpe todos os desenhos</string>
-    <string name="all_sketches_deleted">Todos os desenhos foram excluídos %1$s</string>
+    <string name="all_sketches_deleted">Todos os desenhos foram excluídos</string>
     <string name="confirm_delete_all_sketches">Você tem certeza?</string>
     <string name="rate">nota</string>
     <string name="rate_hint">Dê uma nota para esta aplicação é aproveitar a oportunidade para nos deixar um comentário.</string>

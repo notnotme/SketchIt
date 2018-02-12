@@ -17,12 +17,12 @@
     <string name="action">Action</string>
     <string name="ask_delete_selection">Do you really want to delete the selection?</string>
     <string name="sketch_view">Sketch view</string>
-    <string name="sketch_saved">Sketch saved %1$s</string>
-    <string name="sketch_deleted">%1$s item(s) deleted %2$s</string>
+    <string name="sketch_saved">Sketch saved.</string>
+    <string name="sketch_deleted">%1$s item(s) deleted.</string>
     <string name="settings">Settings</string>
     <string name="delete_all_sketches_hint">You can delete all your sketches at once by clicking the button below.</string>
     <string name="delete_all_sketches">Delete all sketches</string>
-    <string name="all_sketches_deleted">All sketches deleted %1$s</string>
+    <string name="all_sketches_deleted">All sketches deleted.</string>
     <string name="confirm_delete_all_sketches">Are you sure ?</string>
     <string name="rate">Rate</string>
     <string name="rate_hint">Rate this app and take the occasion to give a feedback :)</string>

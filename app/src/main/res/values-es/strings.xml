@@ -16,12 +16,12 @@
     <string name="action">Acción</string>
     <string name="ask_delete_selection">¿Realmente quieres eliminar la selección?</string>
     <string name="sketch_view">Visor de dibujos</string>
-    <string name="sketch_saved">Boceto guardado %1$s</string>
-    <string name="sketch_deleted">%1$s artículo (s) eliminado %2$s</string>
+    <string name="sketch_saved">Boceto guardado</string>
+    <string name="sketch_deleted">%1$s artículo (s) eliminado</string>
     <string name="settings">Configuraciones</string>
     <string name="delete_all_sketches_hint">Puede eliminar todos sus bocetos a la vez haciendo clic en el botón a continuación.</string>
     <string name="delete_all_sketches">Eliminar todos los bocetos</string>
-    <string name="all_sketches_deleted">Todos los bocetos borrados %1$s</string>
+    <string name="all_sketches_deleted">Todos los bocetos borrados</string>
     <string name="confirm_delete_all_sketches">¿Estás seguro?</string>
     <string name="rate">Nota</string>
     <string name="rate_hint">Califica esta aplicación y aprovecha la ocasión para dar tu opinión. :)</string>

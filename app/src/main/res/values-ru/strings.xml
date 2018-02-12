@@ -16,11 +16,11 @@
     <string name="action">действие</string>
     <string name="ask_delete_selection">Вы действительно хотите удалить выделение?</string>
     <string name="sketch_view">зритель</string>
-    <string name="sketch_saved">Сохраненный чертеж %1$s</string>
-    <string name="sketch_deleted">%1$s удаленные элементы %2$s</string>
+    <string name="sketch_saved">Сохраненный чертеж</string>
+    <string name="sketch_deleted">%1$s удаленные элементы</string>
     <string name="delete_all_sketches_hint">Вы можете удалить все рисунки, нажав кнопку ниже.</string>
     <string name="delete_all_sketches">Очистить все чертежи</string>
-    <string name="all_sketches_deleted">Все чертежи удалены %1$s</string>
+    <string name="all_sketches_deleted">Все чертежи удалены</string>
     <string name="confirm_delete_all_sketches">Вы уверены?</string>
     <string name="rate">примечание</string>
     <string name="rate_hint">Дайте примечание к этому приложению, воспользуйтесь возможностью оставить нам комментарий.</string>

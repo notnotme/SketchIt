@@ -16,11 +16,11 @@
     <string name="action">tindakan</string>
     <string name="ask_delete_selection">Yakin ingin menghapus pilihannya?</string>
     <string name="sketch_view">penonton</string>
-    <string name="sketch_saved">Gambar yang disimpan %1$s</string>
-    <string name="sketch_deleted">%1$s item dihapus %2$s</string>
+    <string name="sketch_saved">Gambar yang disimpan</string>
+    <string name="sketch_deleted">%1$s item dihapus</string>
     <string name="delete_all_sketches_hint">Anda bisa menghapus semua gambar dengan mengklik tombol di bawah ini.</string>
     <string name="delete_all_sketches">Hapus semua gambar</string>
-    <string name="all_sketches_deleted">Semua gambar telah dihapus %1$s</string>
+    <string name="all_sketches_deleted">Semua gambar telah dihapus</string>
     <string name="confirm_delete_all_sketches">Apakah kamu yakin</string>
     <string name="rate">catatan</string>
     <string name="rate_hint">Beri catatan pada aplikasi ini adalah memanfaatkan kesempatan untuk memberi kami komentar.</string>

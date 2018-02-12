@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.text.emoji.EmojiCompat;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -144,11 +143,11 @@ public final class SettingsActivity extends BaseActivity {
                 Exception exception = exceptionAtomicReference.get();
                 if (exception != null) {
                     Snackbar.make(findViewById(R.id.coordinator),
-                            EmojiCompat.get().process(exception.getMessage() + "\uD83D\uDCA5"),
+                            "Error : " + System.lineSeparator() + exception.getLocalizedMessage(),
                             Snackbar.LENGTH_SHORT).show();
                 } else {
                     Snackbar.make(findViewById(R.id.coordinator),
-                            EmojiCompat.get().process(getString(R.string.all_sketches_deleted, "\uD83D\uDCA5")),
+                            getString(R.string.all_sketches_deleted),
                             Snackbar.LENGTH_SHORT).show();
                 }
             });

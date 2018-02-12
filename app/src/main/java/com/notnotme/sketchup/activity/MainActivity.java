@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.text.emoji.EmojiCompat;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -187,7 +186,7 @@ public final class MainActivity extends BaseActivity
                     albumFragment.loadSketches(null);
 
                     Snackbar.make(findViewById(R.id.coordinator),
-                            EmojiCompat.get().process(getString(R.string.sketch_saved, "\uD83D\uDE02")),
+                            getString(R.string.sketch_saved),
                             Snackbar.LENGTH_SHORT).show();
                 }
             });
@@ -234,7 +233,7 @@ public final class MainActivity extends BaseActivity
                     getMainHandler().post(() -> {
                         if (isDestroyed() || isFinishing()) return;
                         Snackbar.make(findViewById(R.id.coordinator),
-                                EmojiCompat.get().process("\uD83D\uDCA5 Error \uD83D\uDCA5 " + System.lineSeparator() + e.getLocalizedMessage()),
+                                "Error : " + System.lineSeparator() + e.getLocalizedMessage(),
                                 Snackbar.LENGTH_SHORT).show();
                     });
                     return;
@@ -275,7 +274,7 @@ public final class MainActivity extends BaseActivity
                 } else {
                     callback.success(sketches);
                     Snackbar.make(findViewById(R.id.coordinator),
-                            EmojiCompat.get().process(getString(R.string.sketch_deleted, String.valueOf(sketches.size()), "\uD83D\uDCA5")),
+                            getString(R.string.sketch_deleted, String.valueOf(sketches.size())),
                             Snackbar.LENGTH_SHORT).show();
                 }
             });

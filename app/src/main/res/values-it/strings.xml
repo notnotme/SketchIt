@@ -16,11 +16,11 @@
     <string name="action">azione</string>
     <string name="ask_delete_selection">Sei sicuro di voler eliminare la selezione?</string>
     <string name="sketch_view">spettatore</string>
-    <string name="sketch_saved">Disegno salvato %1$s</string>
-    <string name="sketch_deleted">%1$s elementi eliminati %2$s</string>
+    <string name="sketch_saved">Disegno salvato</string>
+    <string name="sketch_deleted">%1$s elementi eliminati</string>
     <string name="delete_all_sketches_hint">Puoi cancellare tutti i disegni facendo clic sul pulsante qui sotto.</string>
     <string name="delete_all_sketches">Cancella tutti i disegni</string>
-    <string name="all_sketches_deleted">Tutti i disegni sono stati cancellati %1$s</string>
+    <string name="all_sketches_deleted">Tutti i disegni sono stati cancellati</string>
     <string name="confirm_delete_all_sketches">Sei sicuro?</string>
     <string name="rate">nota</string>
     <string name="rate_hint">Dare una nota a questa applicazione è cogliere l\'opportunità di lasciarci un commento.</string>

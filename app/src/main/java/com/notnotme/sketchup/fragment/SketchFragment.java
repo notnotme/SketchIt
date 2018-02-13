@@ -221,7 +221,9 @@ public final class SketchFragment extends Fragment {
             mFab.setTag(false);
         } else {
             if (savedInstanceState.getBoolean(STATE_IS_IMPORTING)) {
-                mImportImage.setImageURI(Uri.parse(savedInstanceState.getString(STATE_IMPORT_IMAGE_PATH)));
+                String uri = savedInstanceState.getString(STATE_IMPORT_IMAGE_PATH);
+                mImportImage.setImageURI(Uri.parse(uri));
+                mImportImage.setTag(uri);
                 enterImportMode();
             } else {
                 mFab.setTag(false);

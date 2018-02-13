@@ -255,10 +255,14 @@ public final class DrawingView extends View {
     }
 
     public void setBitmap(Bitmap bitmap) {
+        // Eat up a little memory to ensure no null pointer exception if we got in instance state to quickly
+        // and trying to save a null bitmap.
+        mCanvasBitmap = Bitmap.createBitmap(1,1, Bitmap.Config.RGB_565);
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mCanvasBitmap.recycle();
                 mCanvasBitmap = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.RGB_565);
                 mDrawCanvas = new Canvas(mCanvasBitmap);
 

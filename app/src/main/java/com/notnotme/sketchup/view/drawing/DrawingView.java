@@ -263,6 +263,15 @@ public final class DrawingView extends View {
             public void onGlobalLayout() {
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 mCanvasBitmap.recycle();
+
+                int width = getMeasuredWidth();
+                int height = getMeasuredHeight();
+                if (width <= 0 || height <= 0) {
+                    // At this point the view is not visible to the user so we can return
+                    // and avoid a crash
+                    return;
+                }
+
                 mCanvasBitmap = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.RGB_565);
                 mDrawCanvas = new Canvas(mCanvasBitmap);
 
@@ -288,6 +297,5 @@ public final class DrawingView extends View {
         FREE,
         LINES
     }
-
 
 }

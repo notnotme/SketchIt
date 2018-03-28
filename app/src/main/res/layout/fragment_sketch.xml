@@ -9,6 +9,7 @@
     android:orientation="vertical"
     tools:context=".fragment.SketchFragment">
 
+    <!-- todo: fix "?" attributes by adding android: to other layouts -->
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="?android:actionBarSize"
             android:gravity="center"
             app:contentInsetEnd="0dp"
             app:contentInsetStart="0dp"
@@ -31,7 +32,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    style="?actionButtonStyle"
+                    style="?android:actionButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/btn_plus"
@@ -39,15 +40,15 @@
                     android:scaleType="centerInside"/>
 
                 <ImageButton
-                    style="?actionButtonStyle"
+                    style="?android:actionButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btn_pencil"
-                    android:src="@mipmap/pencil"
+                    android:id="@+id/btn_tools"
+                    android:src="@mipmap/tools"
                     android:scaleType="centerInside"/>
 
                 <ImageButton
-                    style="?actionButtonStyle"
+                    style="?android:actionButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/btn_color"
@@ -55,7 +56,7 @@
                     android:scaleType="centerInside"/>
 
                 <ImageButton
-                    style="?actionButtonStyle"
+                    style="?android:actionButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/undo"
@@ -68,7 +69,7 @@
                     android:layout_weight="1"/>
 
                 <Button
-                    style="?borderlessButtonStyle"
+                    style="?android:borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/btn_albums"

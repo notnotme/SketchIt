@@ -33,13 +33,15 @@ import com.notnotme.sketchup.view.drawing.Effect;
 public final class SketchFragment extends Fragment {
 
     private static final String TAG = SketchFragment.class.getSimpleName();
-    private static final int REQUEST_IMPORT_PICTURE = 1337;
+
     private static final String STATE_IS_IMPORTING = TAG + ".importing";
     private static final String STATE_IMPORT_IMAGE_PATH = TAG + ".import_image_path";
 
+    private static final int REQUEST_IMPORT_PICTURE = 1337;
+
     private SketchFragmentCallback mCallback;
     private ImageButton mBtnPlus;
-    private ImageButton mBtnPencil;
+    private ImageButton mBtnTools;
     private ImageButton mBtnColors;
     private DrawingView mDrawingView;
 
@@ -179,7 +181,7 @@ public final class SketchFragment extends Fragment {
 
         mDrawingView = view.findViewById(R.id.sketch_drawing);
         mBtnPlus = view.findViewById(R.id.btn_plus);
-        mBtnPencil = view.findViewById(R.id.btn_pencil);
+        mBtnTools = view.findViewById(R.id.btn_tools);
         mBtnColors = view.findViewById(R.id.btn_color);
 
         mBtnPlus.setOnClickListener(v -> {
@@ -189,11 +191,14 @@ public final class SketchFragment extends Fragment {
                     mBtnPlus.getLeft() + mBtnPlus.getWidth() / 3, mBtnPlus.getBottom() + 50);
         });
 
-        mBtnPencil.setOnClickListener(v -> {
+        mBtnTools.setOnClickListener(v -> {
             if (isInImport()) exitImportMode();
+
+            /*
             mPopupWindow = mPencilPopup;
-            mPencilPopup.showAtLocation(mBtnPencil, Gravity.NO_GRAVITY,
-                    mBtnPencil.getLeft() + mBtnPencil.getWidth() / 3, mBtnPencil.getBottom() + 50);
+            mPencilPopup.showAtLocation(mBtnTools, Gravity.NO_GRAVITY,
+                    mBtnTools.getLeft() + mBtnTools.getWidth() / 3, mBtnTools.getBottom() + 50);
+            */
         });
 
         mBtnColors.setOnClickListener(v -> {

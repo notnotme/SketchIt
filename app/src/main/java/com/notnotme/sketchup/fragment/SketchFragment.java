@@ -27,6 +27,7 @@ import com.notnotme.sketchup.popup.ColorPopup;
 import com.notnotme.sketchup.popup.HSVColorPopup;
 import com.notnotme.sketchup.popup.MainMenuPopup;
 import com.notnotme.sketchup.view.drawing.DrawingView;
+import com.notnotme.sketchup.view.drawing.Effect;
 
 // todo: move all dialog creation & showing in MainActivity via mCallback
 public final class SketchFragment extends Fragment {
@@ -188,7 +189,8 @@ public final class SketchFragment extends Fragment {
             if (mCallback.isToolsFragmentVisible()) {
                 mCallback.hideToolsFragment();
                 return;
-            }      mCallback.showAlbumFragment();
+            }
+            mCallback.showAlbumFragment();
         });
 
         view.findViewById(R.id.btn_tools).setOnClickListener(v -> {
@@ -313,6 +315,20 @@ public final class SketchFragment extends Fragment {
         }
     }
 
+    public void setDrawMode(DrawingView.DrawMode mode, float width) {
+        mDrawingView.setDrawMode(mode);
+        mDrawingView.setBrushWidth(width);
+    }
+
+    public void setCurrentEffect(Effect effect) {
+        mDrawingView.setCurrentEffect(effect);
+    }
+
+    public void setPaintColor(int color) {
+        mDrawingView.setBrushColor(color);
+    }
+
+
     public interface SketchFragmentCallback {
         void showAlbumFragment();
 
@@ -325,7 +341,9 @@ public final class SketchFragment extends Fragment {
         void loadSketch(String path, boolean isImport);
 
         void showToolsFragment();
+
         void hideToolsFragment(); // todo: to remove when popups migration is finished?
+
         boolean isToolsFragmentVisible(); // todo: to remove when popups migration is finished?
     }
 

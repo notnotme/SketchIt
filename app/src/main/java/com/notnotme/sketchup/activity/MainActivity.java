@@ -409,17 +409,20 @@ public final class MainActivity extends BaseActivity implements SketchFragment.S
 
     @Override
     public void setDrawMode(DrawingView.DrawMode mode, float width) {
-
+        SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
+        sketchFragment.setDrawMode(mode, width);
     }
 
     @Override
     public void setCurrentEffect(Effect effect) {
-
+        SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
+        sketchFragment.setCurrentEffect(effect);
     }
 
     @Override
     public void setPaintColor(int color) {
-
+        SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
+        sketchFragment.setPaintColor(color);
     }
 
 }

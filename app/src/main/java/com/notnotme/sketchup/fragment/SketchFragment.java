@@ -26,10 +26,9 @@ import com.notnotme.sketchup.R;
 import com.notnotme.sketchup.popup.ColorPopup;
 import com.notnotme.sketchup.popup.HSVColorPopup;
 import com.notnotme.sketchup.popup.MainMenuPopup;
-import com.notnotme.sketchup.popup.PencilPopup;
 import com.notnotme.sketchup.view.drawing.DrawingView;
-import com.notnotme.sketchup.view.drawing.Effect;
 
+// todo: move all dialog creation & showing in MainActivity via mCallback
 public final class SketchFragment extends Fragment {
 
     private static final String TAG = SketchFragment.class.getSimpleName();
@@ -41,7 +40,6 @@ public final class SketchFragment extends Fragment {
 
     private SketchFragmentCallback mCallback;
     private ImageButton mBtnPlus;
-    private ImageButton mBtnTools;
     private ImageButton mBtnColors;
     private DrawingView mDrawingView;
 
@@ -49,7 +47,6 @@ public final class SketchFragment extends Fragment {
     private FloatingActionButton mFab;
 
     private MainMenuPopup mFilePopup;
-    private PencilPopup mPencilPopup;
     private ColorPopup mColorPopup;
     private HSVColorPopup mHSVColorPopup;
     private PopupWindow mPopupWindow;
@@ -139,37 +136,6 @@ public final class SketchFragment extends Fragment {
                 }
             };
 
-    private PencilPopup.PopupListener mPencilPopupListener =
-            new PencilPopup.PopupListener() {
-                @Override
-                public void setDrawMode(DrawingView.DrawMode mode, float width) {
-                    mPopupWindow.dismiss();
-                    mDrawingView.setDrawMode(mode);
-                    mDrawingView.setBrushWidth(width);
-                }
-
-                @Override
-                public Effect getCurrentEffect() {
-                    return mDrawingView.getEffect();
-                }
-
-                @Override
-                public void setCurrentEffect(Effect effect) {
-                    mPopupWindow.dismiss();
-                    mDrawingView.setCurrentEffect(effect);
-                }
-
-                @Override
-                public DrawingView.DrawMode getCurrentDrawMode() {
-                    return mDrawingView.getDrawMode();
-                }
-
-                @Override
-                public float getBrushWidth() {
-                    return mDrawingView.getBrushWidth();
-                }
-            };
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_sketch, container, false);
@@ -181,41 +147,71 @@ public final class SketchFragment extends Fragment {
 
         mDrawingView = view.findViewById(R.id.sketch_drawing);
         mBtnPlus = view.findViewById(R.id.btn_plus);
-        mBtnTools = view.findViewById(R.id.btn_tools);
         mBtnColors = view.findViewById(R.id.btn_color);
 
         mBtnPlus.setOnClickListener(v -> {
             if (isInImport()) exitImportMode();
+            if (mCallback.isToolsFragmentVisible()) {
+                mCallback.hideToolsFragment();
+                return;
+            }
+
             mPopupWindow = mFilePopup;
             mFilePopup.showAtLocation(mBtnPlus, Gravity.NO_GRAVITY,
                     mBtnPlus.getLeft() + mBtnPlus.getWidth() / 3, mBtnPlus.getBottom() + 50);
         });
 
-        mBtnTools.setOnClickListener(v -> {
-            if (isInImport()) exitImportMode();
-
-            /*
-            mPopupWindow = mPencilPopup;
-            mPencilPopup.showAtLocation(mBtnTools, Gravity.NO_GRAVITY,
-                    mBtnTools.getLeft() + mBtnTools.getWidth() / 3, mBtnTools.getBottom() + 50);
-            */
-        });
-
         mBtnColors.setOnClickListener(v -> {
             if (isInImport()) exitImportMode();
+            if (mCallback.isToolsFragmentVisible()) {
+                mCallback.hideToolsFragment();
+                return;
+            }
+
             mPopupWindow = mColorPopup;
             mColorPopup.showAtLocation(mBtnColors, Gravity.NO_GRAVITY,
                     mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
         });
 
-        view.findViewById(R.id.undo).setOnClickListener(v -> mDrawingView.undo());
-        view.findViewById(R.id.btn_albums).setOnClickListener(v -> mCallback.showAlbumFragment());
+        view.findViewById(R.id.undo).setOnClickListener(v -> {
+            if (isInImport()) exitImportMode();
+            if (mCallback.isToolsFragmentVisible()) {
+                mCallback.hideToolsFragment();
+                return;
+            }
+
+            mDrawingView.undo();
+        });
+
+        view.findViewById(R.id.btn_albums).setOnClickListener(v -> {
+            if (isInImport()) exitImportMode();
+            if (mCallback.isToolsFragmentVisible()) {
+                mCallback.hideToolsFragment();
+                return;
+            }      mCallback.showAlbumFragment();
+        });
+
+        view.findViewById(R.id.btn_tools).setOnClickListener(v -> {
+            if (isInImport()) exitImportMode();
+            if (mCallback.isToolsFragmentVisible()) {
+                mCallback.hideToolsFragment();
+            } else {
+                mCallback.showToolsFragment();
+            }
+        });
 
         mImportImage = view.findViewById(R.id.import_image);
         mFab = view.findViewById(R.id.import_ok);
 
         mDrawingView.setBrushWidth(DrawingView.STROKE_DEFAULT_SIZE);
         mDrawingView.setBrushColor(Color.BLACK);
+        mDrawingView.setOnTouchListener((view1, motionEvent) -> {
+            if (mCallback.isToolsFragmentVisible()) {
+                view1.performClick();
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override
@@ -239,7 +235,6 @@ public final class SketchFragment extends Fragment {
         mFilePopup = new MainMenuPopup(context, mFilePopupListener);
         mColorPopup = new ColorPopup(context, mColorPopupListener);
         mHSVColorPopup = new HSVColorPopup(context, mHSVColorPopupListener);
-        mPencilPopup = new PencilPopup(context, mPencilPopupListener);
     }
 
     @Override
@@ -328,6 +323,10 @@ public final class SketchFragment extends Fragment {
         void newSketch();
 
         void loadSketch(String path, boolean isImport);
+
+        void showToolsFragment();
+        void hideToolsFragment(); // todo: to remove when popups migration is finished?
+        boolean isToolsFragmentVisible(); // todo: to remove when popups migration is finished?
     }
 
 }

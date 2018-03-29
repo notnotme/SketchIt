@@ -15,6 +15,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -209,9 +210,18 @@ public final class SketchFragment extends Fragment {
         mDrawingView.setBrushColor(Color.BLACK);
         mDrawingView.setOnTouchListener((view1, motionEvent) -> {
             if (mCallback.isToolsFragmentVisible()) {
-                view1.performClick();
-                return true;
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_MOVE:
+                        view1.performClick();
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        view1.performClick();
+                        mCallback.hideToolsFragment();
+                        return true;
+                }
             }
+
             return false;
         });
     }

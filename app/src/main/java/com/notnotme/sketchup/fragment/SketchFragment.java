@@ -109,7 +109,7 @@ public final class SketchFragment extends Fragment {
                 @Override
                 public void setColor(int color) {
                     mPopupWindow.dismiss();
-                    mDrawingView.setBrushColor(color);
+                    mDrawingView.setColor(color);
                 }
 
                 @Override
@@ -117,14 +117,14 @@ public final class SketchFragment extends Fragment {
                     mPopupWindow.dismiss();
                     mPopupWindow = mHSVColorPopup;
 
-                    mHSVColorPopup.setColor(mDrawingView.getBrushColor());
+                    mHSVColorPopup.setColor(mDrawingView.getColor());
                     mHSVColorPopup.showAtLocation(mBtnColors, Gravity.NO_GRAVITY,
                             mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
                 }
 
                 @Override
                 public int getCurrentColor() {
-                    return mDrawingView.getBrushColor();
+                    return mDrawingView.getColor();
                 }
             };
 
@@ -133,7 +133,7 @@ public final class SketchFragment extends Fragment {
                 @Override
                 public void setColor(int color) {
                     mPopupWindow.dismiss();
-                    mDrawingView.setBrushColor(color);
+                    mDrawingView.setColor(color);
                     mColorPopup.notifyColorChanged();
                 }
             };
@@ -206,8 +206,8 @@ public final class SketchFragment extends Fragment {
         mImportImage = view.findViewById(R.id.import_image);
         mFab = view.findViewById(R.id.import_ok);
 
-        mDrawingView.setBrushWidth(DrawingView.STROKE_DEFAULT_SIZE);
-        mDrawingView.setBrushColor(Color.BLACK);
+        mDrawingView.setStrokeWidth(DrawingView.STROKE_DEFAULT_SIZE);
+        mDrawingView.setColor(Color.BLACK);
         mDrawingView.setOnTouchListener((view1, motionEvent) -> {
             if (mCallback.isToolsFragmentVisible()) {
                 switch (motionEvent.getAction()) {
@@ -327,15 +327,15 @@ public final class SketchFragment extends Fragment {
 
     public void setDrawMode(DrawingView.DrawMode mode, float width) {
         mDrawingView.setDrawMode(mode);
-        mDrawingView.setBrushWidth(width);
+        mDrawingView.setStrokeWidth(width);
     }
 
     public void setCurrentEffect(Effect effect) {
-        mDrawingView.setCurrentEffect(effect);
+        mDrawingView.setEffect(effect);
     }
 
     public void setPaintColor(int color) {
-        mDrawingView.setBrushColor(color);
+        mDrawingView.setColor(color);
     }
 
 

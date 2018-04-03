@@ -11,7 +11,6 @@ import android.graphics.Path;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -80,7 +79,10 @@ public final class DrawingView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (mDrawCanvas == null) return false;
+        if (mDrawCanvas == null) {
+            performClick();
+            return false;
+        }
 
         float touchX = event.getX();
         float touchY = event.getY();
@@ -128,7 +130,6 @@ public final class DrawingView extends View {
         }
 
         invalidate();
-        performClick();
         return true;
     }
 
@@ -168,9 +169,9 @@ public final class DrawingView extends View {
         mOriginalBitmap = BitmapFactory.decodeFile(savedState.getString(SAVESTATE_SKETCH_FILE), options);
 
         setDrawMode(DrawMode.valueOf(savedState.getString(STATE_DRAW_MODE)));
-        setBrushWidth(savedState.getFloat(STATE_STROKE_WIDTH));
-        setBrushColor(savedState.getInt(STATE_COLOR));
-        setCurrentEffect(Effect.valueOf(savedState.getString(STATE_DRAW_EFFECT)));
+        setStrokeWidth(savedState.getFloat(STATE_STROKE_WIDTH));
+        setColor(savedState.getInt(STATE_COLOR));
+        setEffect(Effect.valueOf(savedState.getString(STATE_DRAW_EFFECT)));
         setBitmap(mOriginalBitmap);
     }
 
@@ -186,9 +187,9 @@ public final class DrawingView extends View {
         mCanvasPaint = new Paint(Paint.DITHER_FLAG);
 
         setDrawMode(DrawMode.FREE);
-        setBrushWidth(STROKE_DEFAULT_SIZE);
-        setBrushColor(Color.BLACK);
-        setCurrentEffect(Effect.NONE);
+        setStrokeWidth(STROKE_DEFAULT_SIZE);
+        setColor(Color.BLACK);
+        setEffect(Effect.NONE);
     }
 
     public boolean canUndo() {
@@ -215,20 +216,20 @@ public final class DrawingView extends View {
         invalidate();
     }
 
-    public float getBrushWidth() {
+    public float getStrokeWidth() {
         return mDrawPaint.getStrokeWidth();
     }
 
-    public void setBrushWidth(float strokeWidth) {
+    public void setStrokeWidth(float strokeWidth) {
         mCurrentStrokeWidth = strokeWidth;
         mDrawPaint.setStrokeWidth(strokeWidth);
     }
 
-    public int getBrushColor() {
+    public int getColor() {
         return mDrawPaint.getColor();
     }
 
-    public void setBrushColor(int color) {
+    public void setColor(int color) {
         mCurrentColor = color;
         mDrawPaint.setColor(color);
     }
@@ -237,7 +238,7 @@ public final class DrawingView extends View {
         return mCurrentEffect;
     }
 
-    public void setCurrentEffect(@NonNull Effect effect) {
+    public void setEffect(Effect effect) {
         mCurrentEffect = effect;
         mDrawPaint.setPathEffect(effect.mPathEffect);
     }

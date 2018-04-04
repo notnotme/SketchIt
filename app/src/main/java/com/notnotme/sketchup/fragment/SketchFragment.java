@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,7 +30,7 @@ import com.notnotme.sketchup.view.drawing.DrawingView;
 import com.notnotme.sketchup.view.drawing.Effect;
 
 // todo: move all dialog creation & showing in MainActivity via mCallback
-public final class SketchFragment extends Fragment {
+public final class SketchFragment extends BaseFragment {
 
     private static final String TAG = SketchFragment.class.getSimpleName();
 

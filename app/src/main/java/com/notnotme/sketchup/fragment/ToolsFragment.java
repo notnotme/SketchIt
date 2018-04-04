@@ -4,17 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 
 import com.notnotme.sketchup.R;
-import com.notnotme.sketchup.Theme;
 import com.notnotme.sketchup.view.drawing.DrawingView;
-import com.notnotme.sketchup.view.drawing.Effect;
 
 public class ToolsFragment extends BaseFragment {
 
@@ -32,6 +29,16 @@ public class ToolsFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mNestedScrollView = view.findViewById(R.id.scroll);
 
+        SeekBar seekBar = view.findViewById(R.id.stroke_width);
+        seekBar.setProgress((int) mCallback.getDrawingView().getStrokeWidth());
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                mCallback.getDrawingView().setStrokeWidth(2+i);
+            }
+        });
 
         Context context = getContext();
         if (context != null) {
@@ -57,11 +64,7 @@ public class ToolsFragment extends BaseFragment {
     }
 
     public interface ToolsCallback {
-        void setDrawMode(DrawingView.DrawMode mode, float width);
-
-        void setCurrentEffect(Effect effect);
-
-        void setPaintColor(int color);
+        DrawingView getDrawingView();
     }
 
 }

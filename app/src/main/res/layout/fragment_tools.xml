@@ -34,9 +34,10 @@
                 android:layout_height="8dp" />
 
             <SeekBar
+                android:id="@+id/stroke_width"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="100"/>
+                android:max="50"/>
 
         </LinearLayout>
 

@@ -27,7 +27,6 @@ import com.notnotme.sketchup.popup.ColorPopup;
 import com.notnotme.sketchup.popup.HSVColorPopup;
 import com.notnotme.sketchup.popup.MainMenuPopup;
 import com.notnotme.sketchup.view.drawing.DrawingView;
-import com.notnotme.sketchup.view.drawing.Effect;
 
 // todo: move all dialog creation & showing in MainActivity via mCallback
 public final class SketchFragment extends BaseFragment {
@@ -324,17 +323,8 @@ public final class SketchFragment extends BaseFragment {
         }
     }
 
-    public void setDrawMode(DrawingView.DrawMode mode, float width) {
-        mDrawingView.setDrawMode(mode);
-        mDrawingView.setStrokeWidth(width);
-    }
-
-    public void setCurrentEffect(Effect effect) {
-        mDrawingView.setEffect(effect);
-    }
-
-    public void setPaintColor(int color) {
-        mDrawingView.setColor(color);
+    public DrawingView getDrawingView() {
+        return mDrawingView;
     }
 
 

@@ -27,7 +27,6 @@ import com.notnotme.sketchup.fragment.AlbumFragment;
 import com.notnotme.sketchup.fragment.SketchFragment;
 import com.notnotme.sketchup.fragment.ToolsFragment;
 import com.notnotme.sketchup.view.drawing.DrawingView;
-import com.notnotme.sketchup.view.drawing.Effect;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -408,21 +407,9 @@ public final class MainActivity extends BaseActivity implements SketchFragment.S
     }
 
     @Override
-    public void setDrawMode(DrawingView.DrawMode mode, float width) {
+    public DrawingView getDrawingView() {
         SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
-        sketchFragment.setDrawMode(mode, width);
-    }
-
-    @Override
-    public void setCurrentEffect(Effect effect) {
-        SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
-        sketchFragment.setCurrentEffect(effect);
-    }
-
-    @Override
-    public void setPaintColor(int color) {
-        SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
-        sketchFragment.setPaintColor(color);
+        return sketchFragment.getDrawingView();
     }
 
 }

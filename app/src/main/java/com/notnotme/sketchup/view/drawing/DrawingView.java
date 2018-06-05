@@ -189,7 +189,7 @@ public final class DrawingView extends View {
         setDrawMode(DrawMode.FREE);
         setStrokeWidth(STROKE_DEFAULT_SIZE);
         setColor(Color.BLACK);
-        setEffect(Effect.NONE);
+        setEffect(Effect.PLAIN);
     }
 
     public boolean canUndo() {

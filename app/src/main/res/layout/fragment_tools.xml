@@ -5,7 +5,8 @@
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    tools:layout_marginTop="64dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +17,7 @@
             android:id="@+id/border"
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            tools:background="?android:colorPrimaryDark"/>
+            tools:background="?colorPrimaryDark"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,7 +28,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Brush size"/>
+                android:layout_margin="8dp"
+                android:text="@string/size"/>
 
             <Space
                 android:layout_width="match_parent"
@@ -37,7 +39,44 @@
                 android:id="@+id/stroke_width"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="50"/>
+                tools:progress="50"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <View
+                    android:id="@+id/stroke_size_preview"
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/black"/>
+
+                <TextView
+                    android:id="@+id/text_size"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="50"
+                    android:gravity="center"
+                    android:layout_weight="1"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -54,25 +93,52 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Brush type"
+                android:text="@string/style"
                 android:layout_margin="8dp"/>
 
             <RadioGroup
+                android:id="@+id/brush_style_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Free"/>
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
 
                 <RadioButton
+                    android:id="@+id/brush_style_plain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Lines"/>
+                    android:drawableEnd="@mipmap/style_line"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <RadioButton
+                    android:id="@+id/brush_style_dots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@mipmap/style_dot"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <RadioButton
+                    android:id="@+id/brush_style_dashes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@mipmap/style_dash"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
 
             </RadioGroup>
 
@@ -91,31 +157,41 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Effect"
+                android:text="@string/form"
                 android:layout_margin="8dp"/>
 
             <RadioGroup
+                android:id="@+id/brush_form_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="None"/>
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
 
                 <RadioButton
+                    android:id="@+id/brush_form_free"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Dots"/>
+                    android:drawableEnd="@mipmap/line_free"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
 
                 <RadioButton
+                    android:id="@+id/brush_form_line"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Dashes"/>
+                    android:drawableEnd="@mipmap/style_line"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
 
             </RadioGroup>
 

@@ -4,7 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +16,21 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.notnotme.sketchup.R;
+import com.notnotme.sketchup.popup.HSVColorPopup;
 import com.notnotme.sketchup.view.drawing.DrawingView;
 import com.notnotme.sketchup.view.drawing.Effect;
 
-public class ToolsFragment extends BaseFragment {
+import java.util.Arrays;
+
+public final class ToolsFragment extends BaseFragment {
 
     private final static int MIN_STROKE_WIDTH = 4;
-    private final static int MAX_STROKE_WIDTH = 34;
+    private final static int MAX_STROKE_WIDTH = 50;
 
     private NestedScrollView mNestedScrollView;
+    private ColorAdapter mColorAdapter;
     private ToolsCallback mCallback;
+    private HSVColorPopup mHSVColorPopup;
 
     @Nullable
     @Override
@@ -34,6 +42,11 @@ public class ToolsFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mNestedScrollView = view.findViewById(R.id.scroll);
+        mHSVColorPopup = new HSVColorPopup(getContext(), color -> {
+            mHSVColorPopup.dismiss();
+            mCallback.getDrawingView().setColor(color);
+            mColorAdapter.notifyDataSetChanged();
+        });
 
         Context context = getContext();
         if (context != null) {
@@ -50,6 +63,7 @@ public class ToolsFragment extends BaseFragment {
             initializeSeekBar(view);
             initializeBrushStyles(view, savedInstanceState);
             initializeBrushForms(view, savedInstanceState);
+            initializeBrushColors(view);
         }
     }
 
@@ -157,6 +171,50 @@ public class ToolsFragment extends BaseFragment {
                     break;
             }
         });
+    }
+
+    private void initializeBrushColors(View view) {
+        view.findViewById(R.id.color_more).setOnClickListener(view1 -> showHSVColorPopup());
+
+        RecyclerView rv = view.findViewById(R.id.color_recycler);
+        rv.setHasFixedSize(true);
+
+        Context context = getContext();
+        if (context == null) return;
+
+        mColorAdapter = new ColorAdapter(Arrays.asList(
+                ContextCompat.getColor(context, R.color.palette_0),
+                ContextCompat.getColor(context, R.color.palette_1),
+                ContextCompat.getColor(context, R.color.palette_2),
+                ContextCompat.getColor(context, R.color.palette_3),
+                ContextCompat.getColor(context, R.color.palette_4),
+                ContextCompat.getColor(context, R.color.palette_5),
+                ContextCompat.getColor(context, R.color.palette_6),
+                ContextCompat.getColor(context, R.color.palette_7),
+                ContextCompat.getColor(context, R.color.palette_8),
+                ContextCompat.getColor(context, R.color.palette_9),
+                ContextCompat.getColor(context, R.color.palette_10),
+                ContextCompat.getColor(context, R.color.palette_11),
+                ContextCompat.getColor(context, R.color.palette_13),
+                ContextCompat.getColor(context, R.color.palette_14)),
+                new ColorAdapter.ColorAdapterListener() {
+                    @Override
+                    public void onItemClick(int color) {
+                        mCallback.getDrawingView().setColor(color);
+                    }
+
+                    @Override
+                    public int getCurrentColor() {
+                        return mCallback.getDrawingView().getColor();
+                    }
+                });
+
+        rv.setAdapter(mColorAdapter);
+    }
+
+    private void showHSVColorPopup() {
+        mHSVColorPopup.setColor(mCallback.getDrawingView().getColor());
+        mHSVColorPopup.showAtLocation(mNestedScrollView, Gravity.CENTER, 0, 0);
     }
 
     public interface ToolsCallback {

@@ -19,12 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 
 import com.jsibbold.zoomage.ZoomageView;
 import com.notnotme.sketchup.R;
-import com.notnotme.sketchup.popup.ColorPopup;
-import com.notnotme.sketchup.popup.HSVColorPopup;
 import com.notnotme.sketchup.popup.MainMenuPopup;
 import com.notnotme.sketchup.view.drawing.DrawingView;
 
@@ -40,16 +37,12 @@ public final class SketchFragment extends BaseFragment {
 
     private SketchFragmentCallback mCallback;
     private ImageButton mBtnPlus;
-    private ImageButton mBtnColors;
     private DrawingView mDrawingView;
 
     private ZoomageView mImportImage;
     private FloatingActionButton mFab;
 
     private MainMenuPopup mFilePopup;
-    private ColorPopup mColorPopup;
-    private HSVColorPopup mHSVColorPopup;
-    private PopupWindow mPopupWindow;
     private AlertDialog mAlertDialog;
 
     private View.OnClickListener mImportOkClickListener =
@@ -70,7 +63,7 @@ public final class SketchFragment extends BaseFragment {
             new MainMenuPopup.PopupListener() {
                 @Override
                 public void newSketch() {
-                    mPopupWindow.dismiss();
+                    mFilePopup.dismiss();
                     mAlertDialog = new AlertDialog.Builder(getContext())
                             .setMessage(R.string.start_drawing_question)
                             .setPositiveButton(android.R.string.yes, (dialog, id) -> mCallback.newSketch())
@@ -80,7 +73,7 @@ public final class SketchFragment extends BaseFragment {
 
                 @Override
                 public void saveSketch() {
-                    mPopupWindow.dismiss();
+                    mFilePopup.dismiss();
                     mAlertDialog = new AlertDialog.Builder(getContext())
                             .setMessage(R.string.save_drawing_question)
                             .setPositiveButton(android.R.string.yes, (dialog, which) -> mCallback.saveSketch(mDrawingView.getBitmap()))
@@ -90,7 +83,7 @@ public final class SketchFragment extends BaseFragment {
 
                 @Override
                 public void importSketch() {
-                    mPopupWindow.dismiss();
+                    mFilePopup.dismiss();
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(Intent.createChooser(intent, getString(R.string.import_picture_from)), REQUEST_IMPORT_PICTURE);
@@ -99,40 +92,6 @@ public final class SketchFragment extends BaseFragment {
                 @Override
                 public void shareSketch() {
                     mCallback.shareSketch(mDrawingView.getBitmap());
-                }
-            };
-
-    private ColorPopup.PopupListener mColorPopupListener =
-            new ColorPopup.PopupListener() {
-                @Override
-                public void setColor(int color) {
-                    mPopupWindow.dismiss();
-                    mDrawingView.setColor(color);
-                }
-
-                @Override
-                public void moreColor() {
-                    mPopupWindow.dismiss();
-                    mPopupWindow = mHSVColorPopup;
-
-                    mHSVColorPopup.setColor(mDrawingView.getColor());
-                    mHSVColorPopup.showAtLocation(mBtnColors, Gravity.NO_GRAVITY,
-                            mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
-                }
-
-                @Override
-                public int getCurrentColor() {
-                    return mDrawingView.getColor();
-                }
-            };
-
-    private HSVColorPopup.PopupListener mHSVColorPopupListener =
-            new HSVColorPopup.PopupListener() {
-                @Override
-                public void setColor(int color) {
-                    mPopupWindow.dismiss();
-                    mDrawingView.setColor(color);
-                    mColorPopup.notifyColorChanged();
                 }
             };
 
@@ -147,7 +106,6 @@ public final class SketchFragment extends BaseFragment {
 
         mDrawingView = view.findViewById(R.id.sketch_drawing);
         mBtnPlus = view.findViewById(R.id.btn_plus);
-        mBtnColors = view.findViewById(R.id.btn_color);
 
         mBtnPlus.setOnClickListener(v -> {
             if (isInImport()) exitImportMode();
@@ -156,21 +114,8 @@ public final class SketchFragment extends BaseFragment {
                 return;
             }
 
-            mPopupWindow = mFilePopup;
             mFilePopup.showAtLocation(mBtnPlus, Gravity.NO_GRAVITY,
                     mBtnPlus.getLeft() + mBtnPlus.getWidth() / 3, mBtnPlus.getBottom() + 50);
-        });
-
-        mBtnColors.setOnClickListener(v -> {
-            if (isInImport()) exitImportMode();
-            if (mCallback.isToolsFragmentVisible()) {
-                mCallback.hideToolsFragment();
-                return;
-            }
-
-            mPopupWindow = mColorPopup;
-            mColorPopup.showAtLocation(mBtnColors, Gravity.NO_GRAVITY,
-                    mBtnColors.getLeft() + mBtnColors.getWidth() / 3, mBtnColors.getBottom() + 50);
         });
 
         view.findViewById(R.id.undo).setOnClickListener(v -> {
@@ -243,8 +188,6 @@ public final class SketchFragment extends BaseFragment {
 
         Context context = getContext();
         mFilePopup = new MainMenuPopup(context, mFilePopupListener);
-        mColorPopup = new ColorPopup(context, mColorPopupListener);
-        mHSVColorPopup = new HSVColorPopup(context, mHSVColorPopupListener);
     }
 
     @Override
@@ -269,8 +212,8 @@ public final class SketchFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mPopupWindow != null && mPopupWindow.isShowing()) {
-            mPopupWindow.dismiss();
+        if (mFilePopup != null && mFilePopup.isShowing()) {
+            mFilePopup.dismiss();
         }
 
         if (mAlertDialog != null && mAlertDialog.isShowing()) {

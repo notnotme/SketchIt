@@ -51,14 +51,6 @@
                     style="?android:actionButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btn_color"
-                    android:src="@mipmap/colors"
-                    android:scaleType="centerInside"/>
-
-                <ImageButton
-                    style="?android:actionButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/undo"
                     android:src="@mipmap/undo"
                     android:scaleType="center"/>

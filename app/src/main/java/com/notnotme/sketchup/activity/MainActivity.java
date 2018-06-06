@@ -7,11 +7,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ViewSwitcher;
 
@@ -21,6 +25,8 @@ import com.notnotme.sketchup.Utils;
 import com.notnotme.sketchup.dao.Sketch;
 import com.notnotme.sketchup.fragment.AlbumFragment;
 import com.notnotme.sketchup.fragment.SketchFragment;
+import com.notnotme.sketchup.fragment.ToolsFragment;
+import com.notnotme.sketchup.view.drawing.DrawingView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,8 +34,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public final class MainActivity extends BaseActivity
-        implements SketchFragment.SketchFragmentCallback, AlbumFragment.AlbumFragmentCallback {
+public final class MainActivity extends BaseActivity implements SketchFragment.SketchFragmentCallback,
+        AlbumFragment.AlbumFragmentCallback, ToolsFragment.ToolsCallback {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -42,12 +48,27 @@ public final class MainActivity extends BaseActivity
 
     private ViewSwitcher mViewSwitcher;
     private AlertDialog mAlertDialog;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mViewSwitcher = findViewById(R.id.switcher);
+
+        mBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet));
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    FragmentManager fm = getSupportFragmentManager();
+                    ToolsFragment toolsFragment = (ToolsFragment) fm.findFragmentById(R.id.fragment_tools);
+                    toolsFragment.resetScroll();
+                }
+            }
+        });
 
         if (savedInstanceState != null) {
             switch (savedInstanceState.getInt(STATE_SWITCHER)) {
@@ -106,6 +127,9 @@ public final class MainActivity extends BaseActivity
                 if (sketchFragment.isInImport()) {
                     sketchFragment.exitImportMode();
                     return;
+                } else if (mBottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    return;
                 }
         }
 
@@ -154,6 +178,26 @@ public final class MainActivity extends BaseActivity
     @Override
     public void showSettings() {
         startActivity(new Intent(this, SettingsActivity.class));
+    }
+
+    @Override
+    public void showToolsFragment() {
+        if (mBottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
+    }
+
+    @Override
+    public void hideToolsFragment() {
+        if (mBottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        }
+    }
+
+    @Override
+    public boolean isToolsFragmentVisible() {
+        return mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED
+                || mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED;
     }
 
     @Override
@@ -360,6 +404,12 @@ public final class MainActivity extends BaseActivity
                 }
             });
         });
+    }
+
+    @Override
+    public DrawingView getDrawingView() {
+        SketchFragment sketchFragment = (SketchFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_sketch);
+        return sketchFragment.getDrawingView();
     }
 
 }

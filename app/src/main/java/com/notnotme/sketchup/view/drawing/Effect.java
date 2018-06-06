@@ -4,9 +4,9 @@ import android.graphics.DashPathEffect;
 
 public enum Effect {
 
-    NONE(null),
-    DASHED(new DashPathEffect(new float[]{50, 50}, 0)),
-    DOTTED(new DashPathEffect(new float[]{0, 40}, 0));
+    PLAIN(null),
+    DASHES(new DashPathEffect(new float[]{50, 50}, 0)),
+    DOTS(new DashPathEffect(new float[]{0, 40}, 0));
 
     DashPathEffect mPathEffect;
 

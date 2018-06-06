@@ -33,5 +33,7 @@
     <string name="import_picture_from">Import picture with</string>
     <string name="pen">Brush</string>
     <string name="style">Style</string>
+    <string name="shape">Shape</string>
+    <string name="size">Size</string>
 
 </resources>

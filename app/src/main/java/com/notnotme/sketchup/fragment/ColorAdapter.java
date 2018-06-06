@@ -1,4 +1,4 @@
-package com.notnotme.sketchup.popup;
+package com.notnotme.sketchup.fragment;
 
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;

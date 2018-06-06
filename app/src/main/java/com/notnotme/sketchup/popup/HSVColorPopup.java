@@ -33,6 +33,8 @@ public final class HSVColorPopup extends BasePopup {
 
         mTempHSV = new float[3];
 
+        mColorPreview.setOnClickListener(v -> dismiss());
+
         layout.findViewById(R.id.hue_container).setOnTouchListener(new RatioTouchListener() {
             @Override
             public boolean onTouch(View view, float x, float y, float ratioX, float ratioY) {

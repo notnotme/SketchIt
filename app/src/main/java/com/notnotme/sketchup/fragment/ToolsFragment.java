@@ -40,10 +40,17 @@ public class ToolsFragment extends BaseFragment {
             view.findViewById(R.id.border).setBackgroundResource(
                     getSettingsManager().getTheme().getColorPrimary());
         }
+    }
 
-        initializeSeekBar(view);
-        initializeBrushStyles(view);
-        initializeBrushForms(view);
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        View view = getView();
+        if (view != null) {
+            initializeSeekBar(view);
+            initializeBrushStyles(view, savedInstanceState);
+            initializeBrushForms(view, savedInstanceState);
+        }
     }
 
     @Override
@@ -60,10 +67,6 @@ public class ToolsFragment extends BaseFragment {
 
     public void resetScroll() {
         mNestedScrollView.scrollTo(0,0);
-    }
-
-    public interface ToolsCallback {
-        DrawingView getDrawingView();
     }
 
     private void initializeSeekBar(View view) {
@@ -91,19 +94,24 @@ public class ToolsFragment extends BaseFragment {
         strokeSizeSeekBar.setProgress(strokeWidth);
     }
 
-    private void initializeBrushStyles(View view) {
+    private void initializeBrushStyles(View view, Bundle savedInstanceState) {
         RadioGroup brushTypeGroup = view.findViewById(R.id.brush_style_group);
 
-        int checkedId = R.id.brush_style_plain;
-        switch (mCallback.getDrawingView().getEffect()) {
-            case DOTS:
-                checkedId = R.id.brush_style_dots;
-                break;
-            case DASHES:
-                checkedId = R.id.brush_style_dashes;
-                break;
+        if (savedInstanceState == null) {
+            int checkedId = R.id.brush_style_plain;
+            switch (mCallback.getDrawingView().getEffect()) {
+                case DOTS:
+                    checkedId = R.id.brush_style_dots;
+                    break;
+                case DASHES:
+                    checkedId = R.id.brush_style_dashes;
+                    break;
+            }
+            brushTypeGroup.check(checkedId);
+        } else {
+            // Avoid animation bug that cause button to be partially checked
+            brushTypeGroup.jumpDrawablesToCurrentState();
         }
-        brushTypeGroup.check(checkedId);
 
         brushTypeGroup.setOnCheckedChangeListener((group, checked) -> {
             switch (checked) {
@@ -122,16 +130,21 @@ public class ToolsFragment extends BaseFragment {
         });
     }
 
-    private void initializeBrushForms(View view) {
+    private void initializeBrushForms(View view, Bundle savedInstanceState) {
         RadioGroup brushFormGroup = view.findViewById(R.id.brush_form_group);
 
-        int checkedId = R.id.brush_form_free;
-        switch (mCallback.getDrawingView().getDrawMode()) {
-            case LINES:
-                checkedId = R.id.brush_form_line;
-                break;
+        if (savedInstanceState == null) {
+            int checkedId = R.id.brush_form_free;
+            switch (mCallback.getDrawingView().getDrawMode()) {
+                case LINES:
+                    checkedId = R.id.brush_form_line;
+                    break;
+            }
+            brushFormGroup.check(checkedId);
+        } else {
+            // Avoid animation bug that cause button to be partially checked
+            brushFormGroup.jumpDrawablesToCurrentState();
         }
-        brushFormGroup.check(checkedId);
 
         brushFormGroup.setOnCheckedChangeListener((group, checked) -> {
             switch (checked) {
@@ -144,6 +157,10 @@ public class ToolsFragment extends BaseFragment {
                     break;
             }
         });
+    }
+
+    public interface ToolsCallback {
+        DrawingView getDrawingView();
     }
 
 }

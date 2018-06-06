@@ -25,7 +25,7 @@ import java.util.Arrays;
 public final class ToolsFragment extends BaseFragment {
 
     private final static int MIN_STROKE_WIDTH = 4;
-    private final static int MAX_STROKE_WIDTH = 50;
+    private final static int MAX_STROKE_WIDTH = 40;
 
     private NestedScrollView mNestedScrollView;
     private ColorAdapter mColorAdapter;
@@ -42,11 +42,6 @@ public final class ToolsFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mNestedScrollView = view.findViewById(R.id.scroll);
-        mHSVColorPopup = new HSVColorPopup(getContext(), color -> {
-            mHSVColorPopup.dismiss();
-            mCallback.getDrawingView().setColor(color);
-            mColorAdapter.notifyDataSetChanged();
-        });
 
         Context context = getContext();
         if (context != null) {
@@ -213,6 +208,12 @@ public final class ToolsFragment extends BaseFragment {
     }
 
     private void showHSVColorPopup() {
+        mHSVColorPopup = new HSVColorPopup(getContext(), color -> {
+            mHSVColorPopup.dismiss();
+            mCallback.getDrawingView().setColor(color);
+            mColorAdapter.notifyDataSetChanged();
+        });
+
         mHSVColorPopup.setColor(mCallback.getDrawingView().getColor());
         mHSVColorPopup.showAtLocation(mNestedScrollView, Gravity.CENTER, 0, 0);
     }

@@ -3,6 +3,7 @@ package com.notnotme.sketchup.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
+import android.support.media.ExifInterface;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
@@ -29,6 +31,8 @@ import com.notnotme.sketchup.fragment.ToolsFragment;
 import com.notnotme.sketchup.view.drawing.DrawingView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -267,12 +271,36 @@ public final class MainActivity extends BaseActivity implements SketchFragment.S
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inMutable = true;
             options.inPreferredConfig = Bitmap.Config.RGB_565;
-            AtomicReference<Bitmap> bitmap = new AtomicReference<>();
+            AtomicReference<Bitmap> bitmapReference = new AtomicReference<>();
 
             if (path.startsWith("content")) {
 
                 try {
-                    bitmap.set(MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(path)));
+                    Uri imageUri = Uri.parse(path);
+                    InputStream imageInputStream = getContentResolver().openInputStream(imageUri);
+                    if (imageInputStream == null) {
+                        throw new FileNotFoundException(path);
+                    }
+
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    ExifInterface exifInterface = new ExifInterface(imageInputStream);
+                    Matrix matrix = new Matrix();
+
+                    switch (exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)) {
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            matrix.postRotate(90);
+                            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            matrix.postRotate(180);
+                            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                            break;
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            matrix.postRotate(270);
+                            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                            break;
+                    }
+                    bitmapReference.set(bitmap);
                 } catch (Exception e) {
                     getMainHandler().post(() -> {
                         if (isDestroyed() || isFinishing()) return;
@@ -284,12 +312,12 @@ public final class MainActivity extends BaseActivity implements SketchFragment.S
                 }
 
             } else {
-                bitmap.set(BitmapFactory.decodeFile(path, options));
+                bitmapReference.set(BitmapFactory.decodeFile(path, options));
             }
 
             getMainHandler().post(() -> {
                 if (isDestroyed() || isFinishing()) return;
-                sketchFragment.setSketch(bitmap.get(), isImport);
+                sketchFragment.setSketch(bitmapReference.get(), isImport);
             });
         });
     }

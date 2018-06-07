@@ -32,5 +32,9 @@
     <string name="import_picture_from">Importer une image avec</string>
     <string name="pen">Pinceau</string>
     <string name="style">Style</string>
+    <string name="enable_smooth_drawing_hint">Activez le dessin arrondi pour rendre les bords de vos traits moins visibles. Si vous rencontrez des ralentissements en utilisant cette fonctionnalité, nous vous recommandons de la désactiver car cela peut arriver sur certains périphériques.</string>
+    <string name="shape">Forme</string>
+    <string name="size">Taille</string>
+    <string name="enable">Activé</string>
 
 </resources>

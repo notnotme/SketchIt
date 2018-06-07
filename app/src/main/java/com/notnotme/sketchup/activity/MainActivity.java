@@ -63,7 +63,10 @@ public final class MainActivity extends BaseActivity implements SketchFragment.S
         mBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet));
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
+
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {

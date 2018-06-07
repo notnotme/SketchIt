@@ -1,6 +1,7 @@
 package com.notnotme.sketchup.fragment;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHo
         mColorAdapterListener = listener;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_color, parent, false));

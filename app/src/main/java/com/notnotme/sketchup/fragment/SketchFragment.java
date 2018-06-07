@@ -36,7 +36,6 @@ public final class SketchFragment extends BaseFragment {
     private static final int REQUEST_IMPORT_PICTURE = 1337;
 
     private SketchFragmentCallback mCallback;
-    private ImageButton mBtnPlus;
     private DrawingView mDrawingView;
 
     private ZoomageView mImportImage;
@@ -44,56 +43,6 @@ public final class SketchFragment extends BaseFragment {
 
     private MainMenuPopup mFilePopup;
     private AlertDialog mAlertDialog;
-
-    private View.OnClickListener mImportOkClickListener =
-            new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mFab.setOnClickListener(null);
-
-                    mImportImage.setDrawingCacheEnabled(true);
-                    setSketch(mImportImage.getDrawingCache().copy(Bitmap.Config.RGB_565, true), false);
-                    mImportImage.setDrawingCacheEnabled(false);
-
-                    exitImportMode();
-                }
-            };
-
-    private MainMenuPopup.PopupListener mFilePopupListener =
-            new MainMenuPopup.PopupListener() {
-                @Override
-                public void newSketch() {
-                    mFilePopup.dismiss();
-                    mAlertDialog = new AlertDialog.Builder(getContext())
-                            .setMessage(R.string.start_drawing_question)
-                            .setPositiveButton(android.R.string.yes, (dialog, id) -> mCallback.newSketch())
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .show();
-                }
-
-                @Override
-                public void saveSketch() {
-                    mFilePopup.dismiss();
-                    mAlertDialog = new AlertDialog.Builder(getContext())
-                            .setMessage(R.string.save_drawing_question)
-                            .setPositiveButton(android.R.string.yes, (dialog, which) -> mCallback.saveSketch(mDrawingView.getBitmap()))
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .show();
-                }
-
-                @Override
-                public void importSketch() {
-                    mFilePopup.dismiss();
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("image/*");
-                    startActivityForResult(Intent.createChooser(intent, getString(R.string.import_picture_from)), REQUEST_IMPORT_PICTURE);
-                }
-
-                @Override
-                public void shareSketch() {
-                    mCallback.shareSketch(mDrawingView.getBitmap());
-                }
-            };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -105,17 +54,17 @@ public final class SketchFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mDrawingView = view.findViewById(R.id.sketch_drawing);
-        mBtnPlus = view.findViewById(R.id.btn_plus);
 
-        mBtnPlus.setOnClickListener(v -> {
+        ImageButton btnPlus = view.findViewById(R.id.btn_plus);
+        btnPlus.setOnClickListener(v -> {
             if (isInImport()) exitImportMode();
             if (mCallback.isToolsFragmentVisible()) {
                 mCallback.hideToolsFragment();
                 return;
             }
 
-            mFilePopup.showAtLocation(mBtnPlus, Gravity.NO_GRAVITY,
-                    mBtnPlus.getLeft() + mBtnPlus.getWidth() / 3, mBtnPlus.getBottom() + 50);
+            mFilePopup.showAtLocation(btnPlus, Gravity.NO_GRAVITY,
+                    btnPlus.getLeft() + btnPlus.getWidth() / 3, btnPlus.getBottom() + 50);
         });
 
         view.findViewById(R.id.undo).setOnClickListener(v -> {
@@ -187,7 +136,48 @@ public final class SketchFragment extends BaseFragment {
         }
 
         Context context = getContext();
-        mFilePopup = new MainMenuPopup(context, mFilePopupListener);
+        mFilePopup = new MainMenuPopup(context, new MainMenuPopup.PopupListener() {
+            @Override
+            public void newSketch() {
+                mFilePopup.dismiss();
+                mAlertDialog = new AlertDialog.Builder(getContext())
+                        .setMessage(R.string.start_drawing_question)
+                        .setPositiveButton(android.R.string.yes, (dialog, id) -> mCallback.newSketch())
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show();
+            }
+
+            @Override
+            public void saveSketch() {
+                mFilePopup.dismiss();
+                mAlertDialog = new AlertDialog.Builder(getContext())
+                        .setMessage(R.string.save_drawing_question)
+                        .setPositiveButton(android.R.string.yes, (dialog, which) -> mCallback.saveSketch(mDrawingView.getBitmap()))
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show();
+            }
+
+            @Override
+            public void importSketch() {
+                mFilePopup.dismiss();
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.import_picture_from)), REQUEST_IMPORT_PICTURE);
+            }
+
+            @Override
+            public void shareSketch() {
+                mCallback.shareSketch(mDrawingView.getBitmap());
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // This should be enabled here in case a change happen in settings
+        mDrawingView.setSmoothDrawing(getSettingsManager().isSmoothDrawingEnabled());
     }
 
     @Override
@@ -244,7 +234,15 @@ public final class SketchFragment extends BaseFragment {
         mImportImage.setVisibility(View.VISIBLE);
         mFab.setTag(true);
         mFab.show();
-        mFab.setOnClickListener(mImportOkClickListener);
+        mFab.setOnClickListener(view -> {
+            mFab.setOnClickListener(null);
+
+            mImportImage.setDrawingCacheEnabled(true);
+            setSketch(mImportImage.getDrawingCache().copy(Bitmap.Config.RGB_565, true), false);
+            mImportImage.setDrawingCacheEnabled(false);
+
+            exitImportMode();
+        });
     }
 
     public void exitImportMode() {

@@ -75,7 +75,7 @@ public final class ToolsFragment extends BaseFragment {
     }
 
     public void resetScroll() {
-        mNestedScrollView.scrollTo(0,0);
+        mNestedScrollView.scrollTo(0, 0);
     }
 
     private void initializeSeekBar(View view) {
@@ -85,8 +85,14 @@ public final class ToolsFragment extends BaseFragment {
 
         int strokeWidth = (int) mCallback.getDrawingView().getStrokeWidth();
         strokeSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 int strokeSize = i + MIN_STROKE_WIDTH;

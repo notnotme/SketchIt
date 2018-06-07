@@ -1,5 +1,4 @@
 # SketchIt
-It's not made with tomatoes (because I named it SketchUp before I knew Google SketchUp!)
 
 Hello World!
 
@@ -21,5 +20,4 @@ Credits :
 - [zoomage](https://github.com/jsibbold/zoomage)
 - [Room](https://developer.android.com/topic/libraries/architecture/room.html)
 - [Leakcanary](https://github.com/square/leakcanary)
-- [EmojiCompat](https://developer.android.com/guide/topics/ui/look-and-feel/emoji-compat.html)
 - And the common AppCompat libraries

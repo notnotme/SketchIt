@@ -46,8 +46,15 @@ public final class DrawingView extends View {
     private float mCurrentStrokeWidth;
     private Effect mCurrentEffect;
     private DrawMode mDrawMode;
-    private float mTouchX;
-    private float mTouchY;
+
+    // First touch (action down)
+    private float mFirstTouchX;
+    private float mFirstTouchY;
+
+    // Old touch position (action move)
+    private float mPrevTouchX;
+    private float mPrevTouchY;
+
 
     public DrawingView(Context context) {
         super(context);
@@ -89,8 +96,8 @@ public final class DrawingView extends View {
         int eventAction = event.getAction();
 
         if (eventAction == MotionEvent.ACTION_DOWN) {
-            mTouchX = touchX;
-            mTouchY = touchY;
+            mFirstTouchX = touchX;
+            mFirstTouchY = touchY;
         }
 
         switch (mDrawMode) {
@@ -98,9 +105,13 @@ public final class DrawingView extends View {
                 switch (eventAction) {
                     case MotionEvent.ACTION_DOWN:
                         mDrawPath.moveTo(touchX, touchY);
+                        mPrevTouchX = touchX;
+                        mPrevTouchY = touchY;
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        mDrawPath.lineTo(touchX, touchY);
+                        mDrawPath.quadTo(mPrevTouchX, mPrevTouchY, (touchX + mPrevTouchX)/2, (touchY + mPrevTouchY)/2);
+                        mPrevTouchX = touchX;
+                        mPrevTouchY = touchY;
                         break;
                     case MotionEvent.ACTION_UP:
                         mRedos.push(new PathDrawable(mDrawPaint.getColor(), mDrawPaint.getStrokeWidth(), mCurrentEffect.mPathEffect, mDrawPath));
@@ -113,7 +124,7 @@ public final class DrawingView extends View {
                 switch (eventAction) {
                     case MotionEvent.ACTION_MOVE:
                         mDrawPath.rewind();
-                        mDrawPath.moveTo(mTouchX, mTouchY);
+                        mDrawPath.moveTo(mFirstTouchX, mFirstTouchY);
                         mDrawPath.lineTo(touchX, touchY);
                         break;
                     case MotionEvent.ACTION_UP:

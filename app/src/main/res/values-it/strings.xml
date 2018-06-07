@@ -32,5 +32,9 @@
     <string name="import_picture_from">Importa foto con</string>
     <string name="pen">spazzola</string>
     <string name="style">stile</string>
+    <string name="enable_smooth_drawing_hint">Attiva delicatamente il disegno per rendere meno visibili i bordi delle tue funzioni. Se riscontri rallentamenti utilizzando questa funzione, ti consigliamo di disabilitarla perché ciò può accadere su alcuni dispositivi.</string>
+    <string name="shape">modulo</string>
+    <string name="size">Dimensione</string>
+    <string name="enable">Abilitare</string>
 
 </resources>

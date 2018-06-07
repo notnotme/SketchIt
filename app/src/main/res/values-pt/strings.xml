@@ -32,5 +32,9 @@
     <string name="import_picture_from">Importe imagem com</string>
     <string name="pen">escova</string>
     <string name="style">estilo</string>
+    <string name="enable_smooth_drawing_hint">Ative o desenho suavemente para tornar as bordas de seus recursos menos visíveis. Se você tiver lentidão ao usar esse recurso, recomendamos desabilitá-lo, pois isso pode acontecer em alguns dispositivos.</string>
+    <string name="shape">formulário</string>
+    <string name="size">Tamanho</string>
+    <string name="enable">Habilitar</string>
 
 </resources>

@@ -47,15 +47,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/delete_all_sketches_hint"/>
+                    android:text="@string/change_theme_color"/>
 
-                <Button
-                    style="?borderlessButtonStyle"
-                    android:id="@+id/delete_all_sketches"
-                    android:layout_width="match_parent"
+                <Spinner
+                    android:id="@+id/theme_spinner"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/delete_all_sketches"
-                    android:textColor="@android:color/holo_red_light"/>
+                    android:layout_gravity="center"
+                    tools:listitem="@layout/item_spinner"/>
 
                 <Space
                     android:layout_width="match_parent"
@@ -65,14 +64,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/change_theme_color"/>
+                    android:text="@string/enable_smooth_drawing_hint"/>
 
-                <Spinner
-                    android:id="@+id/theme_spinner"
+                <CheckBox
+                    android:id="@+id/smooth_draw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    tools:listitem="@layout/item_spinner"/>
+                    android:text="@string/enable"
+                    android:layout_gravity="center"/>
 
                 <Space
                     android:layout_width="match_parent"
@@ -111,7 +110,29 @@
                     android:layout_gravity="end"
                     android:textColor="@android:color/holo_green_light"/>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/delete_all_sketches_hint"/>
+
+                <Button
+                    style="?borderlessButtonStyle"
+                    android:id="@+id/delete_all_sketches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete_all_sketches"
+                    android:textColor="@android:color/holo_red_light"/>
+
             </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

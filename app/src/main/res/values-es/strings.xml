@@ -32,5 +32,9 @@
     <string name="import_picture_from">Importar imagen con</string>
     <string name="pen">cepillo</string>
     <string name="style">estilo</string>
+    <string name="enable_smooth_drawing_hint">Active el dibujo suavemente para que los bordes de sus características sean menos visibles. Si experimenta una desaceleración con esta característica, le recomendamos que la desactive porque esto puede suceder en algunos dispositivos.</string>
+    <string name="shape">formulario</string>
+    <string name="size">tamaño</string>
+    <string name="enable">Habilitar</string>
 
 </resources>

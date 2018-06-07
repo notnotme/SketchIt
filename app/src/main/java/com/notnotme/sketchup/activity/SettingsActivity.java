@@ -13,6 +13,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -35,24 +37,6 @@ public final class SettingsActivity extends BaseActivity {
     private static final int EGG_CLICK_COUNT = 7;
     private AlertDialog mAlertDialog;
     private int mEggCounter;
-
-    private AdapterView.OnItemSelectedListener mOnThemeSelectionListener =
-            new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                }
-
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    Theme theme = (Theme) adapterView.getAdapter().getItem(i);
-                    Theme currentTheme = getSettingsManager().getTheme();
-
-                    if (!currentTheme.equals(theme)) {
-                        getSettingsManager().setTheme(theme);
-                        recreate();
-                    }
-                }
-            };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,7 +87,26 @@ public final class SettingsActivity extends BaseActivity {
         Spinner spinner = findViewById(R.id.theme_spinner);
         spinner.setAdapter(new ThemeAdapter(this, Arrays.asList(Theme.values())));
         spinner.setSelection(getSettingsManager().getTheme().ordinal());
-        spinner.setOnItemSelectedListener(mOnThemeSelectionListener);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Theme theme = (Theme) adapterView.getAdapter().getItem(i);
+                Theme currentTheme = getSettingsManager().getTheme();
+
+                if (!currentTheme.equals(theme)) {
+                    getSettingsManager().setTheme(theme);
+                    recreate();
+                }
+            }
+        });
+
+        CheckBox smoothDrawCheckBox = findViewById(R.id.smooth_draw);
+        smoothDrawCheckBox.setChecked(getSettingsManager().isSmoothDrawingEnabled());
+        smoothDrawCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> getSettingsManager().setSmoothDrawingEnabled(isChecked));
 
         String versionString = getString(R.string.app_name) + " v" + BuildConfig.VERSION_NAME;
         versionString += System.lineSeparator();

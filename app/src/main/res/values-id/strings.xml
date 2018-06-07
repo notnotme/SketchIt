@@ -32,5 +32,9 @@
     <string name="import_picture_from">Impor gambar dengan</string>
     <string name="pen">sikat</string>
     <string name="style">gaya</string>
+    <string name="enable_smooth_drawing_hint">Aktifkan gambar dengan lembut untuk membuat bagian tepi fitur Anda kurang terlihat. Jika Anda mengalami pelambatan menggunakan fitur ini, kami sarankan Anda menonaktifkannya karena ini dapat terjadi pada beberapa perangkat.</string>
+    <string name="shape">bentuk</string>
+    <string name="size">Ukuran</string>
+    <string name="enable">Memungkinkan</string>
 
 </resources>

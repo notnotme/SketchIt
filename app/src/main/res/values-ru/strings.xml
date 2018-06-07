@@ -32,5 +32,9 @@
     <string name="import_picture_from">Импортировать изображение с помощью</string>
     <string name="pen">щетка</string>
     <string name="style">стиль</string>
+    <string name="enable_smooth_drawing_hint">Активируйте рисунок осторожно, чтобы края ваших объектов были менее заметными. Если вы испытываете замедление при использовании этой функции, мы рекомендуем отключить ее, поскольку это может случиться на некоторых устройствах.</string>
+    <string name="shape">форма</string>
+    <string name="size">Размер</string>
+    <string name="enable">включить</string>
 
 </resources>

@@ -33,5 +33,9 @@
     <string name="import_picture_from">Import picture with</string>
     <string name="pen">Brush</string>
     <string name="style">Style</string>
+    <string name="shape">Shape</string>
+    <string name="size">Size</string>
+    <string name="enable_smooth_drawing_hint">Activate the smooth drawing to make the edges of your features less visible. If you experience slowdowns using this feature, we recommend that you disable it because this can happen on some devices.</string>
+    <string name="enable">Enable</string>
 
 </resources>

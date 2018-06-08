@@ -37,5 +37,6 @@
     <string name="size">Size</string>
     <string name="enable_smooth_drawing_hint">Activate the smooth drawing to make the edges of your features less visible. If you experience slowdowns using this feature, we recommend that you disable it because this can happen on some devices.</string>
     <string name="enable">Enable</string>
+    <string name="back_button_undo_hint">Back button undo drawing prior to quit the application</string>
 
 </resources>

@@ -53,6 +53,7 @@ public final class MainActivity extends BaseActivity implements SketchFragment.S
     private ViewSwitcher mViewSwitcher;
     private AlertDialog mAlertDialog;
     private BottomSheetBehavior mBottomSheetBehavior;
+    private boolean mBackButtonUndo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +104,12 @@ public final class MainActivity extends BaseActivity implements SketchFragment.S
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mBackButtonUndo = getSettingsManager().isBackButtonUndo();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mAlertDialog != null && mAlertDialog.isShowing()) {
@@ -136,6 +143,9 @@ public final class MainActivity extends BaseActivity implements SketchFragment.S
                     return;
                 } else if (mBottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
                     mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    return;
+                } else if (getDrawingView().canUndo() && mBackButtonUndo) {
+                    getDrawingView().undo();
                     return;
                 }
         }

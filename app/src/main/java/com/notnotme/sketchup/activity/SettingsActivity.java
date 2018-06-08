@@ -108,6 +108,15 @@ public final class SettingsActivity extends BaseActivity {
         smoothDrawCheckBox.setChecked(getSettingsManager().isSmoothDrawingEnabled());
         smoothDrawCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> getSettingsManager().setSmoothDrawingEnabled(isChecked));
 
+        CheckBox backButtonUndo = findViewById(R.id.back_button_undo);
+        backButtonUndo.setChecked(getSettingsManager().isBackButtonUndo());
+        backButtonUndo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                getSettingsManager().setBackButtonUndo(isChecked);
+            }
+        });
+
         String versionString = getString(R.string.app_name) + " v" + BuildConfig.VERSION_NAME;
         versionString += System.lineSeparator();
         versionString += "(" + BuildConfig.BUILD_TYPE + ")";

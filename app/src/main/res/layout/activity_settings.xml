@@ -81,6 +81,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="@string/back_button_undo_hint"/>
+
+                <CheckBox
+                    android:id="@+id/back_button_undo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enable"
+                    android:layout_gravity="center"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="@string/rate_hint"/>
 
                 <Button

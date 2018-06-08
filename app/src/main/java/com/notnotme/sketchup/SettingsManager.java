@@ -8,6 +8,7 @@ public final class SettingsManager {
 
     private static final String THEME_KEY = "theme";
     private static final String SMOOTH_DRAW_KEY = "smooth_draw";
+    private static final String BACK_BUTTON_UNDO_KEY = "back_button_undo";
 
     private SharedPreferences mSharedPreferences;
 
@@ -29,6 +30,14 @@ public final class SettingsManager {
 
     public boolean isSmoothDrawingEnabled() {
         return mSharedPreferences.getBoolean(SMOOTH_DRAW_KEY, false);
+    }
+
+    public void setBackButtonUndo(boolean enable) {
+        mSharedPreferences.edit().putBoolean(BACK_BUTTON_UNDO_KEY, enable).apply();
+    }
+
+    public boolean isBackButtonUndo() {
+        return mSharedPreferences.getBoolean(BACK_BUTTON_UNDO_KEY, false);
     }
 
 }

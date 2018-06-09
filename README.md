@@ -14,6 +14,7 @@ About this part:
 - The sound player used is muxm and it work pretty well on android since years :) You can find more informations [here](http://musound.sourceforge.net/muxm/index.html).
 - All the rendering is done using OpenGL ES 2.0 in pure Java (no native call) and a custom pixel shader to rotate and scale the differents sprites on screen. 
 
+Google Play [direct link](https://play.google.com/store/apps/details?id=com.notnotme.sketchup)
 
 Credits :
 - [Picasso](http://square.github.io/picasso/)

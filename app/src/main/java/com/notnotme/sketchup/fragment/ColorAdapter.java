@@ -16,8 +16,8 @@ import java.util.List;
 
 public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHolder> {
 
-    private ArrayList<Integer> mItems;
-    private ColorAdapterListener mColorAdapterListener;
+    private final ArrayList<Integer> mItems;
+    private final ColorAdapterListener mColorAdapterListener;
 
     ColorAdapter(List<Integer> colorList, ColorAdapterListener listener) {
         mItems = new ArrayList<>();
@@ -59,7 +59,7 @@ public final class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ViewHo
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView icon;
+        final ImageView icon;
 
         ViewHolder(View itemView) {
             super(itemView);

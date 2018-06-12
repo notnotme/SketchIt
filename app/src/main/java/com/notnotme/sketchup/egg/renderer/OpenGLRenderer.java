@@ -10,7 +10,7 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.notnotme.sketchup.egg.GreetingAnimation;
-import com.notnotme.sketchup.egg.SketchupAnimation;
+import com.notnotme.sketchup.egg.SketchItAnimation;
 import com.notnotme.sketchup.egg.renderer.meshe.Mesh;
 import com.notnotme.sketchup.egg.renderer.sprite.AnimatedSprite;
 import com.notnotme.sketchup.egg.renderer.sprite.Sprite;
@@ -66,7 +66,7 @@ public final class OpenGLRenderer implements GLSurfaceView.Renderer {
     private AnimatedSprite mFontSprite;
 
     private GreetingAnimation mGreetingAnimation;
-    private SketchupAnimation mSketchupAnimation;
+    private SketchItAnimation mSketchItAnimation;
     private AnimatedSprite mLogoLetterSprite;
 
     private Mesh mGroundMesh;
@@ -109,7 +109,7 @@ public final class OpenGLRenderer implements GLSurfaceView.Renderer {
 
         mGroundMesh = new Mesh(6);
 
-        mSketchupAnimation = new SketchupAnimation();
+        mSketchItAnimation = new SketchItAnimation();
         mGreetingAnimation = new GreetingAnimation();
 
         mOrtho = new float[16];
@@ -259,13 +259,13 @@ public final class OpenGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
 
         // Bounce letter logo
-        mSketchupAnimation.compute(mCurrentTime);
+        mSketchItAnimation.compute(mCurrentTime);
         mLogoTexture.bind(0);
         mSpriteBuffer.prepare();
         mLogoLetterSprite.x = ((mScreenWidth * 0.5f) - ((8*mLogoLetterSprite.w) * 0.5f)) + mLogoLetterSprite.w * 0.5f;
         for (int i=0; i<8; i++) {
             mLogoLetterSprite.setFrame(i);
-            mSketchupAnimation.apply(mLogoLetterSprite);
+            mSketchItAnimation.apply(mLogoLetterSprite);
             mSpriteBuffer.put(mLogoLetterSprite);
             mLogoLetterSprite.x += mLogoLetterSprite.w;
         }

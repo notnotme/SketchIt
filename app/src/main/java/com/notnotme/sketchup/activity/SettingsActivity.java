@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -110,12 +109,7 @@ public final class SettingsActivity extends BaseActivity {
 
         CheckBox backButtonUndo = findViewById(R.id.back_button_undo);
         backButtonUndo.setChecked(getSettingsManager().isBackButtonUndo());
-        backButtonUndo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                getSettingsManager().setBackButtonUndo(isChecked);
-            }
-        });
+        backButtonUndo.setOnCheckedChangeListener((buttonView, isChecked) -> getSettingsManager().setBackButtonUndo(isChecked));
 
         String versionString = getString(R.string.app_name) + " v" + BuildConfig.VERSION_NAME;
         versionString += System.lineSeparator();
@@ -133,7 +127,7 @@ public final class SettingsActivity extends BaseActivity {
         }
     }
 
-    public void deleteAllSketches() {
+    private void deleteAllSketches() {
         AsyncTask.execute(() -> {
             if (isDestroyed() || isFinishing()) return;
 

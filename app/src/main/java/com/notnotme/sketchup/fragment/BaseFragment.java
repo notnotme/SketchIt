@@ -16,7 +16,7 @@ public class BaseFragment extends Fragment {
         mSettingsManager = new SettingsManager(getContext());
     }
 
-    public SettingsManager getSettingsManager() {
+    protected SettingsManager getSettingsManager() {
         return mSettingsManager;
     }
 

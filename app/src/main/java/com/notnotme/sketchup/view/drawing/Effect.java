@@ -8,7 +8,7 @@ public enum Effect {
     DASHES(new DashPathEffect(new float[]{50, 50}, 0)),
     DOTS(new DashPathEffect(new float[]{0, 40}, 0));
 
-    DashPathEffect mPathEffect;
+    final DashPathEffect mPathEffect;
 
     Effect(DashPathEffect effect) {
         mPathEffect = effect;

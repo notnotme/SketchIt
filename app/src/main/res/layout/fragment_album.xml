@@ -50,7 +50,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="GridLayoutManager"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
         app:spanCount="2"
         tools:listitem="@layout/item_sketch"/>
 

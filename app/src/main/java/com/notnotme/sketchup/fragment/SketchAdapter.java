@@ -1,6 +1,7 @@
 package com.notnotme.sketchup.fragment;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -20,9 +21,9 @@ import java.util.List;
 
 public final class SketchAdapter extends RecyclerView.Adapter<SketchAdapter.ViewHolder> {
 
-    private SketchAdapterListener mSketchAdapterListener;
-    private ArrayList<Sketch> mItems;
-    private SparseBooleanArray mSelected;
+    private final SketchAdapterListener mSketchAdapterListener;
+    private final ArrayList<Sketch> mItems;
+    private final SparseBooleanArray mSelected;
     private boolean mInEditMode;
 
     SketchAdapter(SketchAdapterListener listener) {
@@ -31,6 +32,7 @@ public final class SketchAdapter extends RecyclerView.Adapter<SketchAdapter.View
         mSketchAdapterListener = listener;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sketch, parent, false));
@@ -110,9 +112,9 @@ public final class SketchAdapter extends RecyclerView.Adapter<SketchAdapter.View
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        View clickOverlay;
-        CheckBox checkbox;
+        final ImageView image;
+        final View clickOverlay;
+        final CheckBox checkbox;
 
         ViewHolder(View itemView) {
             super(itemView);

@@ -10,7 +10,7 @@ public final class SettingsManager {
     private static final String SMOOTH_DRAW_KEY = "smooth_draw";
     private static final String BACK_BUTTON_UNDO_KEY = "back_button_undo";
 
-    private SharedPreferences mSharedPreferences;
+    private final SharedPreferences mSharedPreferences;
 
     public SettingsManager(Context context) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);

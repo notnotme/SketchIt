@@ -1,7 +1,7 @@
 package com.notnotme.sketchup.activity;
 
+import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,6 +12,7 @@ import com.notnotme.sketchup.SettingsManager;
 import com.notnotme.sketchup.Theme;
 import com.notnotme.sketchup.dao.LocalDatabase;
 
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
     private LocalDatabase mLocalDatabase;
@@ -48,15 +49,15 @@ public class BaseActivity extends AppCompatActivity {
         mLocalDatabase.close();
     }
 
-    public LocalDatabase getLocalDatabase() {
+    protected LocalDatabase getLocalDatabase() {
         return mLocalDatabase;
     }
 
-    public SettingsManager getSettingsManager() {
+    protected SettingsManager getSettingsManager() {
         return mSettingsManager;
     }
 
-    public Handler getMainHandler() {
+    protected Handler getMainHandler() {
         return mMainHandler;
     }
 

@@ -5,12 +5,12 @@ import com.notnotme.sketchup.egg.util.BounceAnimation;
 
 import java.util.concurrent.TimeUnit;
 
-public final class SketchupAnimation extends BounceAnimation<AnimatedSprite> {
+public final class SketchItAnimation extends BounceAnimation<AnimatedSprite> {
 
     private int mFirstLetterIndex;
     private int mSecondLetterIndex;
 
-    public SketchupAnimation() {
+    public SketchItAnimation() {
         super(6.0f, 0.3f, TimeUnit.SECONDS.toMillis(1)/2);
         mFirstLetterIndex = 0;
         mSecondLetterIndex = -1;

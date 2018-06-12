@@ -7,7 +7,7 @@ import com.notnotme.sketchup.R;
 
 public final class MainMenuPopup extends BasePopup {
 
-    private PopupListener mPopupListener;
+    private final PopupListener mPopupListener;
 
     public MainMenuPopup(Context context, PopupListener popupListener) {
         super(context, R.layout.popup_plus);

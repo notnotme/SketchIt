@@ -25,7 +25,6 @@ import com.notnotme.sketchup.R;
 import com.notnotme.sketchup.popup.MainMenuPopup;
 import com.notnotme.sketchup.view.drawing.DrawingView;
 
-// todo: move all dialog creation & showing in MainActivity via mCallback
 public final class SketchFragment extends BaseFragment {
 
     private static final String TAG = SketchFragment.class.getSimpleName();
@@ -282,9 +281,9 @@ public final class SketchFragment extends BaseFragment {
 
         void showToolsFragment();
 
-        void hideToolsFragment(); // todo: to remove when popups migration is finished?
+        void hideToolsFragment();
 
-        boolean isToolsFragmentVisible(); // todo: to remove when popups migration is finished?
+        boolean isToolsFragmentVisible();
     }
 
 }

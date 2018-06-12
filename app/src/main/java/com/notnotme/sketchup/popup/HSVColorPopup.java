@@ -14,7 +14,7 @@ import com.notnotme.sketchup.view.RatioTouchListener;
 
 public final class HSVColorPopup extends BasePopup {
 
-    private float mTempHSV[];
+    private final float mTempHSV[];
 
     public HSVColorPopup(Context context, PopupListener popupListener) {
         super(context, R.layout.popup_hsv);

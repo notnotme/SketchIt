@@ -1,5 +1,6 @@
 package com.notnotme.sketchup.view.drawing;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -84,6 +85,7 @@ public final class DrawingView extends View {
     }
 
     @Override
+    @SuppressLint("ClickableViewAccessibility")
     public boolean onTouchEvent(MotionEvent event) {
         if (mDrawCanvas == null) {
             performClick();
@@ -148,11 +150,6 @@ public final class DrawingView extends View {
 
         invalidate();
         return true;
-    }
-
-    @Override
-    public boolean performClick() {
-        return super.performClick();
     }
 
     @Override

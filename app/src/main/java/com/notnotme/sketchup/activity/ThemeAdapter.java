@@ -18,8 +18,8 @@ import java.util.List;
 
 final class ThemeAdapter extends BaseAdapter {
 
-    private Context mContext;
-    private ArrayList<Theme> mItems;
+    private final Context mContext;
+    private final ArrayList<Theme> mItems;
 
     ThemeAdapter(@NonNull Context context, List<Theme> items) {
         mContext = context;
@@ -63,9 +63,9 @@ final class ThemeAdapter extends BaseAdapter {
     }
 
     private static final class ViewHolder {
-        View mColorPrimary;
-        View mColorPrimaryDark;
-        TextView mTextColorPrimary;
+        final View mColorPrimary;
+        final View mColorPrimaryDark;
+        final TextView mTextColorPrimary;
 
         ViewHolder(View itemView) {
             mColorPrimary = itemView.findViewById(R.id.primary);
